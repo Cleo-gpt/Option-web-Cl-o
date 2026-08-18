@@ -1,5 +1,5 @@
 /* P4 : remplacez ce commentaire par le reset de l’atelier. */
-reset */
+/* reset */
 *::before,
 *::after {
 box-sizing: border-box;
@@ -8,8 +8,6 @@ box-sizing: border-box;
 margin: 0;
 padding: 0;
 }
-page 2
-Option web · Fiche d’atelier · Atelier 03 — Ranger les boîtes du header
 img {
 max-width: 100%;
 height: auto;
