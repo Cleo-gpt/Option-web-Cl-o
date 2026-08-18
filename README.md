@@ -5,9 +5,7 @@ option-web-prenom/
 ├── README.md
 └── watt/
 ├── index.html
-├── css/
-│ └── style.css
-└── images/
+├──style.css
 ├── ce-soir.jpg
 ├── foule.jpg
 ├── logo.png
