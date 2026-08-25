@@ -1,0 +1,17 @@
+[
+  {
+    "nom": "Vidéoprojecteur salle 2",
+    "salle": "S2",
+    "emprunteur": ""
+  },
+  {
+    "nom": "Enceinte Bluetooth",
+    "salle": "Labo",
+    "emprunteur": "Nora"
+  },
+  {
+    "nom": "Appareil photo",
+    "salle": "Studio",
+    "emprunteur": ""
+  }
+]

@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Prêt de matériel — JSON aller-retour</title>
+    <link rel="stylesheet" href="css/style.css" />
+  </head>
+  <body>
+    <header>
+      <p class="brand">Prêt école</p>
+      <nav><a href="#liste">Matériel</a><a href="#fichier">Le fichier</a></nav>
+    </header>
+    <main>
+      <section id="accueil"><div class="container">
+        <p class="kicker">Sas · JSON · prêt de matériel</p>
+        <h1>Des données deviennent des objets.</h1>
+        <p class="chapo">La page lit trois descriptions. La classe décide si chaque matériel est disponible.</p>
+      </div></section>
+      <section id="liste"><div class="container">
+        <h2>Le matériel</h2><p id="etat" class="lede">Lecture des trois lignes…</p>
+        <div id="cartes" class="liste"></div>
+      </div></section>
+      <section id="fichier"><div class="container">
+        <h2>Le JSON à écrire dans le fichier</h2>
+        <p class="lede">Après un clic, copiez ce texte dans <code>data/prets.json</code>.</p>
+        <pre id="json">…</pre>
+      </div></section>
+    </main>
+    <footer>Votre prénom · aucun secret dans le JSON</footer>
+    <script type="application/json" id="source">
+[
+  {"nom": "Vidéoprojecteur salle 2", "salle": "S2", "emprunteur": ""},
+  {"nom": "Enceinte Bluetooth", "salle": "Labo", "emprunteur": "Nora"},
+  {"nom": "Appareil photo", "salle": "Studio", "emprunteur": ""}
+]
+    </script>
+    <script src="js/materiel.js"></script>
+  </body>
+</html>

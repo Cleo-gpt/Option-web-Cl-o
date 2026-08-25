@@ -1,0 +1,211 @@
+*,
+*::before,
+*::after { box-sizing: border-box; }
+* { margin: 0; padding: 0; }
+
+html,
+body {
+  width: 100%;
+  max-width: 100%;
+  overflow-x: hidden;
+}
+
+body {
+  font-family: "Iowan Old Style", "Palatino Linotype", Palatino, Georgia, serif;
+  color: #1c1917;
+  background: #f4efe6;
+  line-height: 1.5;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+header,
+main,
+footer,
+section,
+.container,
+p,
+h1,
+h2,
+h3,
+nav {
+  max-width: 100%;
+  min-width: 0;
+}
+
+header {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.45rem 1rem;
+  padding: 0.75rem 1rem;
+  background: #1c1917;
+  color: #f4efe6;
+}
+
+@media (min-width: 700px) {
+  header {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+  }
+}
+
+.brand,
+nav { min-width: 0; }
+
+.brand {
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  font-size: 0.8rem;
+}
+
+nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem 1.25rem;
+}
+
+nav a {
+  color: inherit;
+  text-decoration: none;
+  border-bottom: 1px solid rgba(244, 239, 230, 0.35);
+}
+
+.container {
+  max-width: 20rem;
+  width: auto;
+  margin-inline: 1rem;
+  padding-inline: 0;
+}
+
+@media (min-width: 700px) {
+  .container {
+    max-width: 52rem;
+    margin-inline: auto;
+    padding-inline: 1.25rem;
+  }
+}
+
+#accueil { padding: 3rem 0 2rem; }
+
+.kicker {
+  font-family: system-ui, "Segoe UI", sans-serif;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #9a3412;
+  margin-bottom: 0.8rem;
+}
+
+h1 {
+  font-size: clamp(1.7rem, 5vw, 2.7rem);
+  font-weight: 700;
+  line-height: 1.1;
+  max-width: 16ch;
+  margin-bottom: 1rem;
+}
+
+.chapo,
+.lede,
+#comparaison,
+footer {
+  max-width: 38rem;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+.chapo {
+  font-size: 1.05rem;
+  max-width: 100%;
+}
+
+code {
+  font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  font-size: 0.92em;
+  background: #e7e0d4;
+  padding: 0.05em 0.3em;
+}
+
+#fiches,
+#methode { padding: 0 0 2.5rem; }
+
+h2 {
+  font-size: clamp(1.2rem, 3vw, 1.6rem);
+  margin-bottom: 0.6rem;
+}
+
+.lede { margin-bottom: 1.25rem; }
+
+.liste {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0.85rem;
+}
+
+@media (min-width: 640px) {
+  .liste { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+
+@media (min-width: 960px) {
+  .liste { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+}
+
+.fiche {
+  background: #fffcf7;
+  border: 1px solid #d6d0c4;
+  padding: 1rem 1.05rem 1.1rem;
+  min-width: 0;
+}
+
+.fiche h3 {
+  font-size: 1.25rem;
+  margin-bottom: 0.35rem;
+}
+
+.fiche dl {
+  font-family: system-ui, "Segoe UI", sans-serif;
+  font-size: 0.92rem;
+}
+
+.fiche dt {
+  color: #57534e;
+  font-size: 0.72rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  margin-top: 0.55rem;
+}
+
+.fiche dd { margin: 0.1rem 0 0; }
+
+.badge {
+  display: inline-block;
+  margin-top: 0.75rem;
+  font-family: system-ui, "Segoe UI", sans-serif;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  padding: 0.2rem 0.45rem;
+}
+
+.badge--oui { background: #1c1917; color: #f4efe6; }
+.badge--non { background: #e7e0d4; color: #1c1917; }
+
+#comparaison {
+  font-size: 1.05rem;
+}
+
+footer {
+  padding: 1.25rem;
+  border-top: 1px solid #d6d0c4;
+  font-family: system-ui, "Segoe UI", sans-serif;
+  font-size: 0.85rem;
+  color: #57534e;
+}
+
+@media (max-width: 700px) {
+  h1 { max-width: 12ch; }
+}
