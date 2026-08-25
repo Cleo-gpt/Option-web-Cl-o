@@ -1,0 +1,99 @@
+body {
+  font-family: sans-serif;
+  text-align: center;
+  background: #10131a;
+  color: #f2f2f2;
+  padding: 20px;
+}
+
+#score {
+  font-size: 20px;
+  margin-bottom: 10px;
+}
+
+#scene {
+  position: relative;
+  width: 900px;
+  max-width: 95vw;
+  height: 160px;
+  margin: 0 auto;
+  background: linear-gradient(#1b2030, #0d0f16);
+  border: 2px solid #444;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+#personnage {
+  position: absolute;
+  bottom: 10px;
+  left: 0;
+  width: 40px;
+  height: 60px;
+  background: #ffb347;
+  border-radius: 8px;
+  transition: left 0.05s linear;
+}
+
+#personnage::after {
+  content: "";
+  position: absolute;
+  top: 14px;
+  right: 6px;
+  width: 6px;
+  height: 6px;
+  background: #10131a;
+  border-radius: 50%;
+  transition: left 0.1s, right 0.1s;
+}
+
+#personnage.regarde-gauche::after {
+  right: auto;
+  left: 6px;
+}
+
+.lumiere {
+  position: absolute;
+  bottom: 15px;
+  width: 20px;
+  height: 20px;
+  background: radial-gradient(circle, #fff9c4, #ffd700);
+  border-radius: 50%;
+  box-shadow: 0 0 12px 4px #ffd700aa;
+  animation: apparition 0.3s ease-out;
+}
+
+@keyframes apparition {
+  from {
+    transform: scale(0);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+.lumiere.disparition {
+  animation: disparition 0.3s ease-in forwards;
+}
+
+@keyframes disparition {
+  from {
+    transform: scale(1);
+    opacity: 1;
+  }
+  to {
+    transform: scale(0);
+    opacity: 0;
+  }
+}
+
+.cachee {
+  display: none;
+}
+
+#victoire {
+  margin-top: 20px;
+  font-size: 24px;
+  color: #ffd700;
+}
