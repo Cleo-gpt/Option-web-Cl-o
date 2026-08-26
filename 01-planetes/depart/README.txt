@@ -15,3 +15,11 @@ projets/01-planetes/2-ATELIER.pdf.
 
 Au départ, les cartes sont vides. C’est normal : vous fabriquez Terre
 seule avant le catalogue. Rien ne tourne et il n’y a pas de canvas.
+
+sas/
+└── planetes/
+├── index.html
+├── css/
+│ └── style.css
+└── js/
+└── planete.js
