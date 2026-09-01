@@ -25,6 +25,8 @@ function actionDuBouton(changerScene) {
 
   /* ajouter la classe "saute" à #joueur */
   document.getElementById("joueur").classList.add("saute");
+  joueur.sauter();
+  confirmerSaut();
   setTimeout(() => {
     /* retirer la classe "saute" après 180ms */
     document.getElementById("joueur").classList.remove("saute");
@@ -59,8 +61,8 @@ this.vitesseY = 0;
 sauter() {
 this.vitesseY = -10;
 }
-avancer() {
-this.vitesseY += 0.5;
+avancer(vitesse) {
+this.vitesseY += vitesse;
 this.y += this.vitesseY;
 }
 estPerdu(limite) {
@@ -72,13 +74,21 @@ reinitialiser() {
 }
 }
 
+
 const joueur = new Joueur();
-const hauteurDuSol = 300;
+
+const niveaux = [
+  { vitesse: 2, limite: 320 },
+  { vitesse: 3, limite: 300 },
+  { vitesse: 4, limite: 280 }
+];
+let niveauActuel = 0;
 
 function mettreAJour() {
   if (etat.scene !== "jeu") return;
-  joueur.avancer();
-  if (joueur.estPerdu(hauteurDuSol)) {
+  const niveau = niveaux[niveauActuel];
+  joueur.avancer(niveau.vitesse);
+  if (joueur.estPerdu(niveau.limite)) {
     changerScene("over");
   }
 }
@@ -89,5 +99,6 @@ setTimeout(() => {
 /* à vous : retirer la classe retour-saut */
 scene.classList.remove("retour-saut");
 }, 180);
-joueur.sauter();
 }
+
+const scene = document.getElementById("scene");
