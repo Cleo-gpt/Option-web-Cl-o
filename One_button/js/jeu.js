@@ -17,6 +17,7 @@ function actionDuBouton(changerScene) {
 
   if (etat.scene === "over") {
     /* over → rejouer : remettre la scène sur "jeu" */
+    joueur.reinitialiser();
     changerScene("jeu");
     sauts = 0;
     return;
@@ -34,6 +35,15 @@ function actionDuBouton(changerScene) {
     changerScene("over");
   }
 }
+
+document.addEventListener("keydown", (evenement) => {
+  if (evenement.key !== "Escape") return;
+  if (etat.scene === "jeu") {
+    changerScene("pause");
+  } else if (etat.scene === "pause") {
+    changerScene("jeu");
+  }
+});
 
 function changerScene(prochaineScene) {
   etat.scene = prochaineScene;
@@ -53,8 +63,22 @@ avancer() {
 this.vitesseY += 0.5;
 this.y += this.vitesseY;
 }
-};
+estPerdu(limite) {
+  return this.y > limite;
+}
+reinitialiser() {
+  this.y = 220;
+  this.vitesseY = 0;
+}
+}
 
 const joueur = new Joueur();
-joueur.sauter(); joueur.avancer(); console.log(joueur.y);
+const hauteurDuSol = 300;
 
+function mettreAJour() {
+  if (etat.scene !== "jeu") return;
+  joueur.avancer();
+  if (joueur.estPerdu(hauteurDuSol)) {
+    changerScene("over");
+  }
+}
