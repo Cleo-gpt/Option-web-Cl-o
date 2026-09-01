@@ -1,0 +1,46 @@
+body {
+    background-color: #1a1a1a;
+    color: #f0f0f0;
+    font-family: sans-serif;
+    text-align: center;
+    padding: 2rem;
+}
+
+#scene {
+    position: relative;
+    width: 400px;
+    height: 300px;
+    margin: 1rem auto;
+    background-color: #111;
+    border: 2px solid #555;
+}
+
+#joueur {
+    position: absolute;
+    left: 20px;
+    bottom: 20px;
+    width: 30px;
+    height: 30px;
+    background-color: #ffd400;
+    transition: bottom 0.18s;
+}
+
+#etat {
+    font-size: 1.1rem;
+}
+
+#action {
+    font-size: 1rem;
+    padding: 0.5rem 1.5rem;
+    background-color: #ffd400;
+    color: #1a1a1a;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+#action:hover {
+    background-color: #e6bf00;
+}
+
+#joueur.saute { bottom: 150px; transition: bottom 0.18s; }
