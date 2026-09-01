@@ -82,3 +82,12 @@ function mettreAJour() {
     changerScene("over");
   }
 }
+
+function confirmerSaut() {
+scene.classList.add("retour-saut");
+setTimeout(() => {
+/* à vous : retirer la classe retour-saut */
+scene.classList.remove("retour-saut");
+}, 180);
+joueur.sauter();
+}
