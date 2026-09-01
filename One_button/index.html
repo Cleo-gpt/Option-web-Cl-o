@@ -9,11 +9,17 @@
 <body>
     <main>
         <h1>Impulsion</h1>
+        <p id="barre-info">Niveau <span id="info-niveau">1</span>/<span id="info-total-niveaux">3</span> · Score <span id="info-score">0</span></p>
         <div id="scene" aria-label="Zone de jeu">
+            <div id="sol"></div>
             <div id="joueur"></div>
+            <div id="obstacle"></div>
+            <div id="panneau-fin" hidden>
+                <p id="panneau-titre">Partie terminée</p>
+                <p id="panneau-score"><span id="panneau-score-valeur">0</span> points</p>
+            </div>
         </div>
         <p id="etat" aria-live="polite">État : menu</p>
-        <p id="message" aria-live="polite"></p>
         <button type="button" id="action">Jouer</button>
         <button type="button" id="sauter">Sauter</button>
     </main>

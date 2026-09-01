@@ -10,7 +10,7 @@ m13/
 But : déclencher un saut.
 Défaite : aucune dans ce prototype.
 Règle actionDuBouton : menu → jouer ; jeu → sauter.
-
+Aucun son externe
 ## Agent
 
 Un agent "contradicteur", spécialiste en code, est utilisé en complément lors du débogage.

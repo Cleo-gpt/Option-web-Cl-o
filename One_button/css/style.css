@@ -1,9 +1,19 @@
 body {
-    background-color: #1a1a1a;
+    background-color: #0c1230;
     color: #f0f0f0;
     font-family: sans-serif;
     text-align: center;
     padding: 2rem;
+}
+
+#barre-info {
+    max-width: 400px;
+    margin: 0 auto;
+    text-align: left;
+    font-size: 0.85rem;
+    font-weight: bold;
+    letter-spacing: 0.02em;
+    color: #cfe8ff;
 }
 
 #scene {
@@ -11,22 +21,72 @@ body {
     width: 400px;
     height: 300px;
     margin: 1rem auto;
-    background-color: #111;
-    border: 2px solid #555;
+    background-color: #182154;
+    border: 2px solid #3a4a8a;
+    border-radius: 16px;
+    overflow: hidden;
+    transition: box-shadow 0.18s;
 }
 
 #scene.retour-saut {
-    box-shadow: 0 0 0 3px #ffd400;
+    box-shadow: 0 0 0 4px #ffd400;
+}
+
+#sol {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 60px;
+    height: 2px;
+    background-color: #4fd8e8;
 }
 
 #joueur {
     position: absolute;
     left: 20px;
-    bottom: 20px;
+    bottom: 80px;
     width: 30px;
     height: 30px;
+    border-radius: 8px;
     background-color: #ffd400;
     transition: bottom 0.18s;
+}
+
+#joueur.saute { bottom: 210px; transition: bottom 0.18s; }
+
+#obstacle {
+    position: absolute;
+    right: 60px;
+    bottom: 62px;
+    width: 14px;
+    height: 60px;
+    border-radius: 4px;
+    background-color: #ff6b81;
+}
+
+#panneau-fin {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 200px;
+    padding: 1.25rem;
+    background-color: #10173d;
+    border: 1px solid #4fd8e8;
+    border-radius: 10px;
+    box-shadow: 0 0 24px rgba(0, 0, 0, 0.4);
+}
+
+#panneau-titre {
+    margin: 0 0 0.5rem;
+    font-size: 0.9rem;
+    color: #cfe8ff;
+}
+
+#panneau-score {
+    margin: 0;
+    font-size: 1.4rem;
+    font-weight: bold;
 }
 
 #etat {
@@ -46,5 +106,3 @@ body {
 #action:hover {
     background-color: #e6bf00;
 }
-
-#joueur.saute { bottom: 150px; transition: bottom 0.18s; }

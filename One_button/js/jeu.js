@@ -1,9 +1,14 @@
 const etat = { scene: "menu" };
 const SAUTS_AVANT_FIN = 3;
 let sauts = 0;
+let score = 0;
 const bouton = document.getElementById("action");
 const etiquette = document.getElementById("etat");
-const message = document.getElementById("message");
+const panneauFin = document.getElementById("panneau-fin");
+const panneauTitre = document.getElementById("panneau-titre");
+const panneauScoreValeur = document.getElementById("panneau-score-valeur");
+const infoNiveau = document.getElementById("info-niveau");
+const infoScore = document.getElementById("info-score");
 bouton.addEventListener("click", () => {
 actionDuBouton(changerScene);
 etiquette.textContent = `État : ${etat.scene}`;
@@ -19,6 +24,8 @@ function actionDuBouton(changerScene) {
   if (etat.scene === "over" || etat.scene === "victoire") {
     /* over/victoire → rejouer : remettre la scène sur "jeu" */
     niveauActuel = 0;
+    score = 0;
+    infoScore.textContent = score;
     joueur.reinitialiser();
     changerScene("jeu");
     sauts = 0;
@@ -35,6 +42,8 @@ function actionDuBouton(changerScene) {
   }, 180);
 
   sauts += 1;
+  score += 1;
+  infoScore.textContent = score;
   if (sauts >= SAUTS_AVANT_FIN) {
     niveauSuivant();
   }
@@ -65,11 +74,18 @@ function changerScene(prochaineScene) {
   etiquette.textContent = `État : ${etat.scene}`;
   bouton.textContent = etat.scene === "over" || etat.scene === "victoire" ? "Rejouer" : "Agir";
   if (etat.scene === "over") {
-    message.textContent = "Partie terminée";
+    panneauTitre.textContent = "Partie terminée";
+    panneauScoreValeur.textContent = score;
+    panneauFin.hidden = false;
   } else if (etat.scene === "victoire") {
-    message.textContent = "Victoire !";
+    panneauTitre.textContent = "Victoire !";
+    panneauScoreValeur.textContent = score;
+    panneauFin.hidden = false;
   } else {
-    message.textContent = "";
+    panneauFin.hidden = true;
+  }
+  if (etat.scene === "jeu" && sauts === 0) {
+    infoNiveau.textContent = niveauActuel + 1;
   }
 }
 
