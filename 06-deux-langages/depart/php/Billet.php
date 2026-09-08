@@ -28,4 +28,8 @@ class Billet
     }
 }
 
-$paleo = new Billet("Paléo, grande scène — samedi", 45, 0);
+$affiche = [
+    new Billet("Paléo, grande scène — samedi", 45, 0),
+    new Billet("Montreux Jazz Festival, scène principale — vendredi", 60, 2),
+    new Billet("Festival de la Cité, théâtre de verdure — dimanche", 30, 5)
+];
