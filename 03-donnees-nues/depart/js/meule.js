@@ -1,7 +1,35 @@
 const joursGruyere = 90;
 const poidsGruyere = 6;
 
-/* Étape 2 : écrivez ici le premier if, seulement pour le Gruyère. */
+const joursTomme = 90;
+const poidsTomme = 6;
+
+const joursSerac = 90;
+const poidsSerac = 6;
+
+let verdictGruyere;
+if (joursGruyere >= 60 && poidsGruyere >= 4) {
+verdictGruyere = "oui";
+} else {
+verdictGruyere = "non";
+}
+console.log(verdictGruyere);
+
+let verdictTomme;
+if (joursTomme >= 60 && poidsTomme >= 4) {
+verdictTomme = "oui";
+} else {
+verdictTomme = "non";
+}
+console.log(verdictTomme);
+
+let verdictSerac;
+if (joursSerac >= 60 && poidsSerac >= 4) {
+verdictSerac = "oui";
+} else {
+verdictSerac = "non";
+}
+console.log(verdictSerac);
 
 class Meule {
   constructor(nom, joursAffinage, poidsKg) {
@@ -11,10 +39,13 @@ class Meule {
   }
 
   estPret() {
-    /* à vous : une ligne */
+if (this.joursAffinage >= 60 && this.poidsKg >= 4) {
+  return "oui";
+} else {
+  return "non";
   }
 }
-
+}
 /* Étape 4 : fabriquez seulement le Gruyère ici. */
 
 /* Étape 5 : remplacez l’objet de test par la cave et son affichage. */
