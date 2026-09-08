@@ -48,6 +48,7 @@ class Meule {
 
 }
 
-/* Étape 4 : fabriquez seulement le Gruyère ici. */
+const gruyere = new Meule("Gruyère d’alpage", 90, 6);
+
 
 /* Étape 5 : remplacez l’objet de test par la cave et son affichage. */
