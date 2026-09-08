@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Trois meules — données nues puis objet</title>
+    <link rel="stylesheet" href="css/style.css" />
+  </head>
+  <body>
+    <header>
+      <p class="brand">Cave d’affinage</p>
+      <nav>
+        <a href="#nues">Tableau nu</a>
+        <a href="#objets">Objets</a>
+      </nav>
+    </header>
+    <main>
+      <section id="accueil">
+        <div class="container">
+          <p class="kicker">Sas · fromagerie · trois cas</p>
+          <h1>D’abord le tableau. Ensuite l’objet.</h1>
+          <p class="chapo">
+            Une meule est prête si elle a au moins 60 jours d’affinage
+            <strong>et</strong> au moins 4 kg. Vous écrivez la décision une
+            première fois, puis vous rangez la même règle dans
+            <code>Meule.estPret()</code>.
+          </p>
+        </div>
+      </section>
+      <section id="nues">
+        <div class="container">
+          <h2>Les données nues</h2>
+          <p class="lede">
+            Aucune classe dans ce tableau. Trois lignes attendent une décision.
+          </p>
+          <div class="table-scroll">
+            <table class="tableau">
+              <thead>
+                <tr>
+                  <th>Nom</th>
+                  <th>Jours</th>
+                  <th>Poids (kg)</th>
+                  <th>Prête ?</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Gruyère d’alpage</td>
+                  <td>90</td>
+                  <td>6</td>
+                  <td>oui (90 ≥ 60 et 6 ≥ 4)</td>
+                </tr>
+                <tr>
+                  <td>Tomme jeune</td>
+                  <td>20</td>
+                  <td>5</td>
+                  <td>non (20 &lt; 60)</td>
+                </tr>
+                <tr>
+                  <td>Sérac léger</td>
+                  <td>70</td>
+                  <td>2</td>
+                  <td>non (2 &lt; 4)</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+      <section id="objets">
+        <div class="container">
+          <h2>Les mêmes trois, en objets</h2>
+          <p class="lede">
+            La page demandera <code>estPret()</code> à chaque meule.
+          </p>
+          <div id="liste" class="liste"></div>
+        </div>
+      </section>
+    </main>
+    <footer>
+      <p>Votre prénom · classe Meule · pas de billets.</p>
+    </footer>
+    <script src="js/meule.js"></script>
+  </body>
+</html>
