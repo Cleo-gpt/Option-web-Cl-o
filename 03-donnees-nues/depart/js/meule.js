@@ -39,13 +39,15 @@ class Meule {
   }
 
   estPret() {
-if (this.joursAffinage >= 60 && this.poidsKg >= 4) {
-  return "oui";
-} else {
-  return "non";
+  if (this.joursAffinage >= 60 && this.poidsKg >= 4) {
+    return true;
+  } else {
+    return false;
   }
 }
+
 }
+
 /* Étape 4 : fabriquez seulement le Gruyère ici. */
 
 /* Étape 5 : remplacez l’objet de test par la cave et son affichage. */
