@@ -90,24 +90,24 @@ function changerScene(prochaineScene) {
 }
 
 class Joueur {
-constructor() {
-this.y = 220;
-this.vitesseY = 0;
-}
-sauter() {
-this.vitesseY = -10;
-}
-avancer(vitesse) {
-this.vitesseY += vitesse;
-this.y += this.vitesseY;
-}
-estPerdu(limite) {
-  return this.y > limite;
-}
-reinitialiser() {
+  constructor() {
   this.y = 220;
   this.vitesseY = 0;
-}
+  }
+  sauter() {
+  this.vitesseY = -10;
+  }
+  avancer(vitesse) {
+  this.vitesseY += vitesse;
+  this.y += this.vitesseY;
+  }
+  estPerdu(limite) {
+    return this.y > limite;
+  }
+  reinitialiser() {
+    this.y = 220;
+    this.vitesseY = 0;
+  }
 }
 
 
