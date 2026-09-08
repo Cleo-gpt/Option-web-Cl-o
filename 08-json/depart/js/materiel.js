@@ -6,15 +6,18 @@ class Materiel {
   }
 
   estDispo() {
-    /* à vous : retournez vrai quand emprunteur est une chaîne vide */
+    if (this.emprunteur === "") {
+      return true;
+    }
+    return false;
   }
 
   emprunter(qui) {
-    /* à vous : remplacez l’emprunteur par qui */
+    this.emprunteur = qui;
   }
 
   rendre() {
-    /* à vous : remettez une chaîne vide */
+    this.emprunteur = "";
   }
 }
 
