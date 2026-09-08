@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Quatre orbites — Planète</title>
+    <link rel="stylesheet" href="css/style.css" />
+  </head>
+  <body>
+    <header>
+      <p class="brand">Cabinet des orbites</p>
+      <button type="button" id="pause">Pause</button>
+    </header>
+    <main>
+      <section id="accueil">
+        <div class="container">
+          <p class="kicker">Sas · planètes · orbites</p>
+          <h1>Quatre objets vont apprendre à tourner.</h1>
+          <p class="chapo">Le canvas est prêt. À vous de donner des méthodes aux objets.</p>
+        </div>
+      </section>
+      <section id="ciel-bloc">
+        <div class="container">
+          <p id="ciel-desc">
+            Le Soleil au centre, quatre planètes sur leur orbite.
+          </p>
+          <canvas
+            id="ciel"
+            width="800"
+            height="520"
+            role="img"
+            aria-labelledby="ciel-desc"
+          ></canvas>
+          <ul class="noms" id="noms">
+            <li><button type="button" data-nom="Mercure">Mercure</button></li>
+            <li><button type="button" data-nom="Terre">Terre</button></li>
+            <li><button type="button" data-nom="Saturne">Saturne</button></li>
+            <li><button type="button" data-nom="Neptune">Neptune</button></li>
+          </ul>
+          <p id="fiche" role="status" aria-live="polite"></p>
+        </div>
+      </section>
+    </main>
+    <footer>
+      <p>(votre prénom) · classe Planete · orbites</p>
+    </footer>
+    <script src="js/planete.js"></script>
+  </body>
+</html>
