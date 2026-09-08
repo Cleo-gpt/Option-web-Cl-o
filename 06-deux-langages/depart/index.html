@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Trois billets — même classe en JS</title>
+    <link rel="stylesheet" href="css/style.css" />
+  </head>
+  <body>
+    <header>
+      <p class="brand">Guichet de la salle</p>
+      <nav>
+        <a href="#liste">Les trois</a>
+        <a href="#methode">La méthode</a>
+      </nav>
+    </header>
+    <main>
+      <section id="accueil">
+        <div class="container">
+          <p class="kicker">Sas · deux langages · JavaScript</p>
+          <h1>Trois billets, une classe.</h1>
+          <p class="chapo">
+            Un complet (<code>places === 0</code>), un presque plein
+            (<code>places === 2</code>), un vide (<code>places === 80</code>).
+            Prix et état viennent de l’objet.
+          </p>
+        </div>
+      </section>
+      <section id="liste">
+        <div class="container">
+          <h2>Ce soir au guichet</h2>
+          <div id="billets" class="liste"></div>
+        </div>
+      </section>
+      <section id="methode">
+        <div class="container">
+          <h2>Ce que l’objet sait</h2>
+          <p id="oral"></p>
+        </div>
+      </section>
+    </main>
+    <footer>
+      <p>(votre prénom) · classe Billet · JavaScript</p>
+    </footer>
+    <script src="js/billet.js"></script>
+  </body>
+</html>
