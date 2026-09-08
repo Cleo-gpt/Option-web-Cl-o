@@ -48,7 +48,25 @@ class Meule {
 
 }
 
-const gruyere = new Meule("Gruyère d’alpage", 90, 6);
+const cave = [
+new Meule("Gruyère d’alpage", 90, 6),
+new Meule("Tomme jeune", 20, 5),
+new Meule("Sérac léger", 70, 2),
+];
 
-
-/* Étape 5 : remplacez l’objet de test par la cave et son affichage. */
+const liste = document.getElementById("liste");
+cave.forEach((meule) => {
+const pret = meule.estPret();
+const article = document.createElement("article");
+article.className = "fiche";
+article.innerHTML = `
+<h3>${meule.nom}</h3>
+<dl>
+<dt>Affinage</dt><dd>${meule.joursAffinage} jours</dd>
+<dt>Poids</dt><dd>${meule.poidsKg} kg</dd>
+</dl>
+<p class="badge ${pret ? "badge--oui" : "badge--non"}">
+Prête : ${pret ? "oui" : "non"}
+</p>`;
+liste.appendChild(article);
+})
