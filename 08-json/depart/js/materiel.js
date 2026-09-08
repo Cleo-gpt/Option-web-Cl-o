@@ -21,6 +21,9 @@ class Materiel {
   }
 }
 
+const video = new Materiel("Vidéoprojecteur salle 2", "S2", "");
+video.estDispo();
+
 let stock = [];
 
 function versJson() {
