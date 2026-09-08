@@ -6,10 +6,7 @@ class Billet {
   }
 
   estComplet() {
-    if (this.places < 0) {
-      return true;
-    }
-    return this.places === 0;
+    return this.places < 0;
   }
 
   prixFinal() {
