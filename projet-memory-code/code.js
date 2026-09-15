@@ -107,15 +107,22 @@ gererGroupeBoutons("[data-difficulte]", (dataset) => {
   mettreAJourRecapMenu();
 });
 
+// Vérifie que chaque paramètre obligatoire a bien été choisi par le joueur
+// (mode, nombre de joueurs si multi, nombre de cartes, difficulté). Sert à la
+// fois pour activer/désactiver le bouton et comme sécurité au moment du clic.
+function configurationComplete() {
+  const modeChoisi = etat.mode !== null;
+  const nbJoueursOk = etat.mode !== "multi" || document.querySelector("[data-joueurs].selectionne") !== null;
+  const cartesChoisies = document.querySelector("[data-cartes].selectionne") !== null;
+  const difficulteChoisie = document.querySelector("[data-difficulte].selectionne") !== null;
+
+  return modeChoisi && nbJoueursOk && cartesChoisies && difficulteChoisie;
+}
+
 // Affiche un petit résumé des choix et active le bouton "Valider" seulement
 // quand tout ce qui est obligatoire a été choisi.
 function mettreAJourRecapMenu() {
-  const modeChoisi = etat.mode !== null;
-  const nbJoueursOk = etat.mode !== "multi" || document.querySelector("[data-joueurs].selectionne");
-  const cartesChoisies = document.querySelector("[data-cartes].selectionne");
-  const difficulteChoisie = document.querySelector("[data-difficulte].selectionne");
-
-  const pret = modeChoisi && nbJoueursOk && cartesChoisies && difficulteChoisie;
+  const pret = configurationComplete();
   boutonValiderMenu.disabled = !pret;
 
   if (pret) {
@@ -129,11 +136,19 @@ function mettreAJourRecapMenu() {
 // Une fois la configuration validée, on prépare la partie (cartes, joueurs) et
 // on ouvre directement le livre fermé sur sa page de garde, avant que le plateau
 // ne soit révélé.
+// La vérification est refaite ici (en plus du bouton désactivé) : une sécurité
+// pour ne jamais démarrer une partie si un paramètre n'a pas été choisi.
 boutonValiderMenu.addEventListener("click", () => {
+  if (!configurationComplete()) return;
+
   preparerPartie();
   changerEcran("jeu");
   ouvrirLivrePremierAcces();
 });
+
+// Synchronise l'état du bouton dès le chargement de la page, plutôt que de se
+// reposer uniquement sur l'attribut "disabled" écrit à la main dans le HTML.
+mettreAJourRecapMenu();
 
 
 // ===================================================================
@@ -209,7 +224,7 @@ document.getElementById("bouton-refuser-regles").addEventListener("click", () =>
   afficherPage(pageBonneChance);
   setTimeout(() => {
     fermerLivreEtLancerPartie();
-  }, 5000);
+  }, 500);
 });
 
 // "Lancer la partie" / "Relancer la partie" : referme le livre et démarre ou reprend le jeu.
