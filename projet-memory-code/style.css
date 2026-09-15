@@ -82,6 +82,32 @@ button {
   border-color: var(--accent);
 }
 
+/* Curseur pour choisir un nombre de cartes entre 20 et 120 (au-delà des 4 boutons). */
+#bloc-curseur-cartes {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  justify-content: center;
+  margin-top: 0.75rem;
+}
+
+#curseur-cartes {
+  width: 220px;
+  accent-color: var(--accent);
+}
+
+#valeur-curseur-cartes {
+  min-width: 5.5rem;
+  text-align: left;
+}
+
+/* Le curseur est aussi considéré comme "sélectionné" une fois qu'on y touche :
+   son affichage se met en évidence comme les boutons choisis. */
+#bloc-curseur-cartes.selectionne #valeur-curseur-cartes {
+  color: var(--accent);
+  font-weight: bold;
+}
+
 #bouton-valider-menu,
 #bouton-demarrer-partie,
 #bouton-rejouer {
@@ -307,6 +333,43 @@ button {
 .coeurs {
   font-size: 0.9rem;
 }
+
+/* ===== Statistiques de fin de partie ===== */
+
+#statistiques-fin {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  margin: 1.5rem 0;
+  text-align: left;
+}
+
+.ligne-stat-fin {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.4rem 1rem;
+  padding: 0.5rem 0.75rem;
+  border-radius: 6px;
+  background-color: var(--fond-carte);
+}
+
+.nom-stat-fin {
+  font-weight: bold;
+  min-width: 6rem;
+}
+
+/* Sur l'écran de fin, la lumière de chaque joueur reste allumée dans sa couleur
+   en permanence : il n'y a plus de notion de "tour" une fois la partie finie. */
+.ligne-stat-fin .lumiere {
+  box-shadow: 0 0 6px 2px currentColor;
+}
+
+.ligne-stat-fin.joueur-1 .lumiere { background-color: var(--joueur-1); color: var(--joueur-1); }
+.ligne-stat-fin.joueur-2 .lumiere { background-color: var(--joueur-2); color: var(--joueur-2); }
+.ligne-stat-fin.joueur-3 .lumiere { background-color: var(--joueur-3); color: var(--joueur-3); }
+.ligne-stat-fin.joueur-4 .lumiere { background-color: var(--joueur-4); color: var(--joueur-4); }
+.ligne-stat-fin.joueur-robot .lumiere { background-color: var(--robot); color: var(--robot); }
 
 /* Grille de cartes : s'adapte automatiquement au nombre de cartes */
 #grille-cartes {

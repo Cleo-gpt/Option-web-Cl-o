@@ -36,6 +36,13 @@
       <button class="bouton-choix" data-cartes="16">16</button>
       <button class="bouton-choix" data-cartes="20">20</button>
       <button class="bouton-choix" data-cartes="24">24</button>
+
+      <!-- Au-delà de 24, un curseur permet de choisir n'importe quel multiple de 4
+           jusqu'à 120, sans avoir à afficher un bouton par valeur possible. -->
+      <div id="bloc-curseur-cartes">
+        <input type="range" id="curseur-cartes" min="20" max="120" step="4" value="20">
+        <span id="valeur-curseur-cartes">20 cartes</span>
+      </div>
     </div>
 
     <div class="bloc-choix">
@@ -135,6 +142,11 @@
   <section id="ecran-fin" class="ecran" hidden>
     <h2 id="titre-fin"></h2>
     <p id="message-fin"></p>
+
+    <!-- Statistiques de chaque joueur : paires trouvées, vies restantes, temps moyen par paire.
+         Rempli par JavaScript (une ligne par joueur) dans terminerPartie(). -->
+    <div id="statistiques-fin"></div>
+
     <button id="bouton-rejouer">Rejouer</button>
   </section>
 

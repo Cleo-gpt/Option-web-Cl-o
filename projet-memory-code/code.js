@@ -24,8 +24,16 @@ const NOMS_COULEURS = ["Bleu", "Vert", "Rose", "Jaune"];
 const COEURS_DEPART = 10;
 const TEMPS_TOUR = 45; // secondes laissées à chaque joueur pour retourner 2 cartes
 
-// Symboles utilisés sur les cartes (24 cartes = 12 paires maximum avec cette liste)
-const SYMBOLES = ["🍎", "🍋", "🍇", "🍉", "🍓", "🍒", "🍍", "🥝", "🥥", "🍑", "🍌", "🥕"];
+// Symboles utilisés sur les cartes : 60 symboles, de quoi couvrir jusqu'à
+// 120 cartes (60 paires), le maximum proposé dans le menu.
+const SYMBOLES = [
+  "🍎", "🍋", "🍇", "🍉", "🍓", "🍒", "🍍", "🥝", "🥥", "🍑", "🍌", "🥕",
+  "🍊", "🍐", "🍈", "🫐", "🥭", "🌽", "🥑", "🍆",
+  "🐶", "🐱", "🐭", "🐹", "🐰", "🦊", "🐻", "🐼", "🐨", "🐯",
+  "🦁", "🐮", "🐷", "🐸", "🐵", "🐔", "🐧", "🐦", "🦄", "🐝",
+  "⚽", "🏀", "🏈", "⚾", "🎾", "🏐", "🎱", "🏓", "🎸", "🎺",
+  "🚗", "🚕", "🚲", "✈️", "🚀", "⛵", "🏰", "🗻", "🌈", "⭐",
+];
 
 
 // ===================================================================
@@ -48,6 +56,7 @@ const grilleCartes = document.getElementById("grille-cartes");
 
 const titreFin = document.getElementById("titre-fin");
 const messageFin = document.getElementById("message-fin");
+const statistiquesFin = document.getElementById("statistiques-fin");
 
 // Éléments du livre des règles
 const livre = document.getElementById("livre");
@@ -97,8 +106,25 @@ gererGroupeBoutons("[data-joueurs]", (dataset) => {
   mettreAJourRecapMenu();
 });
 
+// Boutons 12/16/20/24 : en choisir un désélectionne le curseur (voir plus bas),
+// puisque les deux façons de choisir le nombre de cartes s'excluent mutuellement.
 gererGroupeBoutons("[data-cartes]", (dataset) => {
   etat.nbCartes = Number(dataset.cartes);
+  blocCurseurCartes.classList.remove("selectionne");
+  mettreAJourRecapMenu();
+});
+
+// Curseur 20 → 120 (pas de 4) : choisir une valeur ici désélectionne les 4 boutons,
+// pour la même raison (un seul et même paramètre, deux façons de le régler).
+const blocCurseurCartes = document.getElementById("bloc-curseur-cartes");
+const curseurCartes = document.getElementById("curseur-cartes");
+const valeurCurseurCartes = document.getElementById("valeur-curseur-cartes");
+
+curseurCartes.addEventListener("input", () => {
+  etat.nbCartes = Number(curseurCartes.value);
+  valeurCurseurCartes.textContent = `${etat.nbCartes} cartes`;
+  blocCurseurCartes.classList.add("selectionne");
+  document.querySelectorAll("[data-cartes]").forEach((b) => b.classList.remove("selectionne"));
   mettreAJourRecapMenu();
 });
 
@@ -113,7 +139,8 @@ gererGroupeBoutons("[data-difficulte]", (dataset) => {
 function configurationComplete() {
   const modeChoisi = etat.mode !== null;
   const nbJoueursOk = etat.mode !== "multi" || document.querySelector("[data-joueurs].selectionne") !== null;
-  const cartesChoisies = document.querySelector("[data-cartes].selectionne") !== null;
+  const cartesChoisies = document.querySelector("[data-cartes].selectionne") !== null
+    || blocCurseurCartes.classList.contains("selectionne");
   const difficulteChoisie = document.querySelector("[data-difficulte].selectionne") !== null;
 
   return modeChoisi && nbJoueursOk && cartesChoisies && difficulteChoisie;
@@ -284,6 +311,8 @@ function creerJoueurs() {
       classeCouleur: CLASSES_COULEUR_JOUEURS[i],
       coeurs: COEURS_DEPART,
       estRobot: false,
+      pairesTrouvees: 0,      // pour les statistiques affichées à la fin de la partie
+      sommeTempsPaires: 0,    // somme des secondes mises à trouver chaque paire (pour la moyenne)
     });
   }
 
@@ -293,6 +322,8 @@ function creerJoueurs() {
       classeCouleur: "joueur-robot",
       coeurs: COEURS_DEPART,
       estRobot: true,
+      pairesTrouvees: 0,
+      sommeTempsPaires: 0,
     });
   }
 }
@@ -401,6 +432,7 @@ function rafraichirCarte(carte) {
 // ===================================================================
 let identifiantMinuteurTour = null;
 let secondesRestantesTour = TEMPS_TOUR;
+let secondesDebutTourJoueur = 0; // valeur du chrono au début du tour en cours, pour mesurer le temps mis à trouver une paire
 
 function demarrerTour() {
   etat.cartesRetournees = [];
@@ -408,6 +440,7 @@ function demarrerTour() {
 
   secondesRestantesTour = TEMPS_TOUR;
   tempsTourAffichage.textContent = `${secondesRestantesTour}s`;
+  secondesDebutTourJoueur = secondesEcoulees;
 
   lancerMinuteurTour();
 
@@ -504,6 +537,11 @@ function gagnerCoeurJoueurActuel() {
   const joueur = etat.joueurs[etat.joueurActuelIndex];
   joueur.coeurs += 1;
   afficherCoeurs(etat.joueurActuelIndex);
+
+  // Statistiques pour l'écran de fin : une paire de plus, et le temps mis
+  // pour la trouver (depuis le début de ce tour) vient allonger la moyenne.
+  joueur.pairesTrouvees += 1;
+  joueur.sommeTempsPaires += secondesEcoulees - secondesDebutTourJoueur;
 }
 
 // Fait perdre un coeur au joueur actuel et vérifie s'il est éliminé.
@@ -625,7 +663,32 @@ function terminerPartie(resultat) {
     messageFin.textContent = "Tous les joueurs ont perdu leurs coeurs.";
   }
 
+  afficherStatistiquesFin();
   changerEcran("fin");
+}
+
+// Affiche, pour chaque joueur, ses paires trouvées, ses vies restantes et le
+// temps moyen mis pour trouver une paire (somme des temps ÷ nombre de paires).
+function afficherStatistiquesFin() {
+  statistiquesFin.innerHTML = "";
+
+  etat.joueurs.forEach((joueur) => {
+    const tempsMoyen = joueur.pairesTrouvees > 0
+      ? Math.round(joueur.sommeTempsPaires / joueur.pairesTrouvees)
+      : null;
+    const texteTempsMoyen = tempsMoyen !== null ? `${tempsMoyen}s en moyenne par paire` : "aucune paire trouvée";
+
+    const ligne = document.createElement("div");
+    ligne.className = `ligne-stat-fin ${joueur.classeCouleur}`;
+    ligne.innerHTML = `
+      <span class="lumiere"></span>
+      <span class="nom-stat-fin">${joueur.nom}</span>
+      <span>${joueur.pairesTrouvees} paire(s) trouvée(s)</span>
+      <span>❤️ ${joueur.coeurs}</span>
+      <span>${texteTempsMoyen}</span>
+    `;
+    statistiquesFin.appendChild(ligne);
+  });
 }
 
 // Le bouton "Rejouer" ramène directement au menu pour choisir une nouvelle configuration.
