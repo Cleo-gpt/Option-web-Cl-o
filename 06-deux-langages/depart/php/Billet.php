@@ -15,21 +15,11 @@ class Billet
 
     public function estComplet(): bool
     {
-        return $this->places < 0;
+        /* à vous : règle billet complet */
     }
 
     public function prixFinal(): float
     {
-       $prixFinal = $this->prix;
-         if ($this->places < 3) {
-                $prixFinal *= 0.9;
-            }   
-        return $prixFinal;
+        /* à vous : règle tarif de dernière minute */
     }
 }
-
-$affiche = [
-    new Billet("Paléo, grande scène — samedi", 45, 0),
-    new Billet("Montreux Jazz Festival, scène principale — vendredi", 60, 2),
-    new Billet("Festival de la Cité, théâtre de verdure — dimanche", 30, 5)
-];

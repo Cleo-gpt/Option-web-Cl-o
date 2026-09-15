@@ -1,4 +1,4 @@
-const joursGruyere = 90;
+/* const joursGruyere = 90;
 const poidsGruyere = 6;
 
 const joursTomme = 90;
@@ -9,27 +9,27 @@ const poidsSerac = 6;
 
 let verdictGruyere;
 if (joursGruyere >= 60 && poidsGruyere >= 4) {
-verdictGruyere = "oui";
+  verdictGruyere = "oui";
 } else {
-verdictGruyere = "non";
+  verdictGruyere = "non";
 }
 console.log(verdictGruyere);
 
 let verdictTomme;
 if (joursTomme >= 60 && poidsTomme >= 4) {
-verdictTomme = "oui";
+  verdictTomme = "oui";
 } else {
-verdictTomme = "non";
+  verdictTomme = "non";
 }
 console.log(verdictTomme);
 
 let verdictSerac;
 if (joursSerac >= 60 && poidsSerac >= 4) {
-verdictSerac = "oui";
+  verdictSerac = "oui";
 } else {
-verdictSerac = "non";
+  verdictSerac = "non";
 }
-console.log(verdictSerac);
+console.log(verdictSerac); */
 
 class Meule {
   constructor(nom, joursAffinage, poidsKg) {
@@ -39,27 +39,27 @@ class Meule {
   }
 
   estPret() {
-  if (this.joursAffinage >= 60 && this.poidsKg >= 4) {
-    return true;
-  } else {
-    return false;
+    if (this.joursAffinage >= 60 && this.poidsKg >= 4) {
+      return true;
+    } else {
+      return false;
+    }
   }
-}
 
 }
 
 const cave = [
-new Meule("Gruyère d’alpage", 90, 6),
-new Meule("Tomme jeune", 20, 5),
-new Meule("Sérac léger", 70, 2),
+  new Meule("Gruyère d’alpage", 90, 6),
+  new Meule("Tomme jeune", 20, 5),
+  new Meule("Sérac léger", 70, 2),
 ];
 
 const liste = document.getElementById("liste");
 cave.forEach((meule) => {
-const pret = meule.estPret();
-const article = document.createElement("article");
-article.className = "fiche";
-article.innerHTML = `
+  const pret = meule.estPret();
+  const article = document.createElement("article");
+  article.className = "fiche";
+  article.innerHTML = `
 <h3>${meule.nom}</h3>
 <dl>
 <dt>Affinage</dt><dd>${meule.joursAffinage} jours</dd>
@@ -68,5 +68,5 @@ article.innerHTML = `
 <p class="badge ${pret ? "badge--oui" : "badge--non"}">
 Prête : ${pret ? "oui" : "non"}
 </p>`;
-liste.appendChild(article);
+  liste.appendChild(article);
 })

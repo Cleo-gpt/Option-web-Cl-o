@@ -5,6 +5,8 @@ require __DIR__ . '/Billet.php';
    Étape 4 : créez d’abord seulement $paleo.
    Étape 5 : remplacez-le par le tableau $affiche des trois billets.
 */
+
+
 ?>
 <!DOCTYPE html>
 <html lang="fr">
@@ -30,28 +32,14 @@ require __DIR__ . '/Billet.php';
         <div class="container">
           <h2>Ce soir au guichet</h2>
           <div class="liste">
-            <?php $billet->titre
-                  $billet->place
-                  $billet->prixFinal()
-                  $billet->estComplet() ?>
+            <?php /* à vous : boucle sur $affiche et cartes branchées sur les méthodes */ ?>
           </div>
         </div>
       </section>
       <section id="methode">
         <div class="container">
           <h2>Ce que l’objet sait</h2>
-          <p><?php foreach ($affiche as $billet): ?>
-<article class="fiche">
-<h3><?= htmlspecialchars($billet->titre, ENT_QUOTES, 'UTF-8') ?></h3>
-<p>
-<?= $billet->places ?> places ·
-<?= number_format($billet->prixFinal(), 2, ',', ' ') ?> francs
-</p>
-<p class="badge">
-<?= $billet->estComplet() ? 'Complet' : 'Ouvert' ?>
-</p>
-</article>
-<?php endforeach; ?></p>
+          <p><?php /* à vous : test d’un objet, puis réponse du premier billet */ ?></p>
         </div>
       </section>
     </main>
