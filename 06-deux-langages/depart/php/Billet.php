@@ -16,11 +16,11 @@ class Billet
     public function estComplet(): bool
     {
         /* à vous : règle billet complet */
-        if ($this->places === 0) {
-            return true;
-        } else {
-            return false;
-        }
+       $prixFinal = $this->prix;
+         if ($this->places < 3) {
+                $prixFinal *= 0.9;
+            }   
+        return $prixFinal;
     }
 
     public function prixFinal(): float
