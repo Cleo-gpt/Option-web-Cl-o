@@ -246,14 +246,16 @@ function preparerPartie() {
   etat.cartes = creerEtMelangerCartes(etat.nbCartes, etat.difficulte);
   etat.joueurActuelIndex = 0;
   etat.cartesRetournees = [];
+  chronoDemarre = false;
+  chronoAffichage.textContent = "00:00";
 
   afficherJoueurs();
   afficherCartes();
 }
 
-// Démarre réellement la partie (chrono + premier tour), une fois le livre refermé.
+// Démarre réellement la partie (le tour), une fois le livre refermé.
+// Le chrono, lui, ne démarre qu'au premier clic sur une carte (voir choisirCarte()).
 function demarrerPartie() {
-  demarrerChrono();
   demarrerTour();
 }
 
@@ -429,6 +431,11 @@ function choisirCarte(idCarte) {
   if (carte.retournee || carte.trouvee) return; // carte déjà visible : rien à faire
   if (etat.cartesRetournees.length >= 2) return; // déjà 2 cartes retournées ce tour-ci
 
+  // Le chrono de la partie démarre seulement au tout premier clic sur une carte.
+  if (!chronoDemarre) {
+    demarrerChrono();
+  }
+
   carte.retournee = true;
   rafraichirCarte(carte);
   etat.cartesRetournees.push(carte);
@@ -532,8 +539,10 @@ function jouerTourRobot() {
 // ===================================================================
 let identifiantChrono = null;
 let secondesEcoulees = 0;
+let chronoDemarre = false; // devient true au premier clic sur une carte, jusqu'à la fin de la partie
 
 function demarrerChrono() {
+  chronoDemarre = true;
   secondesEcoulees = 0;
   chronoAffichage.textContent = "00:00";
 
@@ -569,7 +578,11 @@ function mettreEnPause() {
 
 function reprendrePartie() {
   etat.enPause = false;
-  reprendreChrono();
+  // Le chrono ne reprend que s'il avait déjà démarré (le joueur a pu ouvrir
+  // le livre en pause avant même d'avoir retourné sa première carte).
+  if (chronoDemarre) {
+    reprendreChrono();
+  }
   lancerMinuteurTour();
 }
 

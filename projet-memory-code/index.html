@@ -6,7 +6,7 @@
   <title>Memory Multijoueur</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700&family=IM+Fell+English:ital@0;1&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=MedievalSharp&family=Almendra:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -116,8 +116,20 @@
     </div>
   </div>
 
-  <!-- Languette toujours visible pendant la partie pour rouvrir le livre (mettre en pause) -->
-  <button id="languette-livre" hidden>📖 Livre des règles</button>
+  <!-- Languette toujours visible pendant la partie pour rouvrir le livre (mettre en pause).
+       Un simple grimoire dessiné en SVG, pas de texte : l'icône seule suffit à le reconnaître. -->
+  <button id="languette-livre" hidden aria-label="Ouvrir le livre des règles">
+    <svg viewBox="0 0 40 40" aria-hidden="true">
+      <!-- Tranche des pages : un fin bandeau clair décalé derrière la couverture -->
+      <rect x="7" y="8" width="26" height="26" rx="1" class="grimoire-pages" />
+      <!-- Couverture en cuir clair, bien contrastée sur le bouton -->
+      <rect x="5" y="5" width="26" height="28" rx="2" class="grimoire-couverture" />
+      <!-- Reliure : trois liserés dorés horizontaux sur la couverture -->
+      <line x1="9" y1="12" x2="27" y2="12" class="grimoire-liseret" />
+      <line x1="9" y1="19" x2="27" y2="19" class="grimoire-liseret" />
+      <line x1="9" y1="26" x2="27" y2="26" class="grimoire-liseret" />
+    </svg>
+  </button>
 
   <!-- ===== ÉCRAN 4 : FIN DE PARTIE ===== -->
   <section id="ecran-fin" class="ecran" hidden>

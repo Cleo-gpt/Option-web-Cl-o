@@ -118,9 +118,9 @@ body {
 .livre-ouvert #couverture-livre { display: none; }
 
 #titre-couverture {
-  font-family: "Cinzel Decorative", serif;
+  font-family: "MedievalSharp", serif;
   color: var(--dore);
-  font-size: 1.4rem;
+  font-size: 1.6rem;
   text-align: center;
   text-shadow: 0 0 8px rgba(216, 180, 99, 0.6);
 }
@@ -146,12 +146,13 @@ body {
 }
 
 .titre-page-livre {
-  font-family: "Cinzel Decorative", serif;
+  font-family: "MedievalSharp", serif;
+  font-size: 1.5rem;
   color: var(--cuir);
 }
 
 .texte-livre {
-  font-family: "IM Fell English", serif;
+  font-family: "Almendra", serif;
   font-size: 1.2rem;
   color: #2a1a0e;
   text-align: left;
@@ -170,8 +171,8 @@ body {
 
 .choix-livre button,
 .bouton-bas-page {
-  font-family: "IM Fell English", serif;
-  font-size: 1rem;
+  font-family: "Almendra", serif;
+  font-size: 1.1rem;
   padding: 0.6rem 1rem;
   background-color: var(--cuir);
   color: var(--dore);
@@ -185,20 +186,48 @@ body {
   background-color: var(--cuir-clair);
 }
 
-/* Languette pour rouvrir le livre pendant la partie */
+/* Languette pour rouvrir le livre pendant la partie : un bouton rond en cuir
+   avec juste l'icône du grimoire dessinée en SVG (pas de texte). */
 #languette-livre {
   position: fixed;
   top: 1rem;
   right: 1rem;
-  font-family: "IM Fell English", serif;
-  font-size: 1rem;
-  padding: 0.5rem 1rem;
+  width: 52px;
+  height: 52px;
+  padding: 0;
   background-color: var(--cuir);
-  color: var(--dore);
   border: 2px solid var(--dore);
-  border-radius: 6px;
+  border-radius: 50%;
   cursor: pointer;
   z-index: 5;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#languette-livre:hover {
+  background-color: var(--cuir-clair);
+}
+
+#languette-livre svg {
+  width: 30px;
+  height: 30px;
+}
+
+/* Grimoire dessiné en SVG : tranche de pages décalée + couverture en cuir + liserés dorés */
+.grimoire-pages {
+  fill: var(--papier);
+}
+
+.grimoire-couverture {
+  fill: var(--cuir-clair);
+  stroke: var(--dore);
+  stroke-width: 1.5;
+}
+
+.grimoire-liseret {
+  stroke: var(--dore);
+  stroke-width: 1.5;
 }
 
 /* ===== Écran de jeu ===== */
