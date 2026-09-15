@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Memory Multijoueur</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700&family=IM+Fell+English:ital@0;1&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- ===== ÉCRAN 1 : MENU DE CONFIGURATION ===== -->
+  <!-- On choisit le mode, le nombre de joueurs, le nombre de cartes et la difficulté avant de jouer. -->
+  <section id="ecran-menu" class="ecran">
+    <h1>Memory Multijoueur</h1>
+
+    <div class="bloc-choix">
+      <h2>Mode de jeu</h2>
+      <button class="bouton-choix" data-mode="ordinateur">Contre l'ordinateur</button>
+      <button class="bouton-choix" data-mode="multi">Multijoueur</button>
+    </div>
+
+    <!-- Ce bloc n'apparaît que si le mode "multi" est choisi -->
+    <div class="bloc-choix" id="bloc-nb-joueurs" hidden>
+      <h2>Nombre de joueurs</h2>
+      <button class="bouton-choix" data-joueurs="2">2</button>
+      <button class="bouton-choix" data-joueurs="3">3</button>
+      <button class="bouton-choix" data-joueurs="4">4</button>
+    </div>
+
+    <div class="bloc-choix">
+      <h2>Nombre de cartes</h2>
+      <button class="bouton-choix" data-cartes="12">12</button>
+      <button class="bouton-choix" data-cartes="16">16</button>
+      <button class="bouton-choix" data-cartes="20">20</button>
+      <button class="bouton-choix" data-cartes="24">24</button>
+    </div>
+
+    <div class="bloc-choix">
+      <h2>Difficulté du mélange</h2>
+      <button class="bouton-choix" data-difficulte="facile">Facile</button>
+      <button class="bouton-choix" data-difficulte="moyen">Moyen</button>
+      <button class="bouton-choix" data-difficulte="difficile">Difficile</button>
+    </div>
+
+    <p id="recap-menu"></p>
+
+    <button id="bouton-valider-menu" disabled>Valider</button>
+  </section>
+
+  <!-- ===== ÉCRAN 2 : LIVRE DES RÈGLES ===== -->
+  <!-- S'affiche une fois le menu validé, avant de démarrer réellement la partie. -->
+  <section id="ecran-regles" class="ecran" hidden>
+    <div id="livre-regles">
+      <h2>Règles du jeu</h2>
+      <ul>
+        <li>Chaque joueur commence avec <strong>10 coeurs</strong>.</li>
+        <li>Une erreur (les 2 cartes ne correspondent pas) = <strong>-1 coeur</strong>.</li>
+        <li>Une paire trouvée = <strong>+1 coeur</strong>.</li>
+        <li>Un joueur à <strong>0 coeur</strong> est éliminé.</li>
+        <li>Le but : rester en vie jusqu'à la fin de la partie.</li>
+        <li>Une lumière de couleur signale le joueur dont c'est le tour.</li>
+        <li>Chaque joueur a <strong>45 secondes</strong> pour retourner 2 cartes.</li>
+      </ul>
+      <button id="bouton-demarrer-partie">Démarrer la partie</button>
+    </div>
+  </section>
+
+  <!-- ===== ÉCRAN 3 : PLATEAU DE JEU ===== -->
+  <section id="ecran-jeu" class="ecran" hidden>
+
+    <!-- Informations en haut : chronomètre et temps restant du tour -->
+    <div id="barre-info">
+      <span id="chrono">00:00</span>
+      <span id="temps-tour">45s</span>
+    </div>
+
+    <div id="zone-jeu">
+
+      <!-- Colonne de gauche : une ligne par joueur avec sa lumière et ses coeurs -->
+      <div id="liste-joueurs"></div>
+
+      <!-- Grille de cartes, remplie par JavaScript -->
+      <div id="grille-cartes"></div>
+
+    </div>
+  </section>
+
+  <!-- ===== ÉCRAN 4 : FIN DE PARTIE ===== -->
+  <section id="ecran-fin" class="ecran" hidden>
+    <h2 id="titre-fin"></h2>
+    <p id="message-fin"></p>
+    <button id="bouton-rejouer">Rejouer</button>
+  </section>
+
+  <script src="code.js"></script>
+</body>
+</html>
