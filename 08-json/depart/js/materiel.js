@@ -94,4 +94,8 @@ fetch("data/prets.json")
   .catch(() => {
     document.getElementById("etat").textContent =
       "Page ouverte par double-clic : les trois lignes intégrées ont été lues.";
-  });
+  }
+  
+);
+
+
