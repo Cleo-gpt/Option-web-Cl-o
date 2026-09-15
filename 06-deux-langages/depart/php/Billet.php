@@ -16,10 +16,22 @@ class Billet
     public function estComplet(): bool
     {
         /* à vous : règle billet complet */
+        if ($this->places === 0) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
     public function prixFinal(): float
     {
         /* à vous : règle tarif de dernière minute */
+        $prixFinal = $this->prix;
+        if ($this->places < 3) {
+            $prixFinal *= 0.9; 
+        }
+        return $prixFinal;
     }
 }
+
+const paleo = new Billet("Paléo, grande scène — samedi", 45, 0);

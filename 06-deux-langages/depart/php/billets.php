@@ -6,7 +6,7 @@ require __DIR__ . '/Billet.php';
    Étape 5 : remplacez-le par le tableau $affiche des trois billets.
 */
 
-
+$paleo = new Billet("Paléo, grande scène — samedi", 45, 0);
 ?>
 <!DOCTYPE html>
 <html lang="fr">
