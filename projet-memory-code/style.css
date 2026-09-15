@@ -11,6 +11,12 @@
   --joueur-3: #ff6bcb; /* rose */
   --joueur-4: #ffe14d; /* jaune */
   --robot: #c0c0c0;    /* argenté */
+
+  /* Couleurs "ancien livre" : cuir marron, dorures, parchemin */
+  --cuir: #3b2415;
+  --cuir-clair: #5a3a22;
+  --dore: #d8b463;
+  --papier: #efe3c4;
 }
 
 body {
@@ -19,6 +25,12 @@ body {
   font-family: sans-serif;
   text-align: center;
   padding: 2rem;
+}
+
+/* Règle de sécurité : l'attribut HTML "hidden" doit toujours cacher l'élément,
+   même si une autre règle plus bas lui donne un "display" (flex, grid...). */
+[hidden] {
+  display: none !important;
 }
 
 /* Un seul écran visible à la fois : les autres ont l'attribut "hidden" en HTML. */
@@ -74,16 +86,8 @@ body {
 }
 
 /* ===== Livre des règles ===== */
-/* Couleurs et police "ancienne" : cuir marron, dorures, police à empattements. */
-:root {
-  --cuir: #3b2415;
-  --cuir-clair: #5a3a22;
-  --dore: #d8b463;
-  --papier: #efe3c4;
-}
 
-/* Fond semi-transparent derrière le livre pour le mettre en avant.
-   "[hidden]" doit rester prioritaire sur "display: flex" pour pouvoir cacher le livre. */
+/* Fond semi-transparent derrière le livre pour le mettre en avant */
 #livre {
   position: fixed;
   inset: 0;
@@ -92,10 +96,6 @@ body {
   justify-content: center;
   background-color: rgba(0, 0, 0, 0.6);
   z-index: 10;
-}
-
-#livre[hidden] {
-  display: none;
 }
 
 /* La couverture fermée : un simple rectangle en cuir doré, cliquable pour ouvrir. */

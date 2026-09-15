@@ -209,7 +209,7 @@ document.getElementById("bouton-refuser-regles").addEventListener("click", () =>
   afficherPage(pageBonneChance);
   setTimeout(() => {
     fermerLivreEtLancerPartie();
-  }, 10000);
+  }, 5000);
 });
 
 // "Lancer la partie" / "Relancer la partie" : referme le livre et démarre ou reprend le jeu.
