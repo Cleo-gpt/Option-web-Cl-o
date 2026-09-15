@@ -74,16 +74,131 @@ body {
 }
 
 /* ===== Livre des règles ===== */
+/* Couleurs et police "ancienne" : cuir marron, dorures, police à empattements. */
+:root {
+  --cuir: #3b2415;
+  --cuir-clair: #5a3a22;
+  --dore: #d8b463;
+  --papier: #efe3c4;
+}
 
-#livre-regles {
-  background-color: var(--fond-carte);
-  padding: 1.5rem 2rem;
+/* Fond semi-transparent derrière le livre pour le mettre en avant.
+   "[hidden]" doit rester prioritaire sur "display: flex" pour pouvoir cacher le livre. */
+#livre {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: rgba(0, 0, 0, 0.6);
+  z-index: 10;
+}
+
+#livre[hidden] {
+  display: none;
+}
+
+/* La couverture fermée : un simple rectangle en cuir doré, cliquable pour ouvrir. */
+#couverture-livre {
+  width: 260px;
+  height: 340px;
+  background: linear-gradient(160deg, var(--cuir-clair), var(--cuir));
+  border: 3px solid var(--dore);
+  border-radius: 6px 14px 14px 6px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem;
+  cursor: pointer;
+}
+
+/* Le livre fermé ne montre que sa couverture ; une fois ouvert, on montre les pages à la place. */
+.livre-ferme #pages-livre { display: none; }
+.livre-ouvert #couverture-livre { display: none; }
+
+#titre-couverture {
+  font-family: "Cinzel Decorative", serif;
+  color: var(--dore);
+  font-size: 1.4rem;
+  text-align: center;
+  text-shadow: 0 0 8px rgba(216, 180, 99, 0.6);
+}
+
+/* Les pages ouvertes : fond parchemin, texte à l'ancienne, doré pour les titres. */
+#pages-livre {
+  width: 420px;
+  min-height: 340px;
+  background-color: var(--papier);
+  border: 3px solid var(--dore);
   border-radius: 10px;
+  padding: 2rem;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+  position: relative;
+}
+
+.page-livre {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.5rem;
+  text-align: center;
+}
+
+.titre-page-livre {
+  font-family: "Cinzel Decorative", serif;
+  color: var(--cuir);
+}
+
+.texte-livre {
+  font-family: "IM Fell English", serif;
+  font-size: 1.2rem;
+  color: #2a1a0e;
   text-align: left;
 }
 
-#livre-regles li {
+.texte-livre li {
   margin-bottom: 0.5rem;
+}
+
+.choix-livre {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  width: 100%;
+}
+
+.choix-livre button,
+.bouton-bas-page {
+  font-family: "IM Fell English", serif;
+  font-size: 1rem;
+  padding: 0.6rem 1rem;
+  background-color: var(--cuir);
+  color: var(--dore);
+  border: 2px solid var(--dore);
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.choix-livre button:hover,
+.bouton-bas-page:hover {
+  background-color: var(--cuir-clair);
+}
+
+/* Languette pour rouvrir le livre pendant la partie */
+#languette-livre {
+  position: fixed;
+  top: 1rem;
+  right: 1rem;
+  font-family: "IM Fell English", serif;
+  font-size: 1rem;
+  padding: 0.5rem 1rem;
+  background-color: var(--cuir);
+  color: var(--dore);
+  border: 2px solid var(--dore);
+  border-radius: 6px;
+  cursor: pointer;
+  z-index: 5;
 }
 
 /* ===== Écran de jeu ===== */

@@ -50,25 +50,8 @@
     <button id="bouton-valider-menu" disabled>Valider</button>
   </section>
 
-  <!-- ===== ÉCRAN 2 : LIVRE DES RÈGLES ===== -->
-  <!-- S'affiche une fois le menu validé, avant de démarrer réellement la partie. -->
-  <section id="ecran-regles" class="ecran" hidden>
-    <div id="livre-regles">
-      <h2>Règles du jeu</h2>
-      <ul>
-        <li>Chaque joueur commence avec <strong>10 coeurs</strong>.</li>
-        <li>Une erreur (les 2 cartes ne correspondent pas) = <strong>-1 coeur</strong>.</li>
-        <li>Une paire trouvée = <strong>+1 coeur</strong>.</li>
-        <li>Un joueur à <strong>0 coeur</strong> est éliminé.</li>
-        <li>Le but : rester en vie jusqu'à la fin de la partie.</li>
-        <li>Une lumière de couleur signale le joueur dont c'est le tour.</li>
-        <li>Chaque joueur a <strong>45 secondes</strong> pour retourner 2 cartes.</li>
-      </ul>
-      <button id="bouton-demarrer-partie">Démarrer la partie</button>
-    </div>
-  </section>
-
-  <!-- ===== ÉCRAN 3 : PLATEAU DE JEU ===== -->
+  <!-- ===== ÉCRAN 2 : PLATEAU DE JEU ===== -->
+  <!-- Affiché en dessous du livre : le livre s'ouvre par-dessus au début, puis reste accessible via sa languette. -->
   <section id="ecran-jeu" class="ecran" hidden>
 
     <!-- Informations en haut : chronomètre et temps restant du tour -->
@@ -87,6 +70,54 @@
 
     </div>
   </section>
+
+  <!-- ===== LIVRE DES RÈGLES ===== -->
+  <!-- Un livre ancien qu'on doit ouvrir pour lire les règles. Il apparaît fermé après le
+       menu, et reste accessible pendant la partie via la languette #languette-livre. -->
+  <div id="livre" class="livre-ferme" hidden>
+
+    <!-- Couverture fermée : cliquer dessus ouvre le livre -->
+    <div id="couverture-livre">
+      <span id="titre-couverture">Livre des Règles</span>
+    </div>
+
+    <!-- Pages ouvertes du livre : une seule page visible à la fois, contrôlée en JS -->
+    <div id="pages-livre">
+
+      <!-- Page 1 : la question posée à l'ouverture -->
+      <div class="page-livre" id="page-question">
+        <p class="texte-livre">Voulez-vous lire les règles ?</p>
+        <div class="choix-livre">
+          <button id="bouton-lire-regles">Oui, je souhaite lire les règles</button>
+          <button id="bouton-refuser-regles">Non, je ne souhaite pas lire les règles</button>
+        </div>
+      </div>
+
+      <!-- Page 2a : affichée seulement si le joueur refuse de lire les règles -->
+      <div class="page-livre" id="page-bonne-chance" hidden>
+        <p class="texte-livre">Dans ce cas, bonne chance.</p>
+      </div>
+
+      <!-- Page 2b : les règles complètes, affichées seulement si le joueur accepte -->
+      <div class="page-livre" id="page-regles" hidden>
+        <h2 class="titre-page-livre">Règles du jeu</h2>
+        <ul class="texte-livre">
+          <li>Chaque joueur commence avec <strong>10 coeurs</strong>.</li>
+          <li>Une erreur (les 2 cartes ne correspondent pas) = <strong>-1 coeur</strong>.</li>
+          <li>Une paire trouvée = <strong>+1 coeur</strong>.</li>
+          <li>Un joueur à <strong>0 coeur</strong> est éliminé.</li>
+          <li>Le but : rester en vie jusqu'à la fin de la partie.</li>
+          <li>Une lumière de couleur signale le joueur dont c'est le tour.</li>
+          <li>Chaque joueur a <strong>45 secondes</strong> pour retourner 2 cartes.</li>
+        </ul>
+        <button id="bouton-lancer-partie" class="bouton-bas-page">Lancer la partie</button>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Languette toujours visible pendant la partie pour rouvrir le livre (mettre en pause) -->
+  <button id="languette-livre" hidden>📖 Livre des règles</button>
 
   <!-- ===== ÉCRAN 4 : FIN DE PARTIE ===== -->
   <section id="ecran-fin" class="ecran" hidden>
