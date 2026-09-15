@@ -34,4 +34,3 @@ class Billet
     }
 }
 
-const paleo = new Billet("Paléo, grande scène — samedi", 45, 0);
