@@ -1,9 +1,12 @@
-/* Variables de couleurs : définies une seule fois puis réutilisées partout. */
+/* Variables de couleurs : définies une seule fois puis réutilisées partout.
+   Palette "château de pierre à la tombée de la nuit" : fond gris-bleu sombre
+   avec une pointe brune, dorures et cuir en accent (au lieu du gris/jaune vif). */
 :root {
-  --fond: #2b2b2e;          /* anthracite : fond du jeu */
-  --fond-carte: #3a3a3e;
-  --texte: #f0f0f0;
-  --accent: #ffd400;
+  --fond: #262220;          /* pierre sombre : fond du jeu */
+  --fond-carte: #3a332c;
+  --texte: #e8dfc8;
+  --accent: #c89b3c;         /* or vieilli, remplace l'ancien jaune vif */
+  --accent-texte: #241c0e;   /* texte sombre lisible sur fond doré */
 
   /* Couleur de la lumière de chaque joueur */
   --joueur-1: #3d8bff; /* bleu */
@@ -19,12 +22,24 @@
   --papier: #efe3c4;
 }
 
+/* Police "médiévale" appliquée à toute la page : Almendra pour le texte courant,
+   MedievalSharp pour les titres (menu, écran de jeu, écran de fin, livre). */
 body {
   background-color: var(--fond);
   color: var(--texte);
-  font-family: sans-serif;
+  font-family: "Almendra", serif;
   text-align: center;
   padding: 2rem;
+}
+
+h1, h2 {
+  font-family: "MedievalSharp", serif;
+}
+
+/* Les <button> n'héritent pas automatiquement de la police du body dans les
+   navigateurs : on le force ici pour que tous les boutons suivent le thème. */
+button {
+  font-family: "Almendra", serif;
 }
 
 /* Règle de sécurité : l'attribut HTML "hidden" doit toujours cacher l'élément,
@@ -63,7 +78,7 @@ body {
 /* Le bouton choisi par le joueur reste mis en évidence */
 .bouton-choix.selectionne {
   background-color: var(--accent);
-  color: #1a1a1a;
+  color: var(--accent-texte);
   border-color: var(--accent);
 }
 
@@ -73,15 +88,16 @@ body {
   font-size: 1.1rem;
   padding: 0.6rem 1.5rem;
   background-color: var(--accent);
-  color: #1a1a1a;
-  border: none;
+  color: var(--accent-texte);
+  border: 2px solid var(--dore);
   border-radius: 6px;
   cursor: pointer;
 }
 
 #bouton-valider-menu:disabled {
   background-color: var(--fond-carte);
-  color: #888;
+  color: #8a7d64;
+  border-color: #55493a;
   cursor: not-allowed;
 }
 
@@ -152,7 +168,6 @@ body {
 }
 
 .texte-livre {
-  font-family: "Almendra", serif;
   font-size: 1.2rem;
   color: #2a1a0e;
   text-align: left;
@@ -171,7 +186,6 @@ body {
 
 .choix-livre button,
 .bouton-bas-page {
-  font-family: "Almendra", serif;
   font-size: 1.1rem;
   padding: 0.6rem 1rem;
   background-color: var(--cuir);
@@ -305,7 +319,7 @@ body {
   width: 70px;
   height: 90px;
   background-color: var(--fond-carte);
-  border: 2px solid #555;
+  border: 2px solid #5a4d3c;
   border-radius: 8px;
   display: flex;
   align-items: center;
@@ -317,7 +331,7 @@ body {
 
 /* Carte retournée : on voit son symbole */
 .carte.retournee {
-  background-color: #4a4a50;
+  background-color: #4a4032;
   border-color: var(--accent);
 }
 
