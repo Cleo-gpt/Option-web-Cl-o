@@ -18,13 +18,28 @@ function gererGroupeBoutons(selecteur, surChoix) {
   });
 }
 
+// Le thème "Animé / Pop culture" représente plusieurs univers à la fois : sa
+// couleur d'accent (boutons, bordures) est tirée au hasard parmi ces teintes
+// vives à chaque sélection du thème, plutôt que de se fixer sur une seule
+// (qui finirait par rappeler un autre thème, comme le rose de Japon).
+const ACCENTS_ANIME_POSSIBLES = ["#4fd3ff", "#6bffb0", "#ffe14d", "#ff9142", "#b06bff", "#ff4f9a"];
+
+function choisirAccentAnimeAuHasard() {
+  const accent = ACCENTS_ANIME_POSSIBLES[Math.floor(Math.random() * ACCENTS_ANIME_POSSIBLES.length)];
+  document.body.style.setProperty("--accent", accent);
+}
+
 // Choix du thème visuel : change immédiatement l'apparence de toute la page
 // (fond, couleurs, police, dos de carte) pour un aperçu en direct, même avant
 // de valider le reste de la configuration. "Médiéval" est présélectionné par
 // défaut (voir index.html et THEME_PAR_DEFAUT dans js/themes.js).
 gererGroupeBoutons("[data-theme]", (dataset) => {
   etat.theme = dataset.theme;
+  document.body.style.removeProperty("--accent"); // reprend la valeur par défaut du thème choisi
   appliquerClassesBody();
+  if (etat.theme === "anime") {
+    choisirAccentAnimeAuHasard();
+  }
   mettreAJourLimiteCartes();
   mettreAJourRecapMenu();
 });
@@ -49,19 +64,20 @@ function mettreAJourLimiteCartes() {
   });
 }
 
-// Choix du mode : contre l'ordinateur ou multijoueur.
+// Choix du mode : solo, contre l'ordinateur, ou multijoueur.
 // Le bloc "nombre de joueurs" ne s'affiche que si "multi" est choisi, le bloc
-// "difficulté de l'ordinateur" seulement si "ordinateur" est choisi.
+// "difficulté de l'ordinateur" seulement si "ordinateur" est choisi (le mode
+// solo n'a besoin d'aucun des deux : un seul joueur humain, pas de robot).
 gererGroupeBoutons("[data-mode]", (dataset) => {
   etat.mode = dataset.mode;
-  if (etat.mode === "multi") {
-    blocNbJoueurs.hidden = false;
-    blocDifficulteOrdi.hidden = true;
+  blocNbJoueurs.hidden = etat.mode !== "multi";
+  blocDifficulteOrdi.hidden = etat.mode !== "ordinateur";
+
+  if (etat.mode !== "multi") {
+    etat.nbJoueurs = 1; // solo ou contre l'ordinateur : un seul joueur humain
+  }
+  if (etat.mode !== "ordinateur") {
     etat.difficulteOrdi = null;
-  } else {
-    blocNbJoueurs.hidden = true;
-    blocDifficulteOrdi.hidden = false;
-    etat.nbJoueurs = 1; // contre l'ordinateur : un seul joueur humain
   }
   mettreAJourRecapMenu();
 });
@@ -108,9 +124,14 @@ function mettreAJourRecapMenu() {
   boutonValiderMenu.disabled = !pret;
 
   if (pret) {
-    const texteMode = etat.mode === "multi"
-      ? `${etat.nbJoueurs} ${t("joueurs-mot")}`
-      : `${t("contre-ordinateur")} (${t("ordi-" + etat.difficulteOrdi).toLowerCase()})`;
+    let texteMode;
+    if (etat.mode === "multi") {
+      texteMode = `${etat.nbJoueurs} ${t("joueurs-mot")}`;
+    } else if (etat.mode === "ordinateur") {
+      texteMode = `${t("contre-ordinateur")} (${t("ordi-" + etat.difficulteOrdi).toLowerCase()})`;
+    } else {
+      texteMode = t("mode-solo");
+    }
     recapMenu.textContent = `${t("theme-" + etat.theme)} · ${texteMode} · ${etat.nbCartes} ${t("cartes-mot")} · ${t("difficulte-mot")} ${t(etat.difficulte).toLowerCase()}`;
   } else {
     recapMenu.textContent = "";

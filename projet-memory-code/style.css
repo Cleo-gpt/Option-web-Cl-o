@@ -111,7 +111,7 @@ body.daltonien .carte.trouvee::after {
 }
 
 body {
-  background-color: var(--fond);
+  background: var(--fond);
   color: var(--texte);
   font-family: var(--police-texte);
   text-align: center;
@@ -121,9 +121,12 @@ body {
    body : le mode daltonien applique son filtre de correction des couleurs à
    #contenu-app (voir plus bas, body.daltonien #contenu-app), donc tout ce qui
    doit être corrigé — y compris le fond coloré de chaque thème — doit être
-   peint à l'intérieur de cet élément, pas sur body lui-même. */
+   peint à l'intérieur de cet élément, pas sur body lui-même.
+   "background" (et pas "background-color") : --fond est une simple couleur
+   pour la plupart des thèmes, mais un linear-gradient() pour "Communauté
+   engagée" (voir plus bas) — background-color n'accepterait pas un dégradé. */
 #contenu-app {
-  background-color: var(--fond);
+  background: var(--fond);
   min-height: 100vh;
   padding: 2rem;
   box-sizing: border-box;
@@ -184,35 +187,39 @@ body.theme-medieval.theme-jour {
 }
 
 /* ----- Thème "Animé / Pop culture" -----
-   Très coloré : plusieurs univers/genres se côtoient, donc pas une seule
-   teinte dominante mais un dégradé multicolore vif (titre, bordures actives). */
+   Très coloré : plusieurs univers/genres se côtoient. Fond violet-indigo
+   sombre (net différent du rose sakura de Japon), dégradé multicolore néon
+   sur le titre, et --accent tiré au hasard parmi plusieurs teintes vives à
+   chaque chargement de page (voir choisirAccentAnimeAuHasard() dans
+   js/menu.js) : la couleur d'accent change à chaque partie plutôt que de se
+   fixer sur une seule teinte (qui finirait par rappeler un autre thème). */
 body.theme-anime {
-  --fond: #1c1030;
-  --fond-carte: #2c1c48;
-  --texte: #f4e9ff;
-  --accent: #ff4f9a;
-  --accent-texte: #2a0416;
+  --fond: #170f2e;
+  --fond-carte: #241a42;
+  --texte: #eee6ff;
+  --accent: #4fd3ff; /* remplacé en JS, voir plus haut */
+  --accent-texte: #071824;
   --police-texte: "Baloo 2", sans-serif;
   --police-titres: "Baloo 2", sans-serif;
   --image-dos-carte: url("images/themes/anime/dos.svg");
   --degrade-titre: linear-gradient(90deg, #ff4f9a, #ff9142, #ffe14d, #6bffb0, #4fd3ff, #b06bff);
 
-  --cuir: #4a1a5c;
-  --cuir-clair: #6b2a7e;
-  --dore: #ff9ecf;
-  --papier: #fbe7f5;
+  --cuir: #2e2059;
+  --cuir-clair: #443176;
+  --dore: #b06bff;
+  --papier: #ece4fb;
 }
 
 body.theme-anime.theme-crepuscule {
-  --fond: #3a2454;
-  --fond-carte: #4a3164;
-  --texte: #f8effe;
+  --fond: #2c2050;
+  --fond-carte: #3a2a63;
+  --texte: #f2ecff;
 }
 
 body.theme-anime.theme-jour {
-  --fond: #fdeefc;
-  --fond-carte: #f6d9f2;
-  --texte: #2a0f2e;
+  --fond: #eee7fb;
+  --fond-carte: #dcd0f5;
+  --texte: #170f2e;
 }
 
 /* ----- Thème "Japon" -----
@@ -280,68 +287,74 @@ body.theme-mediamatique.theme-jour {
 }
 
 /* ----- Thème "Communauté engagée" -----
-   Représente les mouvements LGBTQIA+, féministe et Black Lives Matter : fond
-   neutre sombre/clair pour rester lisible, mais l'arc-en-ciel (drapeau Pride)
-   est présent comme accent fort sur le titre et les bordures en surbrillance
-   (voir --degrade-titre et .bouton-choix.selectionne plus bas dans le fichier). */
+   Représente les mouvements LGBTQIA+, féministe et Black Lives Matter : le
+   drapeau Pride (arc-en-ciel) est le fond de la PAGE elle-même (--fond est un
+   linear-gradient, voir body { background: var(--fond); } plus haut), mais les
+   cartes/boutons/panneaux (--fond-carte) restent sur une couleur sombre/claire
+   unie pour rester lisibles — l'arc-en-ciel encadre le contenu, ne passe
+   jamais derrière le texte. */
 body.theme-communaute {
-  --fond: #1a1a1e;
-  --fond-carte: #29292f;
+  --fond: linear-gradient(160deg, #e50000, #ff8d00, #ffee00, #028121, #004cff, #760089);
+  --fond-carte: #1c1c20;
   --texte: #f5f3f0;
-  --accent: #ff5a8a;
-  --accent-texte: #1a0611;
+  --accent: #232946;
+  --accent-texte: #f5f3f0;
   --police-texte: "Poppins", sans-serif;
   --police-titres: "Poppins", sans-serif;
   --image-dos-carte: url("images/themes/communaute/dos.svg");
   --degrade-titre: linear-gradient(90deg, #e50000, #ff8d00, #ffee00, #028121, #004cff, #760089);
   --degrade-accent: linear-gradient(90deg, #e50000, #ff8d00, #ffee00, #028121, #004cff, #760089);
 
-  --cuir: #3a2340;
-  --cuir-clair: #55335c;
+  --cuir: #1c1c20;
+  --cuir-clair: #33333a;
   --dore: #ffd400;
   --papier: #f5f3f0;
 }
 
 body.theme-communaute.theme-crepuscule {
-  --fond: #2b2b30;
-  --fond-carte: #38383f;
+  --fond: linear-gradient(160deg, #c40000, #d97800, #d9c800, #026e1c, #003ecc, #620070);
+  --fond-carte: #242429;
   --texte: #f7f5f2;
 }
 
 body.theme-communaute.theme-jour {
-  --fond: #f5f3f0;
-  --fond-carte: #e3e0da;
+  --fond: linear-gradient(160deg, #ffb3b3, #ffd9a3, #fff3a3, #a3e6b8, #a3c2ff, #d9a3e0);
+  --fond-carte: #ffffff;
   --texte: #1a1a1e;
 }
 
 /* ----- Thème "Youtube" -----
-   Fond rouge Youtube, boutons/cartes noirs, texte blanc. */
+   Dark mode Youtube par défaut (fond très sombre neutre), variante "jour" en
+   fond blanc (light mode Youtube) : noir/blanc pour le texte et les cartes,
+   rouge Youtube seulement en accent (boutons, titre, bordures) — plus proche
+   de la vraie charte, moins agressif qu'un fond rouge plein écran. */
 body.theme-youtube {
-  --fond: #ff0000;
-  --fond-carte: #0f0f0f;
-  --texte: #ffffff;
-  --accent: #0f0f0f;
+  --fond: #0f0f0f;
+  --fond-carte: #212121;
+  --texte: #f1f1f1;
+  --accent: #ff0000;
   --accent-texte: #ffffff;
   --police-texte: "Roboto", sans-serif;
   --police-titres: "Bangers", cursive;
   --image-dos-carte: url("images/themes/youtube/dos.svg");
+  --degrade-titre: linear-gradient(90deg, var(--accent), #cc0000);
 
-  --cuir: #0f0f0f;
-  --cuir-clair: #262626;
-  --dore: #ffffff;
-  --papier: #ffffff;
+  --cuir: #1f1f1f;
+  --cuir-clair: #333333;
+  --dore: #ff0000;
+  --papier: #f1f1f1;
 }
 
 body.theme-youtube.theme-crepuscule {
-  --fond: #e23434;
-  --fond-carte: #181818;
-  --texte: #ffffff;
+  --fond: #181818;
+  --fond-carte: #272727;
+  --texte: #f1f1f1;
 }
 
 body.theme-youtube.theme-jour {
-  --fond: #ff4d4d;
-  --fond-carte: #1f1f1f;
-  --texte: #ffffff;
+  --fond: #ffffff;
+  --fond-carte: #f1f1f1;
+  --texte: #0f0f0f;
 }
 
 /* Règle de sécurité : l'attribut HTML "hidden" doit toujours cacher l'élément,

@@ -16,6 +16,7 @@ const TRADUCTIONS = {
   "theme-communaute": { fr: "Communauté engagée", de: "Engagierte Gemeinschaft", en: "Engaged community" },
   "theme-youtube": { fr: "Youtube", de: "Youtube", en: "Youtube" },
   "mode-de-jeu": { fr: "Mode de jeu", de: "Spielmodus", en: "Game mode" },
+  "mode-solo": { fr: "Solo", de: "Solo", en: "Solo" },
   "mode-ordinateur": { fr: "Contre l'ordinateur", de: "Gegen den Computer", en: "Against the computer" },
   "mode-multi": { fr: "Multijoueur", de: "Mehrspieler", en: "Multiplayer" },
   "nombre-joueurs": { fr: "Nombre de joueurs", de: "Anzahl der Spieler", en: "Number of players" },
