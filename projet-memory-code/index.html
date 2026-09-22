@@ -6,7 +6,8 @@
   <title>Memory Multijoueur</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=MedievalSharp&family=Almendra:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+  <!-- Une police par thème visuel (voir bloc "Thème visuel" du menu, et style.css) -->
+  <link href="https://fonts.googleapis.com/css2?family=MedievalSharp&family=Almendra:ital,wght@0,400;0,700;1,400&family=Baloo+2:wght@400;700&family=Klee+One:wght@400;600&family=Orbitron:wght@400;700&family=Poppins:wght@400;600&family=Roboto:wght@400;700&family=Bangers&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -22,6 +23,16 @@
   <!-- On choisit le mode, le nombre de joueurs, le nombre de cartes et la difficulté avant de jouer. -->
   <section id="ecran-menu" class="ecran">
     <h1 data-traduire="titre-jeu">Memory Multijoueur</h1>
+
+    <div class="bloc-choix">
+      <h2 data-traduire="theme-visuel">Thème visuel</h2>
+      <button class="bouton-choix" data-theme="anime" data-traduire="theme-anime">Animé / Pop culture</button>
+      <button class="bouton-choix" data-theme="japon" data-traduire="theme-japon">Japon</button>
+      <button class="bouton-choix" data-theme="mediamatique" data-traduire="theme-mediamatique">Médiamatique</button>
+      <button class="bouton-choix selectionne" data-theme="medieval" data-traduire="theme-medieval">Médiéval</button>
+      <button class="bouton-choix" data-theme="communaute" data-traduire="theme-communaute">Communauté engagée</button>
+      <button class="bouton-choix" data-theme="youtube" data-traduire="theme-youtube">Youtube</button>
+    </div>
 
     <div class="bloc-choix">
       <h2 data-traduire="mode-de-jeu">Mode de jeu</h2>
@@ -153,6 +164,7 @@
     <button id="bouton-rejouer" data-traduire="rejouer">Rejouer</button>
   </section>
 
+  <script src="js/themes.js"></script>
   <script src="js/etat.js"></script>
   <script src="js/elements-dom.js"></script>
   <script src="js/traductions.js"></script>

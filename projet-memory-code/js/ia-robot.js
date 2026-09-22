@@ -20,11 +20,11 @@ function reinitialiserMemoireRobot() {
 // Appelée à chaque carte retournée (par le joueur humain ou le robot lui-même) :
 // le robot "voit" toujours les cartes retournées, comme un joueur humain le ferait.
 function memoriserCartePourRobot(carte) {
-  if (!memoireRobot[carte.symbole]) {
-    memoireRobot[carte.symbole] = [];
+  if (!memoireRobot[carte.numeroSymbole]) {
+    memoireRobot[carte.numeroSymbole] = [];
   }
-  if (!memoireRobot[carte.symbole].includes(carte.id)) {
-    memoireRobot[carte.symbole].push(carte.id);
+  if (!memoireRobot[carte.numeroSymbole].includes(carte.id)) {
+    memoireRobot[carte.numeroSymbole].push(carte.id);
   }
 }
 

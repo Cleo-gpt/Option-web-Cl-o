@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="140" height="180" viewBox="0 0 140 180">
+  <rect width="140" height="180" rx="12" fill="#2a2a2e"/>
+  <circle cx="70" cy="80" r="42" fill="#3ddcff"/>
+  <text x="70" y="92" font-family="sans-serif" font-size="34" font-weight="bold" fill="white" text-anchor="middle">16</text>
+  <text x="70" y="150" font-family="sans-serif" font-size="13" fill="#3ddcff" text-anchor="middle">mediamatique</text>
+</svg>

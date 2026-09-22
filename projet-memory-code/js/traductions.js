@@ -8,6 +8,13 @@
 // ===================================================================
 const TRADUCTIONS = {
   "titre-jeu": { fr: "Memory Multijoueur", de: "Memory Mehrspieler", en: "Memory Multiplayer" },
+  "theme-visuel": { fr: "Thème visuel", de: "Visuelles Thema", en: "Visual theme" },
+  "theme-anime": { fr: "Animé / Pop culture", de: "Anime / Popkultur", en: "Anime / Pop culture" },
+  "theme-japon": { fr: "Japon", de: "Japan", en: "Japan" },
+  "theme-mediamatique": { fr: "Médiamatique", de: "Medieninformatik", en: "Media technology" },
+  "theme-medieval": { fr: "Médiéval", de: "Mittelalterlich", en: "Medieval" },
+  "theme-communaute": { fr: "Communauté engagée", de: "Engagierte Gemeinschaft", en: "Engaged community" },
+  "theme-youtube": { fr: "Youtube", de: "Youtube", en: "Youtube" },
   "mode-de-jeu": { fr: "Mode de jeu", de: "Spielmodus", en: "Game mode" },
   "mode-ordinateur": { fr: "Contre l'ordinateur", de: "Gegen den Computer", en: "Against the computer" },
   "mode-multi": { fr: "Multijoueur", de: "Mehrspieler", en: "Multiplayer" },
@@ -106,17 +113,34 @@ boutonLangue.addEventListener("click", () => {
 
 
 // ===================================================================
-// BARRE DE RÉGLAGES : THÈME JOUR / NUIT / ENTRE-DEUX
-// Cycle entre 3 thèmes en changeant la classe de <body> ; les couleurs de
-// chaque thème sont définies en CSS (voir style.css, body et body.theme-...).
-// "nuit" est le thème par défaut (aucune classe).
+// BARRE DE RÉGLAGES : LUMINOSITÉ JOUR / NUIT / ENTRE-DEUX
+// Cycle entre 3 niveaux de luminosité, combinés au thème visuel choisi dans le
+// menu (voir js/menu.js) : <body> porte donc 2 classes en même temps, par
+// exemple "theme-japon theme-jour". Les couleurs de chaque combinaison sont
+// définies en CSS (voir style.css, body.theme-<visuel>.theme-<luminosite>).
+// "nuit" est la luminosité par défaut (pas de classe de luminosité).
 // ===================================================================
-const THEMES = ["nuit", "crepuscule", "jour"];
-let themeActuelIndex = 0;
+const LUMINOSITES = ["nuit", "crepuscule", "jour"];
+let luminositeActuelleIndex = 0;
+
+// Applique sur <body> la classe du thème visuel choisi (etat.theme) et celle
+// de la luminosité actuelle, sans effacer l'autre (contrairement à une simple
+// affectation de body.className).
+function appliquerClassesBody() {
+  LUMINOSITES.forEach((luminosite) => document.body.classList.remove(`theme-${luminosite}`));
+  THEMES_VISUELS.forEach((theme) => document.body.classList.remove(`theme-${theme}`));
+
+  document.body.classList.add(`theme-${etat.theme}`);
+  const luminosite = LUMINOSITES[luminositeActuelleIndex];
+  if (luminosite !== "nuit") {
+    document.body.classList.add(`theme-${luminosite}`);
+  }
+}
 
 const boutonTheme = document.getElementById("bouton-theme");
 boutonTheme.addEventListener("click", () => {
-  themeActuelIndex = (themeActuelIndex + 1) % THEMES.length;
-  const theme = THEMES[themeActuelIndex];
-  document.body.className = theme === "nuit" ? "" : `theme-${theme}`;
+  luminositeActuelleIndex = (luminositeActuelleIndex + 1) % LUMINOSITES.length;
+  appliquerClassesBody();
 });
+
+appliquerClassesBody(); // thème par défaut dès le chargement de la page

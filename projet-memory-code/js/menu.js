@@ -18,6 +18,16 @@ function gererGroupeBoutons(selecteur, surChoix) {
   });
 }
 
+// Choix du thème visuel : change immédiatement l'apparence de toute la page
+// (fond, couleurs, police, dos de carte) pour un aperçu en direct, même avant
+// de valider le reste de la configuration. "Médiéval" est présélectionné par
+// défaut (voir index.html et THEME_PAR_DEFAUT dans js/themes.js).
+gererGroupeBoutons("[data-theme]", (dataset) => {
+  etat.theme = dataset.theme;
+  appliquerClassesBody();
+  mettreAJourRecapMenu();
+});
+
 // Choix du mode : contre l'ordinateur ou multijoueur.
 // Le bloc "nombre de joueurs" ne s'affiche que si "multi" est choisi, le bloc
 // "difficulté de l'ordinateur" seulement si "ordinateur" est choisi.
@@ -80,7 +90,7 @@ function mettreAJourRecapMenu() {
     const texteMode = etat.mode === "multi"
       ? `${etat.nbJoueurs} ${t("joueurs-mot")}`
       : `${t("contre-ordinateur")} (${t("ordi-" + etat.difficulteOrdi).toLowerCase()})`;
-    recapMenu.textContent = `${texteMode} · ${etat.nbCartes} ${t("cartes-mot")} · ${t("difficulte-mot")} ${t(etat.difficulte).toLowerCase()}`;
+    recapMenu.textContent = `${t("theme-" + etat.theme)} · ${texteMode} · ${etat.nbCartes} ${t("cartes-mot")} · ${t("difficulte-mot")} ${t(etat.difficulte).toLowerCase()}`;
   } else {
     recapMenu.textContent = "";
   }

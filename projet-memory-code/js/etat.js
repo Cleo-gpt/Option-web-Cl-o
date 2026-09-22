@@ -8,6 +8,7 @@ const etat = {
   mode: null,           // "ordinateur" | "multi"
   nbJoueurs: 1,          // nombre de joueurs humains (1 si contre l'ordinateur)
   difficulteOrdi: null,  // "naze" | "moyen" | "fort" (uniquement en mode "ordinateur")
+  theme: THEME_PAR_DEFAUT, // voir THEMES_VISUELS dans js/themes.js
   nbCartes: 16,          // toujours un multiple de 4
   difficulte: "facile",  // "facile" | "moyen" | "difficile"
   cartes: [],            // toutes les cartes de la grille
@@ -25,12 +26,5 @@ const CLES_TRADUCTION_COULEURS = ["couleur-bleu", "couleur-vert", "couleur-rose"
 const COEURS_DEPART = 10;
 const TEMPS_TOUR = 45; // secondes laissées à chaque joueur pour retourner 2 cartes
 
-// Symboles utilisés sur les cartes : 46 symboles, de quoi couvrir jusqu'à
-// 92 cartes (46 paires), le maximum proposé dans le menu.
-const SYMBOLES = [
-  "🍎", "🍋", "🍇", "🍉", "🍓", "🍒", "🍍", "🥝", "🥥", "🍑", "🍌", "🥕",
-  "🍊", "🍐", "🍈", "🫐", "🥭", "🌽", "🥑", "🍆",
-  "🐶", "🐱", "🐭", "🐹", "🐰", "🦊", "🐻", "🐼", "🐨", "🐯",
-  "🦁", "🐮", "🐷", "🐸", "🐵", "🐔", "🐧", "🐦", "🦄", "🐝",
-  "⚽", "🏀", "🏈", "⚾", "🎾", "🏐",
-];
+// Les symboles des cartes (dos + images de paires) dépendent du thème visuel
+// choisi dans le menu : voir js/themes.js.

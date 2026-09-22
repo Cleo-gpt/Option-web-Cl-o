@@ -1,19 +1,54 @@
-/* Variables de couleurs : définies une seule fois puis réutilisées partout.
-   Palette "château de pierre à la tombée de la nuit" : fond gris-bleu sombre
-   avec une pointe brune, dorures et cuir en accent (au lieu du gris/jaune vif). */
-:root {
-  --fond: #262220;          /* pierre sombre : fond du jeu */
-  --fond-carte: #3a332c;
-  --texte: #e8dfc8;
-  --accent: #c89b3c;         /* or vieilli, remplace l'ancien jaune vif */
-  --accent-texte: #241c0e;   /* texte sombre lisible sur fond doré */
+/* ===================================================================
+   THÈMES VISUELS
+   Chaque thème (choisi dans le menu, voir js/menu.js et js/themes.js) pose une
+   classe "theme-<id>" sur <body> et redéfinit entièrement ses variables :
+   fond, couleurs, police et image de dos de carte. Le bouton 🌗 ajoute en plus
+   une classe de luminosité ("theme-jour" ou "theme-crepuscule", rien pour la
+   nuit) qui vient éclaircir la palette du thème actif — d'où les sélecteurs
+   combinés "body.theme-<id>.theme-jour" ci-dessous.
+   =================================================================== */
 
-  /* Couleur de la lumière de chaque joueur */
+/* Couleurs communes à tous les thèmes (lumières des joueurs) : elles doivent
+   rester distinctes de n'importe quel fond, donc pas besoin d'en changer
+   thème par thème. */
+:root {
   --joueur-1: #3d8bff; /* bleu */
   --joueur-2: #3ddc84; /* vert */
   --joueur-3: #ff6bcb; /* rose */
   --joueur-4: #ffe14d; /* jaune */
   --robot: #c0c0c0;    /* argenté */
+}
+
+body {
+  background-color: var(--fond);
+  color: var(--texte);
+  font-family: var(--police-texte);
+  text-align: center;
+  padding: 2rem;
+}
+
+h1, h2 {
+  font-family: var(--police-titres);
+}
+
+/* Les <button> n'héritent pas automatiquement de la police du body dans les
+   navigateurs : on le force ici pour que tous les boutons suivent le thème. */
+button {
+  font-family: var(--police-texte);
+}
+
+/* ----- Thème "Médiéval" (par défaut) -----
+   Palette "château de pierre à la tombée de la nuit" : fond gris-bleu sombre
+   avec une pointe brune, dorures et cuir en accent. */
+body.theme-medieval {
+  --fond: #262220;
+  --fond-carte: #3a332c;
+  --texte: #e8dfc8;
+  --accent: #c89b3c;
+  --accent-texte: #241c0e;
+  --police-texte: "Almendra", serif;
+  --police-titres: "MedievalSharp", serif;
+  --image-dos-carte: url("images/themes/medieval/dos.svg");
 
   /* Couleurs "ancien livre" : cuir marron, dorures, parchemin */
   --cuir: #3b2415;
@@ -22,40 +57,166 @@
   --papier: #efe3c4;
 }
 
-/* Thème "entre-deux" (crépuscule) : un peu plus clair que la nuit par défaut,
-   sans être un vrai thème clair. Activé via la classe "theme-crepuscule" sur <body>. */
-body.theme-crepuscule {
+body.theme-medieval.theme-crepuscule {
   --fond: #4a4038;
   --fond-carte: #5c5045;
   --texte: #f2ead9;
 }
 
-/* Thème "jour" : fond clair, texte sombre, mêmes accents dorés/cuir pour rester
-   dans l'esprit médiéval. Activé via la classe "theme-jour" sur <body>. */
-body.theme-jour {
+body.theme-medieval.theme-jour {
   --fond: #ede3cf;
   --fond-carte: #ddcfb0;
   --texte: #2a1c0e;
 }
 
-/* Police "médiévale" appliquée à toute la page : Almendra pour le texte courant,
-   MedievalSharp pour les titres (menu, écran de jeu, écran de fin, livre). */
-body {
-  background-color: var(--fond);
-  color: var(--texte);
-  font-family: "Almendra", serif;
-  text-align: center;
-  padding: 2rem;
+/* ----- Thème "Animé / Pop culture" -----
+   Palette néon violet/rose, énergique. */
+body.theme-anime {
+  --fond: #1c1030;
+  --fond-carte: #2c1c48;
+  --texte: #f4e9ff;
+  --accent: #ff4f9a;
+  --accent-texte: #2a0416;
+  --police-texte: "Baloo 2", sans-serif;
+  --police-titres: "Baloo 2", sans-serif;
+  --image-dos-carte: url("images/themes/anime/dos.svg");
+
+  --cuir: #4a1a5c;
+  --cuir-clair: #6b2a7e;
+  --dore: #ff9ecf;
+  --papier: #fbe7f5;
 }
 
-h1, h2 {
-  font-family: "MedievalSharp", serif;
+body.theme-anime.theme-crepuscule {
+  --fond: #3a2454;
+  --fond-carte: #4a3164;
+  --texte: #f8effe;
 }
 
-/* Les <button> n'héritent pas automatiquement de la police du body dans les
-   navigateurs : on le force ici pour que tous les boutons suivent le thème. */
-button {
-  font-family: "Almendra", serif;
+body.theme-anime.theme-jour {
+  --fond: #fdeefc;
+  --fond-carte: #f6d9f2;
+  --texte: #2a0f2e;
+}
+
+/* ----- Thème "Japon" -----
+   Rouge laqué et indigo, épuré, papier washi. */
+body.theme-japon {
+  --fond: #1a1414;
+  --fond-carte: #2c1f1f;
+  --texte: #f1e6d8;
+  --accent: #c8433a;
+  --accent-texte: #fdf3ea;
+  --police-texte: "Klee One", cursive;
+  --police-titres: "Klee One", cursive;
+  --image-dos-carte: url("images/themes/japon/dos.svg");
+
+  --cuir: #2f2331;
+  --cuir-clair: #47333a;
+  --dore: #d6432f;
+  --papier: #f2e6d3;
+}
+
+body.theme-japon.theme-crepuscule {
+  --fond: #362524;
+  --fond-carte: #48302f;
+  --texte: #f5ebdd;
+}
+
+body.theme-japon.theme-jour {
+  --fond: #f4ece0;
+  --fond-carte: #e6d5bd;
+  --texte: #241a16;
+}
+
+/* ----- Thème "Médiamatique" -----
+   Bleu cyan néon, futuriste/tech. */
+body.theme-mediamatique {
+  --fond: #0b1620;
+  --fond-carte: #12283a;
+  --texte: #dff6ff;
+  --accent: #3ddcff;
+  --accent-texte: #001820;
+  --police-texte: "Orbitron", sans-serif;
+  --police-titres: "Orbitron", sans-serif;
+  --image-dos-carte: url("images/themes/mediamatique/dos.svg");
+
+  --cuir: #103245;
+  --cuir-clair: #1a4a63;
+  --dore: #3ddcff;
+  --papier: #dff6ff;
+}
+
+body.theme-mediamatique.theme-crepuscule {
+  --fond: #16324a;
+  --fond-carte: #1d3f5c;
+  --texte: #eafbff;
+}
+
+body.theme-mediamatique.theme-jour {
+  --fond: #e4f8ff;
+  --fond-carte: #c3ecfb;
+  --texte: #041824;
+}
+
+/* ----- Thème "Communauté engagée" -----
+   Vert et terre, chaleureux, humain. */
+body.theme-communaute {
+  --fond: #16231b;
+  --fond-carte: #22322b;
+  --texte: #eef3e6;
+  --accent: #3ddc84;
+  --accent-texte: #062012;
+  --police-texte: "Poppins", sans-serif;
+  --police-titres: "Poppins", sans-serif;
+  --image-dos-carte: url("images/themes/communaute/dos.svg");
+
+  --cuir: #2d4a2f;
+  --cuir-clair: #416a44;
+  --dore: #8fd17a;
+  --papier: #eef3e6;
+}
+
+body.theme-communaute.theme-crepuscule {
+  --fond: #2a4030;
+  --fond-carte: #35503c;
+  --texte: #f2f7ec;
+}
+
+body.theme-communaute.theme-jour {
+  --fond: #eef5e6;
+  --fond-carte: #d3e6c2;
+  --texte: #14200f;
+}
+
+/* ----- Thème "Youtube" -----
+   Rouge, blanc, noir, net et direct. */
+body.theme-youtube {
+  --fond: #0f0f0f;
+  --fond-carte: #212121;
+  --texte: #f1f1f1;
+  --accent: #ff0000;
+  --accent-texte: #ffffff;
+  --police-texte: "Roboto", sans-serif;
+  --police-titres: "Bangers", cursive;
+  --image-dos-carte: url("images/themes/youtube/dos.svg");
+
+  --cuir: #1f1f1f;
+  --cuir-clair: #333333;
+  --dore: #ff0000;
+  --papier: #f1f1f1;
+}
+
+body.theme-youtube.theme-crepuscule {
+  --fond: #2a2a2a;
+  --fond-carte: #383838;
+  --texte: #f6f6f6;
+}
+
+body.theme-youtube.theme-jour {
+  --fond: #ffffff;
+  --fond-carte: #e8e8e8;
+  --texte: #0f0f0f;
 }
 
 /* Règle de sécurité : l'attribut HTML "hidden" doit toujours cacher l'élément,
@@ -157,7 +318,7 @@ button {
 .livre-ouvert #couverture-livre { display: none; }
 
 #titre-couverture {
-  font-family: "MedievalSharp", serif;
+  font-family: var(--police-titres);
   color: var(--dore);
   font-size: 1.6rem;
   text-align: center;
@@ -185,14 +346,14 @@ button {
 }
 
 .titre-page-livre {
-  font-family: "MedievalSharp", serif;
+  font-family: var(--police-titres);
   font-size: 1.5rem;
   color: var(--cuir);
 }
 
 .texte-livre {
   font-size: 1.2rem;
-  color: #2a1a0e;
+  color: var(--cuir);
   text-align: left;
 }
 
@@ -399,27 +560,37 @@ button {
   width: 70px;
   height: 90px;
   background-color: var(--fond-carte);
+  background-image: var(--image-dos-carte);
+  background-size: cover;
+  background-position: center;
   border: 2px solid #5a4d3c;
   border-radius: 8px;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 1.8rem;
   cursor: pointer;
   user-select: none;
 }
 
-/* Carte retournée : on voit son symbole */
+/* Carte retournée : le dos disparaît, le symbole (image-symbole-carte) prend sa place */
 .carte.retournee {
+  background-image: none;
   background-color: #4a4032;
   border-color: var(--accent);
 }
 
 /* Carte déjà associée en paire : elle reste visible mais désactivée */
 .carte.trouvee {
+  background-image: none;
   border-color: var(--joueur-2);
   opacity: 0.6;
   cursor: default;
+}
+
+.image-symbole-carte {
+  width: 80%;
+  height: 80%;
+  object-fit: contain;
 }
 
 /* ===== Écran de fin ===== */

@@ -59,6 +59,17 @@ function afficherCartes() {
     bouton.className = "carte";
     bouton.id = `carte-${carte.id}`;
     bouton.addEventListener("click", () => choisirCarte(carte.id));
+
+    // Le dos (face cachée) est posé en CSS via background-image (voir .carte
+    // dans style.css) : il suit automatiquement le thème choisi. Seule l'image
+    // du symbole (face visible) est gérée ici, une fois la carte retournée.
+    const imageSymbole = document.createElement("img");
+    imageSymbole.className = "image-symbole-carte";
+    imageSymbole.src = cheminSymboleCarte(etat.theme, carte.numeroSymbole);
+    imageSymbole.alt = "";
+    imageSymbole.hidden = true;
+    bouton.appendChild(imageSymbole);
+
     grilleCartes.appendChild(bouton);
   });
 }
@@ -68,5 +79,5 @@ function rafraichirCarte(carte) {
   const bouton = document.getElementById(`carte-${carte.id}`);
   bouton.classList.toggle("retournee", carte.retournee);
   bouton.classList.toggle("trouvee", carte.trouvee);
-  bouton.textContent = carte.retournee || carte.trouvee ? carte.symbole : "";
+  bouton.querySelector(".image-symbole-carte").hidden = !(carte.retournee || carte.trouvee);
 }

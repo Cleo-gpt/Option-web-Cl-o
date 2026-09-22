@@ -64,15 +64,18 @@ function nomJoueur(joueur) {
 
 // Crée les paires de cartes puis les mélange. La difficulté choisie change
 // simplement le nombre de mélanges effectués : plus il y en a, plus l'ordre
-// final est imprévisible.
+// final est imprévisible. Chaque carte retient le numéro de son symbole
+// (1 à NB_SYMBOLES_PAR_THEME) : l'image affichée dépend du thème visuel choisi
+// (voir cheminSymboleCarte() dans js/themes.js), mais la comparaison de paires
+// se fait sur ce numéro, indépendamment du thème.
 function creerEtMelangerCartes(nbCartes, difficulte) {
   const nbPaires = nbCartes / 2;
-  const symbolesUtilises = SYMBOLES.slice(0, nbPaires);
+  const numerosUtilises = Array.from({ length: nbPaires }, (_, i) => i + 1);
 
   // Chaque symbole apparaît deux fois (= une paire)
-  let cartes = symbolesUtilises.concat(symbolesUtilises).map((symbole, index) => ({
+  let cartes = numerosUtilises.concat(numerosUtilises).map((numeroSymbole, index) => ({
     id: index,
-    symbole: symbole,
+    numeroSymbole: numeroSymbole,
     retournee: false,
     trouvee: false,
   }));

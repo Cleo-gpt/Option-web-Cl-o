@@ -79,7 +79,7 @@ function verifierPaire() {
   etat.paireEnAttente = true;
 
   const [carteA, carteB] = etat.cartesRetournees;
-  const estUnePaire = carteA.symbole === carteB.symbole;
+  const estUnePaire = carteA.numeroSymbole === carteB.numeroSymbole;
 
   // Temps de réflexion réel entre le 1er et le 2e clic de ce tour (en secondes).
   const tempsReflexion = (Date.now() - instantPremierClicTour) / 1000;
