@@ -19,13 +19,17 @@ function gererGroupeBoutons(selecteur, surChoix) {
 }
 
 // Choix du mode : contre l'ordinateur ou multijoueur.
-// Le bloc "nombre de joueurs" ne s'affiche que si "multi" est choisi.
+// Le bloc "nombre de joueurs" ne s'affiche que si "multi" est choisi, le bloc
+// "difficulté de l'ordinateur" seulement si "ordinateur" est choisi.
 gererGroupeBoutons("[data-mode]", (dataset) => {
   etat.mode = dataset.mode;
   if (etat.mode === "multi") {
     blocNbJoueurs.hidden = false;
+    blocDifficulteOrdi.hidden = true;
+    etat.difficulteOrdi = null;
   } else {
     blocNbJoueurs.hidden = true;
+    blocDifficulteOrdi.hidden = false;
     etat.nbJoueurs = 1; // contre l'ordinateur : un seul joueur humain
   }
   mettreAJourRecapMenu();
@@ -36,36 +40,16 @@ gererGroupeBoutons("[data-joueurs]", (dataset) => {
   mettreAJourRecapMenu();
 });
 
-// Les 4 boutons 12/16/20/24 et le curseur choisissent tous deux le même
-// paramètre : choisir l'un désélectionne l'autre.
+gererGroupeBoutons("[data-difficulte-ordi]", (dataset) => {
+  etat.difficulteOrdi = dataset.difficulteOrdi;
+  mettreAJourRecapMenu();
+});
+
+// Boutons 12 à 72 (pas de 4/8) : le nombre maximum de cartes proposé.
 gererGroupeBoutons("[data-cartes]", (dataset) => {
   etat.nbCartes = Number(dataset.cartes);
-  curseurCartes.classList.remove("selectionne");
   mettreAJourRecapMenu();
 });
-
-// Curseur 24 → 92 (pas de 4) : au-delà des 4 boutons.
-const curseurCartes = document.getElementById("curseur-cartes");
-const bulleCurseurCartes = document.getElementById("bulle-curseur-cartes");
-
-// Déplace la bulle au-dessus de la poignée. La position en pourcentage de la
-// piste (valeur - min) / (max - min) donne directement la position en % de la
-// largeur du curseur, comme un thermomètre gradué de 0 à 100.
-function deplacerBulleCurseurCartes() {
-  const pourcentage = (curseurCartes.value - curseurCartes.min) / (curseurCartes.max - curseurCartes.min);
-  bulleCurseurCartes.style.left = `${pourcentage * 100}%`;
-  bulleCurseurCartes.textContent = curseurCartes.value;
-}
-
-curseurCartes.addEventListener("input", () => {
-  etat.nbCartes = Number(curseurCartes.value);
-  deplacerBulleCurseurCartes();
-  curseurCartes.classList.add("selectionne");
-  document.querySelectorAll("[data-cartes]").forEach((b) => b.classList.remove("selectionne"));
-  mettreAJourRecapMenu();
-});
-
-deplacerBulleCurseurCartes(); // position initiale de la bulle, au chargement de la page
 
 gererGroupeBoutons("[data-difficulte]", (dataset) => {
   etat.difficulte = dataset.difficulte;
@@ -73,16 +57,17 @@ gererGroupeBoutons("[data-difficulte]", (dataset) => {
 });
 
 // Vérifie que chaque paramètre obligatoire a bien été choisi par le joueur
-// (mode, nombre de joueurs si multi, nombre de cartes, difficulté). Sert à la
-// fois pour activer/désactiver le bouton et comme sécurité au moment du clic.
+// (mode, nombre de joueurs si multi, difficulté de l'ordi si mode ordinateur,
+// nombre de cartes, difficulté du mélange). Sert à la fois pour activer/désactiver
+// le bouton et comme sécurité au moment du clic.
 function configurationComplete() {
   const modeChoisi = etat.mode !== null;
   const nbJoueursOk = etat.mode !== "multi" || document.querySelector("[data-joueurs].selectionne") !== null;
-  const cartesChoisies = document.querySelector("[data-cartes].selectionne") !== null
-    || curseurCartes.classList.contains("selectionne");
+  const difficulteOrdiOk = etat.mode !== "ordinateur" || document.querySelector("[data-difficulte-ordi].selectionne") !== null;
+  const cartesChoisies = document.querySelector("[data-cartes].selectionne") !== null;
   const difficulteChoisie = document.querySelector("[data-difficulte].selectionne") !== null;
 
-  return modeChoisi && nbJoueursOk && cartesChoisies && difficulteChoisie;
+  return modeChoisi && nbJoueursOk && difficulteOrdiOk && cartesChoisies && difficulteChoisie;
 }
 
 // Affiche un petit résumé des choix et active le bouton "Valider" seulement
@@ -92,7 +77,9 @@ function mettreAJourRecapMenu() {
   boutonValiderMenu.disabled = !pret;
 
   if (pret) {
-    const texteMode = etat.mode === "multi" ? `${etat.nbJoueurs} ${t("joueurs-mot")}` : t("contre-ordinateur");
+    const texteMode = etat.mode === "multi"
+      ? `${etat.nbJoueurs} ${t("joueurs-mot")}`
+      : `${t("contre-ordinateur")} (${t("ordi-" + etat.difficulteOrdi).toLowerCase()})`;
     recapMenu.textContent = `${texteMode} · ${etat.nbCartes} ${t("cartes-mot")} · ${t("difficulte-mot")} ${t(etat.difficulte).toLowerCase()}`;
   } else {
     recapMenu.textContent = "";

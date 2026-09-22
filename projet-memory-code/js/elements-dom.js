@@ -8,6 +8,7 @@ const ecranJeu = document.getElementById("ecran-jeu");
 const ecranFin = document.getElementById("ecran-fin");
 
 const blocNbJoueurs = document.getElementById("bloc-nb-joueurs");
+const blocDifficulteOrdi = document.getElementById("bloc-difficulte-ordi");
 const recapMenu = document.getElementById("recap-menu");
 const boutonValiderMenu = document.getElementById("bouton-valider-menu");
 

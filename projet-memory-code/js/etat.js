@@ -7,6 +7,7 @@ const etat = {
   scene: "menu",       // "menu" | "jeu" | "fin"
   mode: null,           // "ordinateur" | "multi"
   nbJoueurs: 1,          // nombre de joueurs humains (1 si contre l'ordinateur)
+  difficulteOrdi: null,  // "naze" | "moyen" | "fort" (uniquement en mode "ordinateur")
   nbCartes: 16,          // toujours un multiple de 4
   difficulte: "facile",  // "facile" | "moyen" | "difficile"
   cartes: [],            // toutes les cartes de la grille

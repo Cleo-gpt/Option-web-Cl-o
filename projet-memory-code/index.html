@@ -37,19 +37,26 @@
       <button class="bouton-choix" data-joueurs="4">4</button>
     </div>
 
+    <!-- Ce bloc n'apparaît que si le mode "ordinateur" est choisi -->
+    <div class="bloc-choix" id="bloc-difficulte-ordi" hidden>
+      <h2 data-traduire="difficulte-ordi">Difficulté de l'ordinateur</h2>
+      <button class="bouton-choix" data-difficulte-ordi="naze" data-traduire="ordi-naze">Très naze</button>
+      <button class="bouton-choix" data-difficulte-ordi="moyen" data-traduire="ordi-moyen">Très moyen</button>
+      <button class="bouton-choix" data-difficulte-ordi="fort" data-traduire="ordi-fort">Très fort</button>
+    </div>
+
     <div class="bloc-choix">
       <h2 data-traduire="nombre-cartes">Nombre de cartes</h2>
       <button class="bouton-choix" data-cartes="12">12</button>
       <button class="bouton-choix" data-cartes="16">16</button>
       <button class="bouton-choix" data-cartes="20">20</button>
       <button class="bouton-choix" data-cartes="24">24</button>
-
-      <!-- Au-delà de 24, un curseur permet de choisir n'importe quel multiple de 4 jusqu'à 92.
-           La bulle suit la poignée : sa position est recalculée en JS à chaque déplacement. -->
-      <div id="zone-curseur-cartes">
-        <input type="range" id="curseur-cartes" min="24" max="92" step="4" value="24">
-        <span id="bulle-curseur-cartes">24</span>
-      </div>
+      <button class="bouton-choix" data-cartes="32">32</button>
+      <button class="bouton-choix" data-cartes="40">40</button>
+      <button class="bouton-choix" data-cartes="48">48</button>
+      <button class="bouton-choix" data-cartes="56">56</button>
+      <button class="bouton-choix" data-cartes="64">64</button>
+      <button class="bouton-choix" data-cartes="72">72</button>
     </div>
 
     <div class="bloc-choix">
@@ -153,6 +160,7 @@
   <script src="js/livre-regles.js"></script>
   <script src="js/partie.js"></script>
   <script src="js/affichage.js"></script>
+  <script src="js/ia-robot.js"></script>
   <script src="js/tour-de-jeu.js"></script>
   <script src="js/chrono.js"></script>
   <script src="js/fin-de-partie.js"></script>

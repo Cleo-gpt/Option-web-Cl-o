@@ -70,6 +70,13 @@ button {
   margin: 0 auto;
 }
 
+/* L'écran de jeu peut être un peu plus large que les autres : avec beaucoup de
+   cartes, la grille carrée (voir calculerNbColonnesGrille() dans affichage.js)
+   a besoin de plus de place pour ne pas être compressée. */
+#ecran-jeu {
+  max-width: 900px;
+}
+
 /* ===== Menu de configuration ===== */
 
 .bloc-choix {
@@ -96,48 +103,6 @@ button {
   background-color: var(--accent);
   color: var(--accent-texte);
   border-color: var(--accent);
-}
-
-/* Curseur pour choisir un nombre de cartes entre 24 et 92 (au-delà des 4 boutons).
-   La zone est en position relative pour que la bulle (position absolue) se place par rapport à elle. */
-#zone-curseur-cartes {
-  position: relative;
-  display: inline-block;
-  margin-top: 1.5rem;
-}
-
-#curseur-cartes {
-  width: 220px;
-  accent-color: var(--accent);
-}
-
-/* La bulle qui affiche le nombre choisi. Sa position gauche (left) est recalculée
-   en JS à chaque déplacement, pour rester au-dessus de la poignée du curseur. */
-#bulle-curseur-cartes {
-  position: absolute;
-  top: -1.9rem;
-  transform: translateX(-50%);
-  padding: 0.2rem 0.5rem;
-  background-color: var(--accent);
-  color: var(--accent-texte);
-  border-radius: 6px;
-  font-weight: bold;
-  font-size: 0.9rem;
-}
-
-/* Petite pointe sous la bulle, dirigée vers la poignée */
-#bulle-curseur-cartes::after {
-  content: "";
-  position: absolute;
-  top: 100%;
-  left: 50%;
-  transform: translateX(-50%);
-  border: 5px solid transparent;
-  border-top-color: var(--accent);
-}
-
-#curseur-cartes.selectionne ~ #bulle-curseur-cartes {
-  outline: 2px solid var(--dore);
 }
 
 #bouton-valider-menu,
@@ -332,6 +297,7 @@ button {
 
 #zone-jeu {
   display: flex;
+  flex-wrap: wrap;
   gap: 2rem;
   justify-content: center;
   align-items: flex-start;
@@ -420,11 +386,13 @@ button {
 .ligne-stat-fin.joueur-4 .lumiere { background-color: var(--joueur-4); color: var(--joueur-4); }
 .ligne-stat-fin.joueur-robot .lumiere { background-color: var(--robot); color: var(--robot); }
 
-/* Grille de cartes : s'adapte automatiquement au nombre de cartes */
+/* Grille de cartes : le nombre de colonnes est calculé en JS (voir
+   calculerNbColonnesGrille() dans affichage.js) pour former un carré, quel
+   que soit le nombre de cartes. */
 #grille-cartes {
   display: grid;
-  grid-template-columns: repeat(4, 70px);
   gap: 0.6rem;
+  justify-content: center;
 }
 
 .carte {

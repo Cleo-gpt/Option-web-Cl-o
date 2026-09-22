@@ -26,8 +26,10 @@ function afficherResultatFin() {
   }
 }
 
-// Affiche, pour chaque joueur, ses paires trouvées, ses vies restantes et le
-// temps moyen mis pour trouver une paire (somme des temps ÷ nombre de paires).
+// Affiche, pour chaque joueur, ses paires trouvées, ses vies restantes, le
+// temps moyen mis pour trouver une paire, et le temps de réflexion moyen réel
+// entre le 1er et le 2e clic de chaque tour (mesuré en millisecondes puis
+// arrondi à la seconde, voir enregistrerTempsReflexion() dans tour-de-jeu.js).
 function afficherStatistiquesFin() {
   statistiquesFin.innerHTML = "";
 
@@ -37,6 +39,13 @@ function afficherStatistiquesFin() {
       : null;
     const texteTempsMoyen = tempsMoyen !== null ? `${tempsMoyen}${t("temps-moyen-paire")}` : t("aucune-paire");
 
+    const tempsReflexionMoyen = joueur.nbToursJoues > 0
+      ? (joueur.sommeTempsReflexion / joueur.nbToursJoues).toFixed(1)
+      : null;
+    const texteTempsReflexion = tempsReflexionMoyen !== null
+      ? `${tempsReflexionMoyen}${t("temps-reflexion-moyen")}`
+      : t("aucun-temps-reflexion");
+
     const ligne = document.createElement("div");
     ligne.className = `ligne-stat-fin ${joueur.classeCouleur}`;
     ligne.innerHTML = `
@@ -45,6 +54,7 @@ function afficherStatistiquesFin() {
       <span>${joueur.pairesTrouvees} ${t("paires-trouvees")}</span>
       <span>❤️ ${joueur.coeurs}</span>
       <span>${texteTempsMoyen}</span>
+      <span>${texteTempsReflexion}</span>
     `;
     statistiquesFin.appendChild(ligne);
   });

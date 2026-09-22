@@ -12,6 +12,10 @@ const TRADUCTIONS = {
   "mode-ordinateur": { fr: "Contre l'ordinateur", de: "Gegen den Computer", en: "Against the computer" },
   "mode-multi": { fr: "Multijoueur", de: "Mehrspieler", en: "Multiplayer" },
   "nombre-joueurs": { fr: "Nombre de joueurs", de: "Anzahl der Spieler", en: "Number of players" },
+  "difficulte-ordi": { fr: "Difficulté de l'ordinateur", de: "Schwierigkeit des Computers", en: "Computer difficulty" },
+  "ordi-naze": { fr: "Très naze", de: "Sehr schwach", en: "Very weak" },
+  "ordi-moyen": { fr: "Très moyen", de: "Mittelmäßig", en: "Average" },
+  "ordi-fort": { fr: "Très fort", de: "Sehr stark", en: "Very strong" },
   "nombre-cartes": { fr: "Nombre de cartes", de: "Anzahl der Karten", en: "Number of cards" },
   "cartes-mot": { fr: "cartes", de: "Karten", en: "cards" },
   "difficulte-melange": { fr: "Difficulté du mélange", de: "Mischschwierigkeit", en: "Shuffle difficulty" },
@@ -55,6 +59,8 @@ const TRADUCTIONS = {
   "paires-trouvees": { fr: "paire(s) trouvée(s)", de: "gefundene(s) Paar(e)", en: "pair(s) found" },
   "temps-moyen-paire": { fr: "s en moyenne par paire", de: "s im Schnitt pro Paar", en: "s on average per pair" },
   "aucune-paire": { fr: "aucune paire trouvée", de: "kein Paar gefunden", en: "no pair found" },
+  "temps-reflexion-moyen": { fr: "s en moyenne entre les 2 cartes", de: "s im Schnitt zwischen den 2 Karten", en: "s on average between the 2 cards" },
+  "aucun-temps-reflexion": { fr: "aucun temps de réflexion mesuré", de: "keine Überlegungszeit gemessen", en: "no thinking time measured" },
 };
 
 const LANGUES = ["fr", "de", "en"];

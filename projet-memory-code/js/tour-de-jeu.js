@@ -5,6 +5,7 @@
 let identifiantMinuteurTour = null;
 let secondesRestantesTour = TEMPS_TOUR;
 let secondesDebutTourJoueur = 0; // valeur du chrono au début du tour en cours, pour mesurer le temps mis à trouver une paire
+let instantPremierClicTour = 0; // Date.now() au premier clic du tour, pour mesurer le temps réel jusqu'au 2e clic
 
 function demarrerTour() {
   etat.cartesRetournees = [];
@@ -56,9 +57,16 @@ function choisirCarte(idCarte) {
     demarrerChrono();
   }
 
+  // Horodatage du premier clic du tour, pour mesurer le temps de réflexion
+  // réel jusqu'au second clic (voir verifierPaire()).
+  if (etat.cartesRetournees.length === 0) {
+    instantPremierClicTour = Date.now();
+  }
+
   carte.retournee = true;
   rafraichirCarte(carte);
   etat.cartesRetournees.push(carte);
+  memoriserCartePourRobot(carte);
 
   if (etat.cartesRetournees.length === 2) {
     verifierPaire();
@@ -72,6 +80,10 @@ function verifierPaire() {
 
   const [carteA, carteB] = etat.cartesRetournees;
   const estUnePaire = carteA.symbole === carteB.symbole;
+
+  // Temps de réflexion réel entre le 1er et le 2e clic de ce tour (en secondes).
+  const tempsReflexion = (Date.now() - instantPremierClicTour) / 1000;
+  enregistrerTempsReflexion(etat.joueurActuelIndex, tempsReflexion);
 
   setTimeout(() => {
     if (estUnePaire) {
@@ -105,6 +117,14 @@ function toutesLesPairesTrouvees() {
   return etat.cartes.every((carte) => carte.trouvee);
 }
 
+// Ajoute une mesure de temps de réflexion (entre le 1er et le 2e clic) pour un
+// joueur donné, utilisée pour calculer sa moyenne à l'écran de fin.
+function enregistrerTempsReflexion(indexJoueur, secondes) {
+  const joueur = etat.joueurs[indexJoueur];
+  joueur.sommeTempsReflexion += secondes;
+  joueur.nbToursJoues += 1;
+}
+
 function gagnerCoeurJoueurActuel() {
   const joueur = etat.joueurs[etat.joueurActuelIndex];
   joueur.coeurs += 1;
@@ -120,6 +140,7 @@ function gagnerCoeurJoueurActuel() {
 function perdreCoeurJoueurActuel() {
   const joueur = etat.joueurs[etat.joueurActuelIndex];
   joueur.coeurs = Math.max(0, joueur.coeurs - 1);
+  joueur.erreurs += 1;
   afficherCoeurs(etat.joueurActuelIndex);
 
   if (joueur.coeurs === 0 && plusAucunJoueurEnVie()) {
@@ -142,17 +163,5 @@ function passerAuJoueurSuivant() {
   demarrerTour();
 }
 
-// Le robot choisit simplement deux cartes cachées au hasard.
-function jouerTourRobot() {
-  if (etat.scene !== "jeu") return;
-
-  const cartesDisponibles = etat.cartes.filter((c) => !c.retournee && !c.trouvee);
-  const premiereCarte = cartesDisponibles[Math.floor(Math.random() * cartesDisponibles.length)];
-  choisirCarte(premiereCarte.id);
-
-  setTimeout(() => {
-    const cartesRestantes = etat.cartes.filter((c) => !c.retournee && !c.trouvee);
-    const deuxiemeCarte = cartesRestantes[Math.floor(Math.random() * cartesRestantes.length)];
-    choisirCarte(deuxiemeCarte.id);
-  }, 600);
-}
+// La logique du robot (jouerTourRobot, mémoire, adaptation à la difficulté)
+// vit dans js/ia-robot.js, chargé après ce fichier.

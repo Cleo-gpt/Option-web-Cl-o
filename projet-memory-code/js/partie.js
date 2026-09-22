@@ -11,6 +11,7 @@ function preparerPartie() {
   etat.cartesRetournees = [];
   chronoDemarre = false;
   chronoAffichage.textContent = "00:00";
+  reinitialiserMemoireRobot();
 
   afficherJoueurs();
   afficherCartes();
@@ -34,6 +35,9 @@ function creerJoueurs() {
       estRobot: false,
       pairesTrouvees: 0,      // pour les statistiques affichées à la fin de la partie
       sommeTempsPaires: 0,    // somme des secondes mises à trouver chaque paire (pour la moyenne)
+      sommeTempsReflexion: 0, // somme des secondes entre le 1er et le 2e clic de chaque tour joué
+      nbToursJoues: 0,        // nombre de tours où les 2 cartes ont été retournées (pour la moyenne de réflexion)
+      erreurs: 0,             // nombre de paires ratées, utilisé par l'IA pour évaluer le niveau du joueur humain
     });
   }
 
@@ -45,6 +49,9 @@ function creerJoueurs() {
       estRobot: true,
       pairesTrouvees: 0,
       sommeTempsPaires: 0,
+      sommeTempsReflexion: 0,
+      nbToursJoues: 0,
+      erreurs: 0,
     });
   }
 }

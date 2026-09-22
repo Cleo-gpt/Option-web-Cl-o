@@ -41,8 +41,18 @@ function allumerLumiereJoueurActuel() {
 // ===================================================================
 // AFFICHAGE DES CARTES
 // ===================================================================
+
+// Nombre de colonnes qui rapproche le plus la grille d'un carré, quel que
+// soit le nombre de cartes (ex: 16 → 4 colonnes, 72 → 9 colonnes, la
+// dernière ligne pouvant rester incomplète).
+function calculerNbColonnesGrille(nbCartes) {
+  return Math.ceil(Math.sqrt(nbCartes));
+}
+
 function afficherCartes() {
   grilleCartes.innerHTML = "";
+  const nbColonnes = calculerNbColonnesGrille(etat.cartes.length);
+  grilleCartes.style.gridTemplateColumns = `repeat(${nbColonnes}, 70px)`;
 
   etat.cartes.forEach((carte) => {
     const bouton = document.createElement("button");
