@@ -15,21 +15,15 @@ class Billet
 
     public function estComplet(): bool
     {
-        /* à vous : règle billet complet */
-       $prixFinal = $this->prix;
-         if ($this->places < 3) {
-                $prixFinal *= 0.9;
-            }   
-        return $prixFinal;
+        return $this->places === 0;
     }
 
     public function prixFinal(): float
     {
-        /* à vous : règle tarif de dernière minute */
-        $prixFinal = $this->prix;
-        if ($this->places < 3) {
-            $prixFinal *= 0.9; 
-        }
+       $prixFinal = $this->prix;
+         if ($this->places < 3) {
+                $prixFinal *= 0.9;
+            }   
         return $prixFinal;
     }
 }
