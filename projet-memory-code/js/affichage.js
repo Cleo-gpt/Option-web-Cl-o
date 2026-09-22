@@ -52,7 +52,7 @@ function calculerNbColonnesGrille(nbCartes) {
 function afficherCartes() {
   grilleCartes.innerHTML = "";
   const nbColonnes = calculerNbColonnesGrille(etat.cartes.length);
-  grilleCartes.style.gridTemplateColumns = `repeat(${nbColonnes}, 70px)`;
+  grilleCartes.style.gridTemplateColumns = `repeat(${nbColonnes}, 95px)`; // doit rester synchronisé avec .carte { width } dans style.css
 
   etat.cartes.forEach((carte) => {
     const bouton = document.createElement("button");

@@ -369,11 +369,13 @@ body.theme-youtube.theme-jour {
   margin: 0 auto;
 }
 
-/* L'écran de jeu peut être un peu plus large que les autres : avec beaucoup de
-   cartes, la grille carrée (voir calculerNbColonnesGrille() dans affichage.js)
-   a besoin de plus de place pour ne pas être compressée. */
+/* L'écran de jeu occupe toute la largeur disponible (pas de max-width ni de
+   centrage comme les autres écrans) : la colonne des joueurs reste collée au
+   bord gauche, et la grille de cartes (voir #grille-cartes plus bas) profite
+   du maximum d'espace pour agrandir ses cartes. */
 #ecran-jeu {
-  max-width: 900px;
+  max-width: none;
+  margin: 0;
 }
 
 /* ===== Menu de configuration ===== */
@@ -541,36 +543,13 @@ body.theme-communaute .bouton-choix:hover {
   background-color: var(--cuir-clair);
 }
 
-/* Languette pour rouvrir le livre pendant la partie : un bouton rond en cuir
-   avec juste l'emoji du livre (pas de texte). */
-#languette-livre {
-  position: fixed;
-  top: 1rem;
-  right: 1rem;
-  width: 52px;
-  height: 52px;
-  padding: 0;
-  background-color: var(--cuir);
-  border: 2px solid var(--dore);
-  border-radius: 50%;
-  cursor: pointer;
-  z-index: 5;
-  font-size: 1.5rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-#languette-livre:hover {
-  background-color: var(--cuir-clair);
-}
-
-/* ===== Barre de réglages (thème + langue) ===== */
-/* Fixée en haut à gauche, visible sur tous les écrans, symétrique à la languette du livre. */
+/* ===== Barre de réglages (thème, langue, daltonien, livre) ===== */
+/* Fixée en haut à droite, tous les boutons ronds regroupés au même endroit,
+   visible sur tous les écrans. */
 #barre-reglages {
   position: fixed;
   top: 1rem;
-  left: 1rem;
+  right: 1rem;
   display: flex;
   gap: 0.5rem;
   z-index: 5;
@@ -578,7 +557,8 @@ body.theme-communaute .bouton-choix:hover {
 
 #bouton-theme,
 #bouton-langue,
-#bouton-daltonien {
+#bouton-daltonien,
+#languette-livre {
   width: 52px;
   height: 52px;
   padding: 0;
@@ -595,13 +575,18 @@ body.theme-communaute .bouton-choix:hover {
 
 #bouton-theme:hover,
 #bouton-langue:hover,
-#bouton-daltonien:hover {
+#bouton-daltonien:hover,
+#languette-livre:hover {
   background-color: var(--cuir-clair);
 }
 
 #bouton-langue {
   font-size: 1rem;
   font-weight: bold;
+}
+
+#languette-livre {
+  font-size: 1.5rem;
 }
 
 /* Le bouton daltonien reste mis en évidence (halo) une fois activé. */
@@ -612,13 +597,41 @@ body.theme-communaute .bouton-choix:hover {
 
 /* ===== Écran de jeu ===== */
 
+/* La colonne de gauche (chrono + joueurs) est collée au bord gauche de
+   l'écran plutôt que centrée à côté de la grille : le texte reste aligné,
+   compact, et laisse le maximum de place à la grille de cartes. */
+#zone-jeu {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2rem;
+  justify-content: flex-start;
+  align-items: flex-start;
+}
+
+#colonne-joueurs {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  text-align: left;
+  flex-shrink: 0;
+  width: 260px; /* largeur fixe : évite que la grille de cartes tremble quand
+                   le texte du minuteur change de longueur ("45s" -> "9s") */
+}
+
 #barre-info {
   display: flex;
-  justify-content: center;
-  gap: 2rem;
+  flex-direction: column;
+  gap: 0.4rem;
   font-size: 1.3rem;
   font-weight: bold;
-  margin-bottom: 1rem;
+}
+
+/* Chiffres à largeur fixe (tabular-nums) : "45s" et "9s" occupent la même
+   largeur de caractère par caractère, pour ne jamais faire trembler la
+   colonne (et donc la grille de cartes juste à côté) à chaque seconde. */
+#chrono,
+#temps-tour {
+  font-variant-numeric: tabular-nums;
 }
 
 .bloc-info {
@@ -633,14 +646,6 @@ body.theme-communaute .bouton-choix:hover {
   font-size: 0.85rem;
   font-weight: normal;
   opacity: 0.85;
-}
-
-#zone-jeu {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 2rem;
-  justify-content: center;
-  align-items: flex-start;
 }
 
 /* Une ligne par joueur : lumière + nom + coeurs */
@@ -738,8 +743,11 @@ body.theme-communaute .bouton-choix:hover {
 
 .carte {
   position: relative;
-  width: 70px;
-  height: 90px;
+  box-sizing: border-box; /* la bordure de 2px doit être comprise dans les 95px,
+                             sinon la carte déborde de sa colonne de grille et
+                             désaligne toute la grille au fil des colonnes */
+  width: 95px;
+  height: 122px;
   background-color: var(--fond-carte);
   background-image: var(--image-dos-carte);
   background-size: cover;

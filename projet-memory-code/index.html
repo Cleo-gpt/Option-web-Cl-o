@@ -40,12 +40,14 @@
     </filter>
   </svg>
 
-  <!-- Boutons fixes en haut à gauche, visibles sur tous les écrans : thème et langue.
-       Symétriques à la languette du livre (en haut à droite). -->
+  <!-- Boutons fixes en haut à droite, visibles sur tous les écrans : thème,
+       langue, daltonien, et la languette pour rouvrir le livre des règles
+       pendant la partie (tous regroupés au même endroit). -->
   <div id="barre-reglages">
     <button id="bouton-theme" aria-label="Changer de thème (jour / nuit / entre-deux)">🌗</button>
     <button id="bouton-langue" aria-label="Changer de langue">Fr</button>
     <button id="bouton-daltonien" aria-label="Activer le mode daltonien" aria-pressed="false">👁️</button>
+    <button id="languette-livre" hidden aria-label="Ouvrir le livre des règles">📖</button>
   </div>
 
   <!-- Enveloppe tous les écrans (mais pas la barre de réglages ni le livre) :
@@ -122,22 +124,24 @@
   <!-- Affiché en dessous du livre : le livre s'ouvre par-dessus au début, puis reste accessible via sa languette. -->
   <section id="ecran-jeu" class="ecran" hidden>
 
-    <!-- Informations en haut : chronomètre et temps restant du tour -->
-    <div id="barre-info">
-      <span class="bloc-info">
-        <span class="etiquette-info" data-traduire="etiquette-temps-jeu">Temps de jeu :</span>
-        <span id="chrono">00:00</span>
-      </span>
-      <span class="bloc-info">
-        <span class="etiquette-info" data-traduire="etiquette-temps-tour">Joueur temps restant :</span>
-        <span id="temps-tour">45s</span>
-      </span>
-    </div>
-
     <div id="zone-jeu">
 
-      <!-- Colonne de gauche : une ligne par joueur avec sa lumière et ses coeurs -->
-      <div id="liste-joueurs"></div>
+      <!-- Colonne de gauche, collée au bord : chronomètre, temps du tour, et
+           une ligne par joueur avec sa lumière et ses coeurs. -->
+      <div id="colonne-joueurs">
+        <div id="barre-info">
+          <span class="bloc-info">
+            <span class="etiquette-info" data-traduire="etiquette-temps-jeu">Temps de jeu :</span>
+            <span id="chrono">00:00</span>
+          </span>
+          <span class="bloc-info">
+            <span class="etiquette-info" data-traduire="etiquette-temps-tour">Joueur temps restant :</span>
+            <span id="temps-tour">45s</span>
+          </span>
+        </div>
+
+        <div id="liste-joueurs"></div>
+      </div>
 
       <!-- Grille de cartes, remplie par JavaScript -->
       <div id="grille-cartes"></div>
@@ -189,10 +193,6 @@
 
     </div>
   </div>
-
-  <!-- Languette toujours visible pendant la partie pour rouvrir le livre (mettre en pause).
-       Un simple emoji de livre, pas de dessin : l'icône seule suffit à le reconnaître. -->
-  <button id="languette-livre" hidden aria-label="Ouvrir le livre des règles">📖</button>
 
   <!-- ===== ÉCRAN 4 : FIN DE PARTIE ===== -->
   <section id="ecran-fin" class="ecran" hidden>
