@@ -25,6 +25,7 @@ Ces règles servent à garder le projet simple et lisible, même en avançant pe
 5. **Pas de code mort ni de fonctionnalité inutilisée.** Si une règle du jeu n'est pas demandée (ex: sauvegarde en ligne, comptes utilisateurs), on ne l'ajoute pas "au cas où".
 6. **État du jeu centralisé.** Une seule structure (`etat`) contient l'état courant (scène active, joueurs, cartes, tour actuel...) pour toujours savoir "où on en est" en lisant un seul endroit.
 7. **CSS avec variables.** Les couleurs (dont les couleurs des joueurs et le fond anthracite) sont définies une fois via des variables CSS (`:root { --bleu: ...; }`) et réutilisées, pas recopiées partout.
+8. **Se baser sur les ateliers du cours.** Avant toute modification de ce projet, parcourir les PDF "Atelier" des dossiers `01-planetes`, `02-orbit`, `03-donnees-nues`, `06-deux-langages`, `08-json`, `One_button` et `watt` (à la racine du dépôt). Le code écrit ici doit s'appuyer uniquement sur les notions, techniques et façons de faire présentes dans ces ateliers — pas de notion, de méthode ou d'API absente de ces documents, même si elle serait plus simple ou plus idiomatique autrement.
 
 ### Exemple de commentaire attendu
 
@@ -84,3 +85,18 @@ Une fois la configuration validée, un livre de règles s'affiche avant de déma
 
 - Fond du jeu : **anthracite**.
 - Chaque joueur est identifiable par sa couleur (lumière + éventuellement bordure de son tour).
+
+## Écarts assumés avec les ateliers
+
+Le projet suit la règle 8 (se baser sur les ateliers) autant que possible : emoji plutôt que
+dessin SVG, classe CSS simple (`document.body.className`) plutôt qu'attribut `data-*` pour le
+thème. Trois points restent au-delà de ce que les ateliers enseignent, gardés volontairement :
+
+- **Le curseur `<input type="range">`** pour le nombre de cartes au-delà de 24 : aucun atelier
+  ne l'utilise, mais il reste très simple (une balise, un seul `addEventListener`) et évite
+  d'empiler des boutons pour chaque multiple de 4 jusqu'à 120.
+- **Les variables CSS** (`:root { --x: ...; }`) : demandées explicitement par la règle 7
+  ci-dessus, alors qu'aucun atelier n'utilise cette technique.
+- **Le sélecteur de langue** (Fr/All/Ang) : aucun atelier ne couvre la traduction de texte ;
+  le dictionnaire `TRADUCTIONS` et l'attribut `data-traduire` restent le moyen le plus simple
+  trouvé pour éviter de dupliquer chaque texte trois fois dans le code.

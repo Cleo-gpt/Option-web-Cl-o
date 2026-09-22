@@ -7,7 +7,7 @@ require __DIR__ . '/Billet.php';
 */
 $affiche = [
     new Billet("Paléo, grande scène — samedi", 45, 0),
-    new Billet("Club de la Gare — jazz", 22, 2),
+    new Billet("Club de la Gare — jazz", 72, 2),
     new Billet("Salle des fêtes — chorale", 12, 80)
 ];
 ?>

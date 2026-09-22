@@ -22,6 +22,22 @@
   --papier: #efe3c4;
 }
 
+/* Thème "entre-deux" (crépuscule) : un peu plus clair que la nuit par défaut,
+   sans être un vrai thème clair. Activé via la classe "theme-crepuscule" sur <body>. */
+body.theme-crepuscule {
+  --fond: #4a4038;
+  --fond-carte: #5c5045;
+  --texte: #f2ead9;
+}
+
+/* Thème "jour" : fond clair, texte sombre, mêmes accents dorés/cuir pour rester
+   dans l'esprit médiéval. Activé via la classe "theme-jour" sur <body>. */
+body.theme-jour {
+  --fond: #ede3cf;
+  --fond-carte: #ddcfb0;
+  --texte: #2a1c0e;
+}
+
 /* Police "médiévale" appliquée à toute la page : Almendra pour le texte courant,
    MedievalSharp pour les titres (menu, écran de jeu, écran de fin, livre). */
 body {
@@ -82,13 +98,12 @@ button {
   border-color: var(--accent);
 }
 
-/* Curseur pour choisir un nombre de cartes entre 20 et 120 (au-delà des 4 boutons). */
-#bloc-curseur-cartes {
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-  justify-content: center;
-  margin-top: 0.75rem;
+/* Curseur pour choisir un nombre de cartes entre 24 et 92 (au-delà des 4 boutons).
+   La zone est en position relative pour que la bulle (position absolue) se place par rapport à elle. */
+#zone-curseur-cartes {
+  position: relative;
+  display: inline-block;
+  margin-top: 1.5rem;
 }
 
 #curseur-cartes {
@@ -96,16 +111,33 @@ button {
   accent-color: var(--accent);
 }
 
-#valeur-curseur-cartes {
-  min-width: 5.5rem;
-  text-align: left;
+/* La bulle qui affiche le nombre choisi. Sa position gauche (left) est recalculée
+   en JS à chaque déplacement, pour rester au-dessus de la poignée du curseur. */
+#bulle-curseur-cartes {
+  position: absolute;
+  top: -1.9rem;
+  transform: translateX(-50%);
+  padding: 0.2rem 0.5rem;
+  background-color: var(--accent);
+  color: var(--accent-texte);
+  border-radius: 6px;
+  font-weight: bold;
+  font-size: 0.9rem;
 }
 
-/* Le curseur est aussi considéré comme "sélectionné" une fois qu'on y touche :
-   son affichage se met en évidence comme les boutons choisis. */
-#bloc-curseur-cartes.selectionne #valeur-curseur-cartes {
-  color: var(--accent);
-  font-weight: bold;
+/* Petite pointe sous la bulle, dirigée vers la poignée */
+#bulle-curseur-cartes::after {
+  content: "";
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  border: 5px solid transparent;
+  border-top-color: var(--accent);
+}
+
+#curseur-cartes.selectionne ~ #bulle-curseur-cartes {
+  outline: 2px solid var(--dore);
 }
 
 #bouton-valider-menu,
@@ -227,7 +259,7 @@ button {
 }
 
 /* Languette pour rouvrir le livre pendant la partie : un bouton rond en cuir
-   avec juste l'icône du grimoire dessinée en SVG (pas de texte). */
+   avec juste l'emoji du livre (pas de texte). */
 #languette-livre {
   position: fixed;
   top: 1rem;
@@ -240,6 +272,7 @@ button {
   border-radius: 50%;
   cursor: pointer;
   z-index: 5;
+  font-size: 1.5rem;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -249,25 +282,41 @@ button {
   background-color: var(--cuir-clair);
 }
 
-#languette-livre svg {
-  width: 30px;
-  height: 30px;
+/* ===== Barre de réglages (thème + langue) ===== */
+/* Fixée en haut à gauche, visible sur tous les écrans, symétrique à la languette du livre. */
+#barre-reglages {
+  position: fixed;
+  top: 1rem;
+  left: 1rem;
+  display: flex;
+  gap: 0.5rem;
+  z-index: 5;
 }
 
-/* Grimoire dessiné en SVG : tranche de pages décalée + couverture en cuir + liserés dorés */
-.grimoire-pages {
-  fill: var(--papier);
+#bouton-theme,
+#bouton-langue {
+  width: 52px;
+  height: 52px;
+  padding: 0;
+  background-color: var(--cuir);
+  color: var(--dore);
+  border: 2px solid var(--dore);
+  border-radius: 50%;
+  cursor: pointer;
+  font-size: 1.3rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-.grimoire-couverture {
-  fill: var(--cuir-clair);
-  stroke: var(--dore);
-  stroke-width: 1.5;
+#bouton-theme:hover,
+#bouton-langue:hover {
+  background-color: var(--cuir-clair);
 }
 
-.grimoire-liseret {
-  stroke: var(--dore);
-  stroke-width: 1.5;
+#bouton-langue {
+  font-size: 1rem;
+  font-weight: bold;
 }
 
 /* ===== Écran de jeu ===== */

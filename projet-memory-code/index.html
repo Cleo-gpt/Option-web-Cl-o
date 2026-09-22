@@ -11,50 +11,57 @@
 </head>
 <body>
 
+  <!-- Boutons fixes en haut à gauche, visibles sur tous les écrans : thème et langue.
+       Symétriques à la languette du livre (en haut à droite). -->
+  <div id="barre-reglages">
+    <button id="bouton-theme" aria-label="Changer de thème (jour / nuit / entre-deux)">🌗</button>
+    <button id="bouton-langue" aria-label="Changer de langue">Fr</button>
+  </div>
+
   <!-- ===== ÉCRAN 1 : MENU DE CONFIGURATION ===== -->
   <!-- On choisit le mode, le nombre de joueurs, le nombre de cartes et la difficulté avant de jouer. -->
   <section id="ecran-menu" class="ecran">
-    <h1>Memory Multijoueur</h1>
+    <h1 data-traduire="titre-jeu">Memory Multijoueur</h1>
 
     <div class="bloc-choix">
-      <h2>Mode de jeu</h2>
-      <button class="bouton-choix" data-mode="ordinateur">Contre l'ordinateur</button>
-      <button class="bouton-choix" data-mode="multi">Multijoueur</button>
+      <h2 data-traduire="mode-de-jeu">Mode de jeu</h2>
+      <button class="bouton-choix" data-mode="ordinateur" data-traduire="mode-ordinateur">Contre l'ordinateur</button>
+      <button class="bouton-choix" data-mode="multi" data-traduire="mode-multi">Multijoueur</button>
     </div>
 
     <!-- Ce bloc n'apparaît que si le mode "multi" est choisi -->
     <div class="bloc-choix" id="bloc-nb-joueurs" hidden>
-      <h2>Nombre de joueurs</h2>
+      <h2 data-traduire="nombre-joueurs">Nombre de joueurs</h2>
       <button class="bouton-choix" data-joueurs="2">2</button>
       <button class="bouton-choix" data-joueurs="3">3</button>
       <button class="bouton-choix" data-joueurs="4">4</button>
     </div>
 
     <div class="bloc-choix">
-      <h2>Nombre de cartes</h2>
+      <h2 data-traduire="nombre-cartes">Nombre de cartes</h2>
       <button class="bouton-choix" data-cartes="12">12</button>
       <button class="bouton-choix" data-cartes="16">16</button>
       <button class="bouton-choix" data-cartes="20">20</button>
       <button class="bouton-choix" data-cartes="24">24</button>
 
-      <!-- Au-delà de 24, un curseur permet de choisir n'importe quel multiple de 4
-           jusqu'à 120, sans avoir à afficher un bouton par valeur possible. -->
-      <div id="bloc-curseur-cartes">
-        <input type="range" id="curseur-cartes" min="20" max="120" step="4" value="20">
-        <span id="valeur-curseur-cartes">20 cartes</span>
+      <!-- Au-delà de 24, un curseur permet de choisir n'importe quel multiple de 4 jusqu'à 92.
+           La bulle suit la poignée : sa position est recalculée en JS à chaque déplacement. -->
+      <div id="zone-curseur-cartes">
+        <input type="range" id="curseur-cartes" min="24" max="92" step="4" value="24">
+        <span id="bulle-curseur-cartes">24</span>
       </div>
     </div>
 
     <div class="bloc-choix">
-      <h2>Difficulté du mélange</h2>
-      <button class="bouton-choix" data-difficulte="facile">Facile</button>
-      <button class="bouton-choix" data-difficulte="moyen">Moyen</button>
-      <button class="bouton-choix" data-difficulte="difficile">Difficile</button>
+      <h2 data-traduire="difficulte-melange">Difficulté du mélange</h2>
+      <button class="bouton-choix" data-difficulte="facile" data-traduire="facile">Facile</button>
+      <button class="bouton-choix" data-difficulte="moyen" data-traduire="moyen">Moyen</button>
+      <button class="bouton-choix" data-difficulte="difficile" data-traduire="difficile">Difficile</button>
     </div>
 
     <p id="recap-menu"></p>
 
-    <button id="bouton-valider-menu" disabled>Valider</button>
+    <button id="bouton-valider-menu" disabled data-traduire="valider">Valider</button>
   </section>
 
   <!-- ===== ÉCRAN 2 : PLATEAU DE JEU ===== -->
@@ -85,7 +92,7 @@
 
     <!-- Couverture fermée : cliquer dessus ouvre le livre -->
     <div id="couverture-livre">
-      <span id="titre-couverture">Livre des Règles</span>
+      <span id="titre-couverture" data-traduire="titre-livre">Livre des Règles</span>
     </div>
 
     <!-- Pages ouvertes du livre : une seule page visible à la fois, contrôlée en JS -->
@@ -93,50 +100,39 @@
 
       <!-- Page 1 : la question posée à l'ouverture -->
       <div class="page-livre" id="page-question">
-        <p class="texte-livre">Voulez-vous lire les règles ?</p>
+        <p class="texte-livre" data-traduire="question-regles">Voulez-vous lire les règles ?</p>
         <div class="choix-livre">
-          <button id="bouton-lire-regles">Oui, je souhaite lire les règles</button>
-          <button id="bouton-refuser-regles">Non, je ne souhaite pas lire les règles</button>
+          <button id="bouton-lire-regles" data-traduire="oui-regles">Oui, je souhaite lire les règles</button>
+          <button id="bouton-refuser-regles" data-traduire="non-regles">Non, je ne souhaite pas lire les règles</button>
         </div>
       </div>
 
       <!-- Page 2a : affichée seulement si le joueur refuse de lire les règles -->
       <div class="page-livre" id="page-bonne-chance" hidden>
-        <p class="texte-livre">Dans ce cas, bonne chance.</p>
+        <p class="texte-livre" data-traduire="bonne-chance">Dans ce cas, bonne chance.</p>
       </div>
 
       <!-- Page 2b : les règles complètes, affichées seulement si le joueur accepte -->
       <div class="page-livre" id="page-regles" hidden>
-        <h2 class="titre-page-livre">Règles du jeu</h2>
+        <h2 class="titre-page-livre" data-traduire="titre-regles">Règles du jeu</h2>
         <ul class="texte-livre">
-          <li>Chaque joueur commence avec <strong>10 coeurs</strong>.</li>
-          <li>Une erreur (les 2 cartes ne correspondent pas) = <strong>-1 coeur</strong>.</li>
-          <li>Une paire trouvée = <strong>+1 coeur</strong>.</li>
-          <li>Un joueur à <strong>0 coeur</strong> est éliminé.</li>
-          <li>Le but : rester en vie jusqu'à la fin de la partie.</li>
-          <li>Une lumière de couleur signale le joueur dont c'est le tour.</li>
-          <li>Chaque joueur a <strong>45 secondes</strong> pour retourner 2 cartes.</li>
+          <li data-traduire="regle-1">Chaque joueur commence avec <strong>10 coeurs</strong>.</li>
+          <li data-traduire="regle-2">Une erreur (les 2 cartes ne correspondent pas) = <strong>-1 coeur</strong>.</li>
+          <li data-traduire="regle-3">Une paire trouvée = <strong>+1 coeur</strong>.</li>
+          <li data-traduire="regle-4">Un joueur à <strong>0 coeur</strong> est éliminé.</li>
+          <li data-traduire="regle-5">Le but : rester en vie jusqu'à la fin de la partie.</li>
+          <li data-traduire="regle-6">Une lumière de couleur signale le joueur dont c'est le tour.</li>
+          <li data-traduire="regle-7">Chaque joueur a <strong>45 secondes</strong> pour retourner 2 cartes.</li>
         </ul>
-        <button id="bouton-lancer-partie" class="bouton-bas-page">Lancer la partie</button>
+        <button id="bouton-lancer-partie" class="bouton-bas-page" data-traduire="lancer-partie">Lancer la partie</button>
       </div>
 
     </div>
   </div>
 
   <!-- Languette toujours visible pendant la partie pour rouvrir le livre (mettre en pause).
-       Un simple grimoire dessiné en SVG, pas de texte : l'icône seule suffit à le reconnaître. -->
-  <button id="languette-livre" hidden aria-label="Ouvrir le livre des règles">
-    <svg viewBox="0 0 40 40" aria-hidden="true">
-      <!-- Tranche des pages : un fin bandeau clair décalé derrière la couverture -->
-      <rect x="7" y="8" width="26" height="26" rx="1" class="grimoire-pages" />
-      <!-- Couverture en cuir clair, bien contrastée sur le bouton -->
-      <rect x="5" y="5" width="26" height="28" rx="2" class="grimoire-couverture" />
-      <!-- Reliure : trois liserés dorés horizontaux sur la couverture -->
-      <line x1="9" y1="12" x2="27" y2="12" class="grimoire-liseret" />
-      <line x1="9" y1="19" x2="27" y2="19" class="grimoire-liseret" />
-      <line x1="9" y1="26" x2="27" y2="26" class="grimoire-liseret" />
-    </svg>
-  </button>
+       Un simple emoji de livre, pas de dessin : l'icône seule suffit à le reconnaître. -->
+  <button id="languette-livre" hidden aria-label="Ouvrir le livre des règles">📖</button>
 
   <!-- ===== ÉCRAN 4 : FIN DE PARTIE ===== -->
   <section id="ecran-fin" class="ecran" hidden>
@@ -147,7 +143,7 @@
          Rempli par JavaScript (une ligne par joueur) dans terminerPartie(). -->
     <div id="statistiques-fin"></div>
 
-    <button id="bouton-rejouer">Rejouer</button>
+    <button id="bouton-rejouer" data-traduire="rejouer">Rejouer</button>
   </section>
 
   <script src="code.js"></script>
