@@ -46,6 +46,8 @@ const TRADUCTIONS = {
   "lancer-partie": { fr: "Lancer la partie", de: "Spiel starten", en: "Start the game" },
   "relancer-partie": { fr: "Relancer la partie", de: "Spiel fortsetzen", en: "Resume the game" },
   "rejouer": { fr: "Rejouer", de: "Nochmal spielen", en: "Play again" },
+  "etiquette-temps-jeu": { fr: "Temps de jeu :", de: "Spielzeit:", en: "Game time:" },
+  "etiquette-temps-tour": { fr: "Joueur temps restant :", de: "Spieler verbleibende Zeit:", en: "Player time remaining:" },
 
   // Textes générés dynamiquement en JS (pas d'élément data-traduire fixe en HTML) :
   // ils sont traduits directement dans le code via TRADUCTIONS[cle][langueActuelle].
@@ -144,3 +146,20 @@ boutonTheme.addEventListener("click", () => {
 });
 
 appliquerClassesBody(); // thème par défaut dès le chargement de la page
+
+
+// ===================================================================
+// MODE DALTONIEN
+// Un simple bascule (on/off), indépendante du thème visuel et du mode de jeu :
+// une fois activé, reste actif quel que soit l'écran ou la configuration
+// choisie. Palette de joueurs adaptée + motifs distincts, voir style.css
+// (body.daltonien).
+// ===================================================================
+let modeDaltonienActif = false;
+
+const boutonDaltonien = document.getElementById("bouton-daltonien");
+boutonDaltonien.addEventListener("click", () => {
+  modeDaltonienActif = !modeDaltonienActif;
+  document.body.classList.toggle("daltonien", modeDaltonienActif);
+  boutonDaltonien.setAttribute("aria-pressed", String(modeDaltonienActif));
+});

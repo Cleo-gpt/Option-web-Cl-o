@@ -1,5 +1,5 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="140" height="180" viewBox="0 0 140 180">
-  <rect width="140" height="180" rx="12" fill="#3ddcff"/>
-  <rect x="8" y="8" width="124" height="164" rx="8" fill="none" stroke="white" stroke-opacity="0.5" stroke-width="3"/>
-  <text x="70" y="98" font-family="sans-serif" font-size="16" fill="white" text-anchor="middle" opacity="0.85">mediamatique</text>
+  <rect width="140" height="180" rx="12" fill="#203d91"/>
+  <rect x="8" y="8" width="124" height="164" rx="8" fill="none" stroke="#56bfdc" stroke-opacity="0.7" stroke-width="3"/>
+  <text x="70" y="98" font-family="sans-serif" font-size="14" fill="#56bfdc" text-anchor="middle" opacity="0.9">mediamatique</text>
 </svg>

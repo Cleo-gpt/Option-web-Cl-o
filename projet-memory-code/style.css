@@ -17,6 +17,97 @@
   --joueur-3: #ff6bcb; /* rose */
   --joueur-4: #ffe14d; /* jaune */
   --robot: #c0c0c0;    /* argenté */
+
+  /* Bordure des boutons sélectionnés : une couleur unie par défaut (--accent
+     du thème actif), remplacée par un vrai dégradé arc-en-ciel uniquement
+     pour le thème "Communauté engagée" (voir plus bas). */
+  --degrade-accent: var(--accent);
+}
+
+/* ===================================================================
+   MODE DALTONIEN
+   Activé par le bouton 👁️ (voir js/traductions.js, appliquerClassesBody()),
+   indépendamment du thème visuel et du mode de jeu choisis. Trois effets
+   cumulés : un filtre visuel appliqué à toute la page (visible immédiatement,
+   même sur l'écran menu), une palette de joueurs choisie pour rester
+   distinguable en deutéranopie/protanopie (bleu / orange / jaune foncé /
+   violet, palette Okabe-Ito), et des motifs distincts sur les lumières des
+   joueurs, pour ne jamais dépendre de la couleur seule.
+   =================================================================== */
+
+/* Filtre global de correction "Daltonize" pour la deutéranopie (confusion
+   rouge-vert, la forme la plus répandue) : le filtre SVG #daltonize-deutan
+   (voir index.html) redistribue la composante de couleur perdue par un
+   deutéranope vers le bleu/jaune, qu'il perçoit normalement. Contrairement à
+   un simple saturate()/contrast(), ça ne fonce pas juste l'image : ça déplace
+   réellement les teintes confondues pour les rendre à nouveau distinguables.
+   Appliqué à #contenu-app plutôt qu'à body : un filtre CSS crée un nouveau
+   containing block pour ses descendants en position "fixed", ce qui décalerait
+   #barre-reglages, #livre et #languette-livre (restés hors de #contenu-app,
+   voir index.html) s'il était posé sur body. */
+body.daltonien #contenu-app {
+  filter: url(#daltonize-deutan);
+}
+
+body.daltonien {
+  --joueur-1: #0072b2; /* bleu */
+  --joueur-2: #e69f00; /* orange */
+  --joueur-3: #f0e442; /* jaune */
+  --joueur-4: #9a4dbf; /* violet */
+  --robot: #999999;    /* gris */
+}
+
+/* La palette Okabe-Ito ci-dessus est déjà pensée pour rester distinguable par
+   un daltonien SANS transformation : la repasser dans le filtre global de
+   #contenu-app la redécalerait inutilement (et pourrait la dégrader, ex: le
+   bleu #0072b2 devenait un cyan terne une fois filtré). Le filtre inverse
+   neutralise donc ici l'effet hérité du parent, pour que .lumiere garde
+   exactement ses couleurs Okabe-Ito d'origine. */
+body.daltonien .lumiere {
+  filter: url(#daltonize-deutan-inverse);
+}
+
+/* Motif distinct par joueur, en plus de la couleur : cercle plein / carré /
+   triangle / losange. Le motif est un pseudo-élément blanc semi-transparent
+   par-dessus la lumière, visible quelle que soit sa couleur de fond. */
+body.daltonien .lumiere.allumee::after {
+  content: "";
+  display: block;
+  width: 60%;
+  height: 60%;
+  margin: 20% auto;
+  background-color: rgba(255, 255, 255, 0.85);
+}
+
+body.daltonien .joueur-1 .lumiere.allumee::after { border-radius: 50%; } /* rond */
+body.daltonien .joueur-2 .lumiere.allumee::after { border-radius: 0; }   /* carré */
+body.daltonien .joueur-3 .lumiere.allumee::after {
+  width: 0; height: 0; margin: 22% auto;
+  background: none;
+  border-left: 5px solid transparent;
+  border-right: 5px solid transparent;
+  border-bottom: 8px solid rgba(255, 255, 255, 0.85);
+} /* triangle */
+body.daltonien .joueur-4 .lumiere.allumee::after {
+  border-radius: 0;
+  transform: rotate(45deg);
+} /* losange */
+body.daltonien .joueur-robot .lumiere.allumee::after {
+  border-radius: 50%;
+  width: 40%;
+  height: 40%;
+} /* petit rond, distinct du joueur 1 */
+
+/* Carte trouvée : un repère "✓" en plus de la bordure de couleur, pour ne pas
+   dépendre uniquement de border-color: var(--joueur-2) (vert). */
+body.daltonien .carte.trouvee::after {
+  content: "✓";
+  position: absolute;
+  top: 2px;
+  right: 4px;
+  font-size: 0.9rem;
+  font-weight: bold;
+  color: var(--joueur-2);
 }
 
 body {
@@ -24,11 +115,33 @@ body {
   color: var(--texte);
   font-family: var(--police-texte);
   text-align: center;
+}
+
+/* Le fond et le padding vivent sur #contenu-app plutôt que directement sur
+   body : le mode daltonien applique son filtre de correction des couleurs à
+   #contenu-app (voir plus bas, body.daltonien #contenu-app), donc tout ce qui
+   doit être corrigé — y compris le fond coloré de chaque thème — doit être
+   peint à l'intérieur de cet élément, pas sur body lui-même. */
+#contenu-app {
+  background-color: var(--fond);
+  min-height: 100vh;
   padding: 2rem;
+  box-sizing: border-box;
 }
 
 h1, h2 {
   font-family: var(--police-titres);
+}
+
+/* Chaque thème définit --degrade-titre (voir plus bas) : un dégradé pour le
+   titre principal de l'écran menu. La plupart des thèmes y mettent un dégradé
+   discret de deux tons de --accent ; les thèmes "très colorés" (Animé,
+   Communauté engagée) y mettent un vrai dégradé multicolore. */
+h1 {
+  background: var(--degrade-titre);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
 }
 
 /* Les <button> n'héritent pas automatiquement de la police du body dans les
@@ -49,6 +162,7 @@ body.theme-medieval {
   --police-texte: "Almendra", serif;
   --police-titres: "MedievalSharp", serif;
   --image-dos-carte: url("images/themes/medieval/dos.svg");
+  --degrade-titre: linear-gradient(90deg, var(--accent), var(--dore));
 
   /* Couleurs "ancien livre" : cuir marron, dorures, parchemin */
   --cuir: #3b2415;
@@ -70,7 +184,8 @@ body.theme-medieval.theme-jour {
 }
 
 /* ----- Thème "Animé / Pop culture" -----
-   Palette néon violet/rose, énergique. */
+   Très coloré : plusieurs univers/genres se côtoient, donc pas une seule
+   teinte dominante mais un dégradé multicolore vif (titre, bordures actives). */
 body.theme-anime {
   --fond: #1c1030;
   --fond-carte: #2c1c48;
@@ -80,6 +195,7 @@ body.theme-anime {
   --police-texte: "Baloo 2", sans-serif;
   --police-titres: "Baloo 2", sans-serif;
   --image-dos-carte: url("images/themes/anime/dos.svg");
+  --degrade-titre: linear-gradient(90deg, #ff4f9a, #ff9142, #ffe14d, #6bffb0, #4fd3ff, #b06bff);
 
   --cuir: #4a1a5c;
   --cuir-clair: #6b2a7e;
@@ -100,50 +216,54 @@ body.theme-anime.theme-jour {
 }
 
 /* ----- Thème "Japon" -----
-   Rouge laqué et indigo, épuré, papier washi. */
+   Teintes sakura : rose cerisier, gris ardoise doux, blanc papier washi. */
 body.theme-japon {
-  --fond: #1a1414;
-  --fond-carte: #2c1f1f;
-  --texte: #f1e6d8;
-  --accent: #c8433a;
-  --accent-texte: #fdf3ea;
+  --fond: #241a1e;
+  --fond-carte: #382530;
+  --texte: #fbe9ef;
+  --accent: #f4a6c1;
+  --accent-texte: #3a0d1e;
   --police-texte: "Klee One", cursive;
   --police-titres: "Klee One", cursive;
   --image-dos-carte: url("images/themes/japon/dos.svg");
+  --degrade-titre: linear-gradient(90deg, var(--accent), var(--dore));
 
-  --cuir: #2f2331;
-  --cuir-clair: #47333a;
-  --dore: #d6432f;
-  --papier: #f2e6d3;
+  --cuir: #5c3a4a;
+  --cuir-clair: #7a4f61;
+  --dore: #f4a6c1;
+  --papier: #fdf0f4;
 }
 
 body.theme-japon.theme-crepuscule {
-  --fond: #362524;
-  --fond-carte: #48302f;
-  --texte: #f5ebdd;
+  --fond: #3d2a32;
+  --fond-carte: #4f3540;
+  --texte: #fdeef3;
 }
 
 body.theme-japon.theme-jour {
-  --fond: #f4ece0;
-  --fond-carte: #e6d5bd;
-  --texte: #241a16;
+  --fond: #fdf0f4;
+  --fond-carte: #f6d9e4;
+  --texte: #2a141c;
 }
 
 /* ----- Thème "Médiamatique" -----
-   Bleu cyan néon, futuriste/tech. */
+   Couleurs reprises des symboles fournis (images/themes/mediamatique/) :
+   cyan clair #56bfdc (symbole "general") en accent vif, bleu marine #203d91
+   (symbole "informatique") pour les tons plus structurels (cuir/cadre). */
 body.theme-mediamatique {
   --fond: #0b1620;
   --fond-carte: #12283a;
   --texte: #dff6ff;
-  --accent: #3ddcff;
+  --accent: #56bfdc;
   --accent-texte: #001820;
   --police-texte: "Orbitron", sans-serif;
   --police-titres: "Orbitron", sans-serif;
   --image-dos-carte: url("images/themes/mediamatique/dos.svg");
+  --degrade-titre: linear-gradient(90deg, var(--accent), var(--cuir-clair));
 
-  --cuir: #103245;
-  --cuir-clair: #1a4a63;
-  --dore: #3ddcff;
+  --cuir: #203d91;
+  --cuir-clair: #2c50b8;
+  --dore: #56bfdc;
   --papier: #dff6ff;
 }
 
@@ -160,63 +280,68 @@ body.theme-mediamatique.theme-jour {
 }
 
 /* ----- Thème "Communauté engagée" -----
-   Vert et terre, chaleureux, humain. */
+   Représente les mouvements LGBTQIA+, féministe et Black Lives Matter : fond
+   neutre sombre/clair pour rester lisible, mais l'arc-en-ciel (drapeau Pride)
+   est présent comme accent fort sur le titre et les bordures en surbrillance
+   (voir --degrade-titre et .bouton-choix.selectionne plus bas dans le fichier). */
 body.theme-communaute {
-  --fond: #16231b;
-  --fond-carte: #22322b;
-  --texte: #eef3e6;
-  --accent: #3ddc84;
-  --accent-texte: #062012;
+  --fond: #1a1a1e;
+  --fond-carte: #29292f;
+  --texte: #f5f3f0;
+  --accent: #ff5a8a;
+  --accent-texte: #1a0611;
   --police-texte: "Poppins", sans-serif;
   --police-titres: "Poppins", sans-serif;
   --image-dos-carte: url("images/themes/communaute/dos.svg");
+  --degrade-titre: linear-gradient(90deg, #e50000, #ff8d00, #ffee00, #028121, #004cff, #760089);
+  --degrade-accent: linear-gradient(90deg, #e50000, #ff8d00, #ffee00, #028121, #004cff, #760089);
 
-  --cuir: #2d4a2f;
-  --cuir-clair: #416a44;
-  --dore: #8fd17a;
-  --papier: #eef3e6;
+  --cuir: #3a2340;
+  --cuir-clair: #55335c;
+  --dore: #ffd400;
+  --papier: #f5f3f0;
 }
 
 body.theme-communaute.theme-crepuscule {
-  --fond: #2a4030;
-  --fond-carte: #35503c;
-  --texte: #f2f7ec;
+  --fond: #2b2b30;
+  --fond-carte: #38383f;
+  --texte: #f7f5f2;
 }
 
 body.theme-communaute.theme-jour {
-  --fond: #eef5e6;
-  --fond-carte: #d3e6c2;
-  --texte: #14200f;
+  --fond: #f5f3f0;
+  --fond-carte: #e3e0da;
+  --texte: #1a1a1e;
 }
 
 /* ----- Thème "Youtube" -----
-   Rouge, blanc, noir, net et direct. */
+   Fond rouge Youtube, boutons/cartes noirs, texte blanc. */
 body.theme-youtube {
-  --fond: #0f0f0f;
-  --fond-carte: #212121;
-  --texte: #f1f1f1;
-  --accent: #ff0000;
+  --fond: #ff0000;
+  --fond-carte: #0f0f0f;
+  --texte: #ffffff;
+  --accent: #0f0f0f;
   --accent-texte: #ffffff;
   --police-texte: "Roboto", sans-serif;
   --police-titres: "Bangers", cursive;
   --image-dos-carte: url("images/themes/youtube/dos.svg");
 
-  --cuir: #1f1f1f;
-  --cuir-clair: #333333;
-  --dore: #ff0000;
-  --papier: #f1f1f1;
+  --cuir: #0f0f0f;
+  --cuir-clair: #262626;
+  --dore: #ffffff;
+  --papier: #ffffff;
 }
 
 body.theme-youtube.theme-crepuscule {
-  --fond: #2a2a2a;
-  --fond-carte: #383838;
-  --texte: #f6f6f6;
+  --fond: #e23434;
+  --fond-carte: #181818;
+  --texte: #ffffff;
 }
 
 body.theme-youtube.theme-jour {
-  --fond: #ffffff;
-  --fond-carte: #e8e8e8;
-  --texte: #0f0f0f;
+  --fond: #ff4d4d;
+  --fond-carte: #1f1f1f;
+  --texte: #ffffff;
 }
 
 /* Règle de sécurité : l'attribut HTML "hidden" doit toujours cacher l'élément,
@@ -264,6 +389,25 @@ body.theme-youtube.theme-jour {
   background-color: var(--accent);
   color: var(--accent-texte);
   border-color: var(--accent);
+}
+
+/* Thème "Communauté engagée" : la bordure du bouton sélectionné (et celle
+   survolée) devient un vrai dégradé arc-en-ciel (border-image), plutôt qu'une
+   couleur unie — border-color ne peut pas afficher de dégradé. */
+body.theme-communaute .bouton-choix.selectionne,
+body.theme-communaute .bouton-choix:hover {
+  border-image: var(--degrade-accent) 1;
+}
+
+/* Bouton indisponible (ex: nombre de cartes au-delà de ce que le thème visuel
+   choisi propose comme symboles, voir mettreAJourLimiteCartes() dans menu.js) */
+.bouton-choix:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+
+.bouton-choix:disabled:hover {
+  border-color: transparent;
 }
 
 #bouton-valider-menu,
@@ -420,7 +564,8 @@ body.theme-youtube.theme-jour {
 }
 
 #bouton-theme,
-#bouton-langue {
+#bouton-langue,
+#bouton-daltonien {
   width: 52px;
   height: 52px;
   padding: 0;
@@ -436,13 +581,20 @@ body.theme-youtube.theme-jour {
 }
 
 #bouton-theme:hover,
-#bouton-langue:hover {
+#bouton-langue:hover,
+#bouton-daltonien:hover {
   background-color: var(--cuir-clair);
 }
 
 #bouton-langue {
   font-size: 1rem;
   font-weight: bold;
+}
+
+/* Le bouton daltonien reste mis en évidence (halo) une fois activé. */
+#bouton-daltonien[aria-pressed="true"] {
+  border-color: var(--accent);
+  box-shadow: 0 0 8px 2px var(--accent);
 }
 
 /* ===== Écran de jeu ===== */
@@ -454,6 +606,20 @@ body.theme-youtube.theme-jour {
   font-size: 1.3rem;
   font-weight: bold;
   margin-bottom: 1rem;
+}
+
+.bloc-info {
+  display: flex;
+  align-items: baseline;
+  gap: 0.4rem;
+}
+
+/* Étiquette avant chaque timer ("Temps de jeu :", "Joueur temps restant :") :
+   un peu moins marquée que la valeur elle-même, qui reste en gras. */
+.etiquette-info {
+  font-size: 0.85rem;
+  font-weight: normal;
+  opacity: 0.85;
 }
 
 #zone-jeu {
@@ -488,6 +654,7 @@ body.theme-youtube.theme-jour {
 
 /* La petite lumière ronde à côté du nom du joueur */
 .lumiere {
+  display: block;
   width: 16px;
   height: 16px;
   border-radius: 50%;
@@ -557,6 +724,7 @@ body.theme-youtube.theme-jour {
 }
 
 .carte {
+  position: relative;
   width: 70px;
   height: 90px;
   background-color: var(--fond-carte);

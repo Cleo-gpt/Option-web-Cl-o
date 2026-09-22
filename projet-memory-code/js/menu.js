@@ -25,8 +25,29 @@ function gererGroupeBoutons(selecteur, surChoix) {
 gererGroupeBoutons("[data-theme]", (dataset) => {
   etat.theme = dataset.theme;
   appliquerClassesBody();
+  mettreAJourLimiteCartes();
   mettreAJourRecapMenu();
 });
+
+// Certains thèmes ont moins de 36 symboles disponibles (voir
+// NB_SYMBOLES_PAR_THEME dans js/themes.js) : leurs boutons "Nombre de cartes"
+// au-delà de 2× ce nombre de symboles sont désactivés. Si le nombre de cartes
+// déjà choisi n'est plus disponible pour le nouveau thème, on désélectionne
+// ce bouton (le joueur doit en choisir un autre valide).
+function mettreAJourLimiteCartes() {
+  const nbCartesMax = NB_SYMBOLES_PAR_THEME[etat.theme] * 2;
+
+  document.querySelectorAll("[data-cartes]").forEach((bouton) => {
+    const nbCartesBouton = Number(bouton.dataset.cartes);
+    const disponible = nbCartesBouton <= nbCartesMax;
+    bouton.disabled = !disponible;
+
+    if (!disponible && bouton.classList.contains("selectionne")) {
+      bouton.classList.remove("selectionne");
+      etat.nbCartes = null;
+    }
+  });
+}
 
 // Choix du mode : contre l'ordinateur ou multijoueur.
 // Le bloc "nombre de joueurs" ne s'affiche que si "multi" est choisi, le bloc
@@ -111,6 +132,7 @@ boutonValiderMenu.addEventListener("click", () => {
 
 // Synchronise l'état du bouton dès le chargement de la page, plutôt que de se
 // reposer uniquement sur l'attribut "disabled" écrit à la main dans le HTML.
+mettreAJourLimiteCartes();
 mettreAJourRecapMenu();
 
 
