@@ -61,6 +61,18 @@ const THEMES_VISUELS = {
 THEMES_VISUELS.mediamatique.ajouterException(11, "svg"); // logo PhpMyAdmin
 
 THEMES_VISUELS.anime.ajouterException(1, "png");
+THEMES_VISUELS.anime.ajouterException(2, "jpg");
+THEMES_VISUELS.anime.ajouterException(3, "webp");
+THEMES_VISUELS.anime.ajouterException(4, "jpg");
+THEMES_VISUELS.anime.ajouterException(5, "webp");
+THEMES_VISUELS.anime.ajouterException(6, "webp");
+THEMES_VISUELS.anime.ajouterException(7, "jpg");
+THEMES_VISUELS.anime.ajouterException(8, "jpg");
+THEMES_VISUELS.anime.ajouterException(9, "jpg");
+THEMES_VISUELS.anime.ajouterException(10, "jpg");
+THEMES_VISUELS.anime.ajouterException(11, "webp");
+THEMES_VISUELS.anime.ajouterException(12, "webp");
+THEMES_VISUELS.anime.ajouterException(13, "webp");
 
 THEMES_VISUELS.communaute.ajouterException(1, "jpg");
 THEMES_VISUELS.communaute.ajouterException(2, "jpg");
