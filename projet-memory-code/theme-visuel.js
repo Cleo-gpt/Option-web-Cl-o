@@ -119,5 +119,11 @@ THEMES_VISUELS.communaute.ajouterException(19, "jpg");
 THEMES_VISUELS.communaute.ajouterException(20, "jpg");
 THEMES_VISUELS.communaute.ajouterException(21, "jpg");
 THEMES_VISUELS.communaute.ajouterException(22, "jpg");
+THEMES_VISUELS.communaute.ajouterException(23, "jpg");
+THEMES_VISUELS.communaute.ajouterException(24, "webp");
+THEMES_VISUELS.communaute.ajouterException(25, "png");
+THEMES_VISUELS.communaute.ajouterException(26, "jpg");
+THEMES_VISUELS.communaute.ajouterException(27, "jpg");
+THEMES_VISUELS.communaute.ajouterException(28, "webp");
 
 const THEME_PAR_DEFAUT = "medieval";
