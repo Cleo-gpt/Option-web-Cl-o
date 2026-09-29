@@ -12,13 +12,17 @@ Quand [MODIF.md](MODIF.md) reçoit une nouvelle entrée, l'agent doit le signale
 
 ```
 projet-memory-code/
-├── README.md        (ce fichier)
-├── index.html        structure de la page (menu, règles, plateau de jeu)
-├── style.css          apparence (couleurs, cartes, lumières des joueurs, coeurs)
-├── carte.js           classe Carte
-├── joueur.js          classe Joueur
-├── partie.js          classe Partie (cartes, joueurs, tour actuel, chrono, IA)
-└── code.js            reste de la logique (menu, traductions, livre des règles, fin de partie)
+├── README.md            (ce fichier)
+├── index.html            structure de la page (menu, règles, plateau de jeu)
+├── style.css              apparence (couleurs, cartes, lumières des joueurs, coeurs)
+├── theme-visuel.js        classe ThemeVisuel (données par thème : symboles, images)
+├── traducteur.js          classe Traducteur (dictionnaire FR/DE/EN + langue actuelle)
+├── carte.js               classe Carte
+├── joueur.js              classe Joueur
+├── partie.js              classe Partie (cartes, joueurs, tour actuel, chrono, IA)
+├── menu.js                classe Menu (configuration choisie, validation)
+├── livre-des-regles.js    classe LivreDesRegles (ouverture, pause, pages)
+└── code.js                reste de la logique (constantes, éléments HTML, écrans, fin de partie)
 ```
 
 Pas de framework, pas d'outil de build : on ouvre `index.html` dans le navigateur et ça fonctionne. HTML + CSS + JavaScript "vanilla" uniquement.
@@ -28,24 +32,29 @@ Pas de framework, pas d'outil de build : on ouvre `index.html` dans le navigateu
 Ces règles servent à garder le projet simple et lisible, même en avançant petit à petit.
 
 1. **Rester simple (KISS).** Pas de framework (React, Vue, ...), pas de build tool, pas de librairie externe.
-2. **Un fichier JS par classe, le reste dans `code.js`.** `Carte`, `Joueur` et `Partie` vivent
-   chacune dans leur propre fichier (`carte.js`, `joueur.js`, `partie.js`) ; tout ce qui n'est pas
-   une classe (menu, traductions, livre des règles, fin de partie) reste dans `code.js`. Pas
-   d'autre découpage : on ne multiplie pas les petits fichiers au-delà de ces 4.
+2. **Un fichier JS par classe, le reste dans `code.js`.** `ThemeVisuel`, `Traducteur`, `Carte`,
+   `Joueur`, `Partie`, `Menu` et `LivreDesRegles` vivent chacune dans leur propre fichier ; tout ce
+   qui n'est pas une classe (constantes partagées, éléments HTML, gestion des écrans, fin de
+   partie) reste dans `code.js`. Pas d'autre découpage : on ne multiplie pas les petits fichiers
+   au-delà de ces 8.
 3. **Noms en français.** Variables, fonctions et commentaires sont écrits en français, comme dans le reste du dépôt (ex: `joueurs`, `cartesRetournees`, `melangerCartes()`).
 4. **Un commentaire par bloc de logique.** Chaque paragraphe de code un peu complexe (une fonction, une condition importante) doit avoir un court commentaire au-dessus qui explique **à quoi il sert**, pas comment JavaScript fonctionne. Voir l'exemple ci-dessous.
 5. **Pas de code mort ni de fonctionnalité inutilisée.** Si une règle du jeu n'est pas demandée (ex: sauvegarde en ligne, comptes utilisateurs), on ne l'ajoute pas "au cas où".
-6. **État du jeu centralisé.** La configuration du menu (`config`) et la partie en cours
-   (`partieActuelle`, une instance de `Partie`) sont chacune un seul endroit à lire pour savoir
-   "où on en est" — pas de duplication de ces informations ailleurs dans le code.
+6. **État du jeu centralisé, dans des classes.** La configuration du menu (`menu`, instance de
+   `Menu`) et la partie en cours (`partieActuelle`, instance de `Partie`, ou `null` avant qu'une
+   partie ne commence) sont chacune un seul objet à lire pour savoir "où on en est" — pas de
+   duplication de ces informations ailleurs dans le code.
 7. **CSS avec variables.** Les couleurs (dont les couleurs des joueurs et le fond anthracite) sont définies une fois via des variables CSS (`:root { --bleu: ...; }`) et réutilisées, pas recopiées partout.
 8. **Se baser sur les ateliers du cours.** Avant toute modification de ce projet, parcourir les PDF "Atelier" des dossiers `01-planetes`, `02-orbit`, `03-donnees-nues`, `06-deux-langages`, `08-json`, `One_button` et `watt` (à la racine du dépôt). Le code écrit ici doit s'appuyer uniquement sur les notions, techniques et façons de faire présentes dans ces ateliers — pas de notion, de méthode ou d'API absente de ces documents, même si elle serait plus simple ou plus idiomatique autrement.
-9. **Classes ES6 pour les objets du jeu.** `Carte`, `Joueur` et `Partie` sont des classes avec
-   `constructor` et méthodes, dans le style vu dans les ateliers (`Planete`, `Meule`, `Billet`,
-   `Materiel`) : un constructeur qui affecte simplement `this.xxx = xxx` par propriété, des
-   méthodes en camelCase français préfixées par `est` pour les prédicats (`estElimine`,
-   `estVisible`), pas d'héritage, pas de getters/setters, pas de champs privés — rien qui ne soit
-   pas déjà montré dans ces ateliers.
+9. **Classes ES6 pour un maximum de structures du jeu.** Toute structure qui a un état propre et
+   un comportement associé devient une classe avec `constructor` et méthodes, dans le style vu
+   dans les ateliers (`Planete`, `Meule`, `Billet`, `Materiel`) : un constructeur qui affecte
+   simplement `this.xxx = xxx` par propriété, des méthodes en camelCase français préfixées par
+   `est` pour les prédicats (`estElimine`, `estVisible`, `estComplet`), pas d'héritage, pas de
+   getters/setters, pas de champs privés, pas de méthode statique — rien qui ne soit pas déjà
+   montré dans ces ateliers. Restent en dehors des classes : les constantes pures qui n'ont pas de
+   comportement (`TRADUCTIONS`, `CLASSES_COULEUR_JOUEURS`...) et les quelques fonctions qui ne
+   concernent qu'un seul écran simple (gestion des écrans, affichage de fin de partie).
 
 ### Exemple de commentaire attendu
 

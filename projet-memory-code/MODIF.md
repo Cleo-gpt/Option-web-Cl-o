@@ -35,20 +35,22 @@
 - **Note obsolète dans le README** : l'ancienne section "Écarts assumés" mentionnait un curseur
   `<input type="range">` qui n'existe plus dans le code (remplacé par des boutons fixes) — déjà
   corrigée en pointant vers ce fichier à la place.
-- **Classes ES6 ajoutées (2026-09-29)** : à la demande du professeur, tout le jeu utilise maintenant
-  des classes avec `constructor` (`Carte`, `Joueur`, `Partie`), dans le style des ateliers
-  (`Meule`, `Materiel`...). C'est l'inverse d'un écart : ça rapproche le code du cours plutôt que de
-  l'en éloigner, donc ça ne va pas dans les sections ci-dessus. `etat` (l'ancien objet global) a été
-  scindé en `config` (choix du menu) et une instance de `Partie` (créée au clic sur "Valider").
+- **Classes ES6 ajoutées et étendues (2026-09-29, 2026-09-30)** : à la demande du professeur, le
+  jeu utilise au maximum des classes avec `constructor` (`Carte`, `Joueur`, `Partie`,
+  `ThemeVisuel`, `Traducteur`, `Menu`, `LivreDesRegles`), dans le style des ateliers (`Meule`,
+  `Materiel`...). C'est l'inverse d'un écart : ça rapproche le code du cours plutôt que de l'en
+  éloigner, donc ça ne va pas dans les sections ci-dessus. L'ancien objet global `etat` puis
+  `config` a été remplacé par une instance de `Menu` (config du menu) et une instance de `Partie`
+  (créée au clic sur "Valider").
 
 ## À partir de maintenant
 
 *(Se remplit à chaque demande ou idée qui va à contre-sens des ateliers ; chaque entrée est
 notifiée à l'utilisateur au moment où elle est ajoutée.)*
 
-- **Classes séparées dans leurs propres fichiers (2026-09-30)** : `Carte`, `Joueur` et `Partie`
-  vivent maintenant chacune dans `carte.js`, `joueur.js`, `partie.js` (demande explicite,
-  malgré la fusion en un seul fichier faite peu avant pour coller aux ateliers). Aucun atelier
-  ne sépare ses classes dans des fichiers distincts (`Meule`, `Billet`, etc. sont toujours dans
-  le même fichier que le reste de leur atelier) — écart assumé, la règle 2 du README a été
-  mise à jour en conséquence.
+- **Classes séparées dans leurs propres fichiers (2026-09-30)** : chaque classe vit dans son
+  propre fichier (`carte.js`, `joueur.js`, `partie.js`, puis `theme-visuel.js`, `traducteur.js`,
+  `menu.js`, `livre-des-regles.js`), demande explicite malgré la fusion en un seul fichier faite
+  peu avant pour coller aux ateliers. Aucun atelier ne sépare ses classes dans des fichiers
+  distincts (`Meule`, `Billet`, etc. sont toujours dans le même fichier que le reste de leur
+  atelier) — écart assumé, la règle 2 du README a été mise à jour en conséquence.

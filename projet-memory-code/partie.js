@@ -52,10 +52,10 @@ class Partie {
 
   // Crée les paires de cartes puis les mélange. La difficulté choisie change
   // simplement le nombre de mélanges effectués : plus il y en a, plus l'ordre
-  // final est imprévisible. Chaque carte retient le numéro de son symbole
-  // (1 à NB_SYMBOLES_PAR_THEME) : l'image affichée dépend du thème visuel
-  // choisi (voir cheminSymboleCarte() dans code.js), mais la comparaison de
-  // paires se fait sur ce numéro, indépendamment du thème.
+  // final est imprévisible. Chaque carte retient le numéro de son symbole :
+  // l'image affichée dépend du thème visuel choisi (voir
+  // ThemeVisuel.cheminSymboleCarte() dans theme-visuel.js), mais la
+  // comparaison de paires se fait sur ce numéro, indépendamment du thème.
   creerEtMelangerCartes(nbCartes, difficulte) {
     const nbPaires = nbCartes / 2;
 
@@ -144,7 +144,7 @@ class Partie {
       // du symbole (face visible) est gérée ici, une fois la carte retournée.
       const imageSymbole = document.createElement("img");
       imageSymbole.className = "image-symbole-carte";
-      imageSymbole.src = cheminSymboleCarte(this.theme, carte.numeroSymbole);
+      imageSymbole.src = THEMES_VISUELS[this.theme].cheminSymboleCarte(carte.numeroSymbole);
       imageSymbole.alt = "";
       imageSymbole.hidden = true;
       bouton.appendChild(imageSymbole);
