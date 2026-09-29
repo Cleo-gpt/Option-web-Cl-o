@@ -2,6 +2,10 @@
 
 Un jeu de Memory (paires de cartes à retrouver) jouable en local, seul contre un ordinateur ou à plusieurs sur le même écran.
 
+## Workflow avec l'agent
+
+À chaque fin de demande formulée par l'utilisateur, l'agent doit pousser (push) les changements vers le dépôt distant.
+
 ## Structure du projet
 
 ```

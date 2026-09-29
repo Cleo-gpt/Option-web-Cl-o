@@ -12,48 +12,18 @@
 </head>
 <body>
 
-  <!-- Filtres SVG du mode daltonien (voir style.css, body.daltonien), ne
-       s'affichent jamais eux-mêmes (width/height à 0) : ils ne font que
-       définir des filtres utilisés ailleurs via filter: url(#...). -->
-  <svg width="0" height="0" style="position: absolute;" aria-hidden="true">
-    <!-- Correction "Daltonize" pour la deutéranopie : décale les teintes que
-         ce type de daltonisme confond (rouge/vert) vers des teintes qu'il
-         perçoit mieux. Appliquée à #contenu-app en entier. -->
-    <filter id="daltonize-deutan" color-interpolation-filters="sRGB">
-      <feColorMatrix type="matrix" values="
-        1.00000   0.00000   0.00000  0 0
-        0.20232   0.79767   0.00000  0 0
-        0.51741  -0.51741   1.00000  0 0
-        0         0         0        1 0" />
-    </filter>
-    <!-- Inverse exacte de daltonize-deutan : appliquée sur .lumiere (voir
-         style.css), elle annule l'effet du filtre hérité de #contenu-app, pour
-         que la palette de joueurs Okabe-Ito (déjà pensée pour être
-         distinguable par un daltonien, sans transformation) ne soit pas
-         redécalée une seconde fois et dégradée par le filtre global. -->
-    <filter id="daltonize-deutan-inverse" color-interpolation-filters="sRGB">
-      <feColorMatrix type="matrix" values="
-         1.00000   0.00000   0.00000  0 0
-        -0.25364   1.25364   0.00000  0 0
-        -0.64865   0.64865   1.00000  0 0
-         0         0         0        1 0" />
-    </filter>
-  </svg>
-
   <!-- Boutons fixes en haut à droite, visibles sur tous les écrans : thème,
-       langue, daltonien, et la languette pour rouvrir le livre des règles
-       pendant la partie (tous regroupés au même endroit). -->
+       langue, et la languette pour rouvrir le livre des règles pendant la
+       partie (tous regroupés au même endroit). -->
   <div id="barre-reglages">
     <button id="bouton-theme" aria-label="Changer de thème (jour / nuit / entre-deux)">🌗</button>
     <button id="bouton-langue" aria-label="Changer de langue">Fr</button>
-    <button id="bouton-daltonien" aria-label="Activer le mode daltonien" aria-pressed="false">👁️</button>
     <button id="languette-livre" hidden aria-label="Ouvrir le livre des règles">📖</button>
   </div>
 
-  <!-- Enveloppe tous les écrans (mais pas la barre de réglages ni le livre) :
-       c'est cet élément qui reçoit le filtre du mode daltonien (voir style.css,
-       body.daltonien #contenu-app), pour ne pas casser le "position: fixed" des
-       éléments restés enfants directs de <body>. -->
+  <!-- Enveloppe tous les écrans (mais pas la barre de réglages ni le livre),
+       pour garder le fond de chaque thème séparé des éléments en
+       position: fixed. -->
   <div id="contenu-app">
 
   <!-- ===== ÉCRAN 1 : MENU DE CONFIGURATION ===== -->

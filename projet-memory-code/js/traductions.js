@@ -147,20 +147,3 @@ boutonTheme.addEventListener("click", () => {
 });
 
 appliquerClassesBody(); // thème par défaut dès le chargement de la page
-
-
-// ===================================================================
-// MODE DALTONIEN
-// Un simple bascule (on/off), indépendante du thème visuel et du mode de jeu :
-// une fois activé, reste actif quel que soit l'écran ou la configuration
-// choisie. Palette de joueurs adaptée + motifs distincts, voir style.css
-// (body.daltonien).
-// ===================================================================
-let modeDaltonienActif = false;
-
-const boutonDaltonien = document.getElementById("bouton-daltonien");
-boutonDaltonien.addEventListener("click", () => {
-  modeDaltonienActif = !modeDaltonienActif;
-  document.body.classList.toggle("daltonien", modeDaltonienActif);
-  boutonDaltonien.setAttribute("aria-pressed", String(modeDaltonienActif));
-});

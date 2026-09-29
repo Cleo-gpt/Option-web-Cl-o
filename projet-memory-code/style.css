@@ -24,92 +24,6 @@
   --degrade-accent: var(--accent);
 }
 
-/* ===================================================================
-   MODE DALTONIEN
-   Activé par le bouton 👁️ (voir js/traductions.js, appliquerClassesBody()),
-   indépendamment du thème visuel et du mode de jeu choisis. Trois effets
-   cumulés : un filtre visuel appliqué à toute la page (visible immédiatement,
-   même sur l'écran menu), une palette de joueurs choisie pour rester
-   distinguable en deutéranopie/protanopie (bleu / orange / jaune foncé /
-   violet, palette Okabe-Ito), et des motifs distincts sur les lumières des
-   joueurs, pour ne jamais dépendre de la couleur seule.
-   =================================================================== */
-
-/* Filtre global de correction "Daltonize" pour la deutéranopie (confusion
-   rouge-vert, la forme la plus répandue) : le filtre SVG #daltonize-deutan
-   (voir index.html) redistribue la composante de couleur perdue par un
-   deutéranope vers le bleu/jaune, qu'il perçoit normalement. Contrairement à
-   un simple saturate()/contrast(), ça ne fonce pas juste l'image : ça déplace
-   réellement les teintes confondues pour les rendre à nouveau distinguables.
-   Appliqué à #contenu-app plutôt qu'à body : un filtre CSS crée un nouveau
-   containing block pour ses descendants en position "fixed", ce qui décalerait
-   #barre-reglages, #livre et #languette-livre (restés hors de #contenu-app,
-   voir index.html) s'il était posé sur body. */
-body.daltonien #contenu-app {
-  filter: url(#daltonize-deutan);
-}
-
-body.daltonien {
-  --joueur-1: #0072b2; /* bleu */
-  --joueur-2: #e69f00; /* orange */
-  --joueur-3: #f0e442; /* jaune */
-  --joueur-4: #9a4dbf; /* violet */
-  --robot: #999999;    /* gris */
-}
-
-/* La palette Okabe-Ito ci-dessus est déjà pensée pour rester distinguable par
-   un daltonien SANS transformation : la repasser dans le filtre global de
-   #contenu-app la redécalerait inutilement (et pourrait la dégrader, ex: le
-   bleu #0072b2 devenait un cyan terne une fois filtré). Le filtre inverse
-   neutralise donc ici l'effet hérité du parent, pour que .lumiere garde
-   exactement ses couleurs Okabe-Ito d'origine. */
-body.daltonien .lumiere {
-  filter: url(#daltonize-deutan-inverse);
-}
-
-/* Motif distinct par joueur, en plus de la couleur : cercle plein / carré /
-   triangle / losange. Le motif est un pseudo-élément blanc semi-transparent
-   par-dessus la lumière, visible quelle que soit sa couleur de fond. */
-body.daltonien .lumiere.allumee::after {
-  content: "";
-  display: block;
-  width: 60%;
-  height: 60%;
-  margin: 20% auto;
-  background-color: rgba(255, 255, 255, 0.85);
-}
-
-body.daltonien .joueur-1 .lumiere.allumee::after { border-radius: 50%; } /* rond */
-body.daltonien .joueur-2 .lumiere.allumee::after { border-radius: 0; }   /* carré */
-body.daltonien .joueur-3 .lumiere.allumee::after {
-  width: 0; height: 0; margin: 22% auto;
-  background: none;
-  border-left: 5px solid transparent;
-  border-right: 5px solid transparent;
-  border-bottom: 8px solid rgba(255, 255, 255, 0.85);
-} /* triangle */
-body.daltonien .joueur-4 .lumiere.allumee::after {
-  border-radius: 0;
-  transform: rotate(45deg);
-} /* losange */
-body.daltonien .joueur-robot .lumiere.allumee::after {
-  border-radius: 50%;
-  width: 40%;
-  height: 40%;
-} /* petit rond, distinct du joueur 1 */
-
-/* Carte trouvée : un repère "✓" en plus de la bordure de couleur, pour ne pas
-   dépendre uniquement de border-color: var(--joueur-2) (vert). */
-body.daltonien .carte.trouvee::after {
-  content: "✓";
-  position: absolute;
-  top: 2px;
-  right: 4px;
-  font-size: 0.9rem;
-  font-weight: bold;
-  color: var(--joueur-2);
-}
-
 body {
   background: var(--fond);
   color: var(--texte);
@@ -118,10 +32,8 @@ body {
 }
 
 /* Le fond et le padding vivent sur #contenu-app plutôt que directement sur
-   body : le mode daltonien applique son filtre de correction des couleurs à
-   #contenu-app (voir plus bas, body.daltonien #contenu-app), donc tout ce qui
-   doit être corrigé — y compris le fond coloré de chaque thème — doit être
-   peint à l'intérieur de cet élément, pas sur body lui-même.
+   body, qui ne garde que la barre de réglages et le livre des règles (voir
+   index.html) hors de cette zone.
    "background" (et pas "background-color") : --fond est une simple couleur
    pour la plupart des thèmes, mais un linear-gradient() pour "Communauté
    engagée" (voir plus bas) — background-color n'accepterait pas un dégradé. */
@@ -543,7 +455,7 @@ body.theme-communaute .bouton-choix:hover {
   background-color: var(--cuir-clair);
 }
 
-/* ===== Barre de réglages (thème, langue, daltonien, livre) ===== */
+/* ===== Barre de réglages (thème, langue, livre) ===== */
 /* Fixée en haut à droite, tous les boutons ronds regroupés au même endroit,
    visible sur tous les écrans. */
 #barre-reglages {
@@ -557,7 +469,6 @@ body.theme-communaute .bouton-choix:hover {
 
 #bouton-theme,
 #bouton-langue,
-#bouton-daltonien,
 #languette-livre {
   width: 52px;
   height: 52px;
@@ -575,7 +486,6 @@ body.theme-communaute .bouton-choix:hover {
 
 #bouton-theme:hover,
 #bouton-langue:hover,
-#bouton-daltonien:hover,
 #languette-livre:hover {
   background-color: var(--cuir-clair);
 }
@@ -587,12 +497,6 @@ body.theme-communaute .bouton-choix:hover {
 
 #languette-livre {
   font-size: 1.5rem;
-}
-
-/* Le bouton daltonien reste mis en évidence (halo) une fois activé. */
-#bouton-daltonien[aria-pressed="true"] {
-  border-color: var(--accent);
-  box-shadow: 0 0 8px 2px var(--accent);
 }
 
 /* ===== Écran de jeu ===== */
