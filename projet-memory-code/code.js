@@ -56,11 +56,19 @@ const EXTENSION_PAR_DEFAUT_PAR_THEME = {
   youtube: "svg",
 };
 
-// Le thème "mediamatique" a un seul symbole qui fait exception à ".png" : le
-// symbole 11 (logo PhpMyAdmin), fourni en ".svg". Liste plate, un numéro de
-// symbole par ligne, plutôt qu'un objet imbriqué.
-const EXTENSIONS_SYMBOLES_MEDIAMATIQUE = [
-  { numeroSymbole: 11, extension: "svg" },
+// Certains symboles ont une extension différente de celle par défaut de leur
+// thème (des vraies images fournies au fur et à mesure, dans le format où
+// elles ont été trouvées, plutôt que les placeholders ".svg" d'origine).
+// Liste plate {theme, numeroSymbole, extension}, une ligne par exception.
+const EXCEPTIONS_EXTENSION_SYMBOLE = [
+  { theme: "mediamatique", numeroSymbole: 11, extension: "svg" }, // logo PhpMyAdmin
+  { theme: "anime", numeroSymbole: 1, extension: "png" },
+  { theme: "communaute", numeroSymbole: 1, extension: "jpg" },
+  { theme: "communaute", numeroSymbole: 2, extension: "jpg" },
+  { theme: "communaute", numeroSymbole: 3, extension: "png" },
+  { theme: "communaute", numeroSymbole: 4, extension: "jpg" },
+  { theme: "communaute", numeroSymbole: 5, extension: "jpg" },
+  { theme: "communaute", numeroSymbole: 6, extension: "jpg" },
 ];
 
 // Chemin de l'image de dos (face cachée, identique pour toutes les cartes d'un thème).
@@ -68,14 +76,13 @@ function cheminDosCarte(theme) {
   return `images/themes/${theme}/dos.svg`;
 }
 
-// Cherche une extension spéciale pour ce symbole dans la liste d'exceptions du
-// thème "mediamatique" ; renvoie null si aucune exception ne le concerne.
+// Cherche une extension spéciale pour ce symbole de ce thème dans la liste
+// d'exceptions ; renvoie null si aucune exception ne le concerne.
 function chercherExtensionException(theme, numeroSymbole) {
-  if (theme !== "mediamatique") return null;
-
-  for (let i = 0; i < EXTENSIONS_SYMBOLES_MEDIAMATIQUE.length; i++) {
-    if (EXTENSIONS_SYMBOLES_MEDIAMATIQUE[i].numeroSymbole === numeroSymbole) {
-      return EXTENSIONS_SYMBOLES_MEDIAMATIQUE[i].extension;
+  for (let i = 0; i < EXCEPTIONS_EXTENSION_SYMBOLE.length; i++) {
+    const exception = EXCEPTIONS_EXTENSION_SYMBOLE[i];
+    if (exception.theme === theme && exception.numeroSymbole === numeroSymbole) {
+      return exception.extension;
     }
   }
   return null;
