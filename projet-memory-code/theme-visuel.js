@@ -61,6 +61,10 @@ THEMES_VISUELS.mediamatique.ajouterException(11, "svg"); // logo PhpMyAdmin
 
 THEMES_VISUELS.anime.ajouterException(1, "png");
 
+for (let numero = 1; numero <= 16; numero++) {
+  THEMES_VISUELS.japon.ajouterException(numero, "jpeg");
+}
+
 THEMES_VISUELS.communaute.ajouterException(1, "jpg");
 THEMES_VISUELS.communaute.ajouterException(2, "jpg");
 THEMES_VISUELS.communaute.ajouterException(3, "png");
