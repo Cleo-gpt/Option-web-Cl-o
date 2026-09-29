@@ -6,6 +6,8 @@ Un jeu de Memory (paires de cartes à retrouver) jouable en local, seul contre u
 
 À chaque fin de demande formulée par l'utilisateur, l'agent doit pousser (push) les changements vers le dépôt distant.
 
+Quand [MODIF.md](MODIF.md) reçoit une nouvelle entrée, l'agent doit le signaler à l'utilisateur et lui montrer le fichier.
+
 ## Structure du projet
 
 ```
@@ -90,17 +92,9 @@ Une fois la configuration validée, un livre de règles s'affiche avant de déma
 - Fond du jeu : **anthracite**.
 - Chaque joueur est identifiable par sa couleur (lumière + éventuellement bordure de son tour).
 
-## Écarts assumés avec les ateliers
+## Écarts avec les ateliers
 
-Le projet suit la règle 8 (se baser sur les ateliers) autant que possible : emoji plutôt que
-dessin SVG, classe CSS simple (`document.body.className`) plutôt qu'attribut `data-*` pour le
-thème. Trois points restent au-delà de ce que les ateliers enseignent, gardés volontairement :
-
-- **Le curseur `<input type="range">`** pour le nombre de cartes au-delà de 24 : aucun atelier
-  ne l'utilise, mais il reste très simple (une balise, un seul `addEventListener`) et évite
-  d'empiler des boutons pour chaque multiple de 4 jusqu'à 120.
-- **Les variables CSS** (`:root { --x: ...; }`) : demandées explicitement par la règle 7
-  ci-dessus, alors qu'aucun atelier n'utilise cette technique.
-- **Le sélecteur de langue** (Fr/All/Ang) : aucun atelier ne couvre la traduction de texte ;
-  le dictionnaire `TRADUCTIONS` et l'attribut `data-traduire` restent le moyen le plus simple
-  trouvé pour éviter de dupliquer chaque texte trois fois dans le code.
+Le détail des écarts entre le code de ce projet et les notions/techniques enseignées dans les
+ateliers du cours (règle 8 ci-dessus) est suivi dans [MODIF.md](MODIF.md), pas ici : la liste a
+grandi au fil du projet et un fichier dédié reste plus facile à tenir à jour qu'une section de
+README.

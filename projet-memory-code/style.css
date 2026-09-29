@@ -109,7 +109,7 @@ body.theme-anime {
   --fond: #170f2e;
   --fond-carte: #241a42;
   --texte: #eee6ff;
-  --accent: #4fd3ff; /* remplacé en JS, voir plus haut */
+  --accent: #4fd3ff; /* teinte par défaut, remplacée par une classe accent-anime-N (voir plus bas) */
   --accent-texte: #071824;
   --police-texte: "Baloo 2", sans-serif;
   --police-titres: "Baloo 2", sans-serif;
@@ -133,6 +133,15 @@ body.theme-anime.theme-jour {
   --fond-carte: #dcd0f5;
   --texte: #170f2e;
 }
+
+/* Une classe par teinte possible : posée/retirée par choisirAccentAnimeAuHasard()
+   dans js/menu.js (via classList), à chaque sélection du thème "Animé". */
+body.theme-anime.accent-anime-1 { --accent: #4fd3ff; }
+body.theme-anime.accent-anime-2 { --accent: #6bffb0; }
+body.theme-anime.accent-anime-3 { --accent: #ffe14d; }
+body.theme-anime.accent-anime-4 { --accent: #ff9142; }
+body.theme-anime.accent-anime-5 { --accent: #b06bff; }
+body.theme-anime.accent-anime-6 { --accent: #ff4f9a; }
 
 /* ----- Thème "Japon" -----
    Teintes sakura : rose cerisier, gris ardoise doux, blanc papier washi. */
@@ -636,13 +645,13 @@ body.theme-communaute .bouton-choix:hover {
 .ligne-stat-fin.joueur-4 .lumiere { background-color: var(--joueur-4); color: var(--joueur-4); }
 .ligne-stat-fin.joueur-robot .lumiere { background-color: var(--robot); color: var(--robot); }
 
-/* Grille de cartes : le nombre de colonnes est calculé en JS (voir
-   calculerNbColonnesGrille() dans affichage.js) pour former un carré, quel
-   que soit le nombre de cartes. */
+/* Grille de cartes : les cartes s'enchaînent et reviennent à la ligne toutes
+   seules dès que la largeur disponible est dépassée. */
 #grille-cartes {
-  display: grid;
+  display: flex;
+  flex-wrap: wrap;
   gap: 0.6rem;
-  justify-content: center;
+  max-width: 900px; /* revient à la ligne toute seule, pas de calcul de colonnes */
 }
 
 .carte {
