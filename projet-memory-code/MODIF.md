@@ -35,6 +35,11 @@
 - **Note obsolète dans le README** : l'ancienne section "Écarts assumés" mentionnait un curseur
   `<input type="range">` qui n'existe plus dans le code (remplacé par des boutons fixes) — déjà
   corrigée en pointant vers ce fichier à la place.
+- **Classes ES6 ajoutées (2026-09-29)** : à la demande du professeur, tout le jeu utilise maintenant
+  des classes avec `constructor` (`Carte`, `Joueur`, `Partie`), dans le style des ateliers
+  (`Meule`, `Materiel`...). C'est l'inverse d'un écart : ça rapproche le code du cours plutôt que de
+  l'en éloigner, donc ça ne va pas dans les sections ci-dessus. `etat` (l'ancien objet global) a été
+  scindé en `config` (choix du menu) et une instance de `Partie` (créée au clic sur "Valider").
 
 ## À partir de maintenant
 

@@ -29,9 +29,17 @@ Ces règles servent à garder le projet simple et lisible, même en avançant pe
 3. **Noms en français.** Variables, fonctions et commentaires sont écrits en français, comme dans le reste du dépôt (ex: `joueurs`, `cartesRetournees`, `melangerCartes()`).
 4. **Un commentaire par bloc de logique.** Chaque paragraphe de code un peu complexe (une fonction, une condition importante) doit avoir un court commentaire au-dessus qui explique **à quoi il sert**, pas comment JavaScript fonctionne. Voir l'exemple ci-dessous.
 5. **Pas de code mort ni de fonctionnalité inutilisée.** Si une règle du jeu n'est pas demandée (ex: sauvegarde en ligne, comptes utilisateurs), on ne l'ajoute pas "au cas où".
-6. **État du jeu centralisé.** Une seule structure (`etat`) contient l'état courant (scène active, joueurs, cartes, tour actuel...) pour toujours savoir "où on en est" en lisant un seul endroit.
+6. **État du jeu centralisé.** La configuration du menu (`config`) et la partie en cours
+   (`partieActuelle`, une instance de `Partie`) sont chacune un seul endroit à lire pour savoir
+   "où on en est" — pas de duplication de ces informations ailleurs dans le code.
 7. **CSS avec variables.** Les couleurs (dont les couleurs des joueurs et le fond anthracite) sont définies une fois via des variables CSS (`:root { --bleu: ...; }`) et réutilisées, pas recopiées partout.
 8. **Se baser sur les ateliers du cours.** Avant toute modification de ce projet, parcourir les PDF "Atelier" des dossiers `01-planetes`, `02-orbit`, `03-donnees-nues`, `06-deux-langages`, `08-json`, `One_button` et `watt` (à la racine du dépôt). Le code écrit ici doit s'appuyer uniquement sur les notions, techniques et façons de faire présentes dans ces ateliers — pas de notion, de méthode ou d'API absente de ces documents, même si elle serait plus simple ou plus idiomatique autrement.
+9. **Classes ES6 pour les objets du jeu.** `Carte`, `Joueur` et `Partie` sont des classes avec
+   `constructor` et méthodes, dans le style vu dans les ateliers (`Planete`, `Meule`, `Billet`,
+   `Materiel`) : un constructeur qui affecte simplement `this.xxx = xxx` par propriété, des
+   méthodes en camelCase français préfixées par `est` pour les prédicats (`estElimine`,
+   `estVisible`), pas d'héritage, pas de getters/setters, pas de champs privés — rien qui ne soit
+   pas déjà montré dans ces ateliers.
 
 ### Exemple de commentaire attendu
 

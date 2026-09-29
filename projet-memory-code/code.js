@@ -2,16 +2,16 @@
 // MEMORY MULTIJOUEUR — LOGIQUE DU JEU
 // Sommaire (dans l'ordre où le code apparaît ci-dessous) :
 //   1. Thèmes visuels (données : liste, symboles, chemins d'images)
-//   2. État du jeu (structure centrale + constantes)
+//   2. Constantes du jeu + configuration choisie dans le menu
 //   3. Éléments HTML (récupérés une fois pour toutes)
 //   4. Traductions (dictionnaire FR/DE/EN + thème jour/nuit)
 //   5. Menu de configuration
 //   6. Livre des règles
-//   7. Préparation de la partie (joueurs, cartes, mélange)
-//   8. Affichage (joueurs, cartes)
-//   9. IA du robot (mode "contre l'ordinateur")
-//  10. Tour de jeu (choix des cartes, vérification des paires)
-//  11. Chronomètre et pause
+//   7. Classe Carte
+//   8. Classe Joueur
+//   9. Classe Partie (cartes, joueurs, tour actuel, chrono)
+//  10. Affichage (joueurs, cartes)
+//  11. IA du robot (mode "contre l'ordinateur")
 //  12. Fin de partie et statistiques
 // ===================================================================
 
@@ -35,7 +35,7 @@ const THEME_PAR_DEFAUT = "medieval";
 // Nombre de symboles (= paires max) disponibles par thème. La plupart ont 36
 // placeholders (de quoi couvrir les 72 cartes proposées dans le menu) ; le
 // thème "mediamatique" n'a que 20 vraies images, donc son nombre de cartes
-// max dans le menu est limité en conséquence (voir js/menu.js).
+// max dans le menu est limité en conséquence (voir mettreAJourLimiteCartes()).
 const NB_SYMBOLES_PAR_THEME = {
   anime: 36,
   japon: 36,
@@ -91,25 +91,26 @@ function cheminSymboleCarte(theme, numeroSymbole) {
 
 
 // ===================================================================
-// ÉTAT DU JEU
-// Une seule structure centralise tout ce qu'il faut savoir sur la partie en cours :
-// la configuration choisie dans le menu, les cartes, les joueurs et le tour actuel.
+// CONSTANTES DU JEU + CONFIGURATION CHOISIE DANS LE MENU
+// "scene" et "config" existent même avant qu'une partie ne commence (elles
+// pilotent le menu) ; "partieActuelle" ne prend vie qu'au clic sur "Valider"
+// (voir la classe Partie plus bas et boutonValiderMenu.addEventListener()).
 // ===================================================================
-const etat = {
-  scene: "menu",       // "menu" | "jeu" | "fin"
-  mode: null,           // "ordinateur" | "multi"
-  nbJoueurs: 1,          // nombre de joueurs humains (1 si contre l'ordinateur)
+let scene = "menu"; // "menu" | "jeu" | "fin"
+
+// La configuration choisie dans le menu, avant qu'une partie n'existe.
+const config = {
+  mode: null,           // "solo" | "ordinateur" | "multi"
+  nbJoueurs: 1,          // nombre de joueurs humains (1 si solo ou contre l'ordinateur)
   difficulteOrdi: null,  // "naze" | "moyen" | "fort" (uniquement en mode "ordinateur")
   theme: THEME_PAR_DEFAUT, // voir THEMES_VISUELS plus haut
   nbCartes: 16,          // toujours un multiple de 4
   difficulte: "facile",  // "facile" | "moyen" | "difficile"
-  cartes: [],            // toutes les cartes de la grille
-  joueurs: [],           // liste des joueurs (humains + robot éventuel)
-  joueurActuelIndex: 0,
-  cartesRetournees: [],  // les 0, 1 ou 2 cartes actuellement retournées par le joueur en cours
-  paireEnAttente: false, // true pendant la petite pause où on affiche 2 cartes qui ne correspondent pas
-  enPause: false,         // true pendant que le livre est rouvert en cours de partie
 };
+
+// Une seule partie active à la fois : créée au clic sur "Valider" (voir plus
+// bas), remplacée par une nouvelle instance à chaque nouvelle partie.
+let partieActuelle = null;
 
 // Couleurs des lumières, dans l'ordre des joueurs (voir style.css)
 const CLASSES_COULEUR_JOUEURS = ["joueur-1", "joueur-2", "joueur-3", "joueur-4"];
@@ -117,9 +118,6 @@ const CLES_TRADUCTION_COULEURS = ["couleur-bleu", "couleur-vert", "couleur-rose"
 
 const COEURS_DEPART = 10;
 const TEMPS_TOUR = 45; // secondes laissées à chaque joueur pour retourner 2 cartes
-
-// Les symboles des cartes (dos + images de paires) dépendent du thème visuel
-// choisi dans le menu : voir la section THÈMES VISUELS plus haut.
 
 
 // ===================================================================
@@ -254,11 +252,11 @@ function appliquerLangue() {
   // Retraduit aussi les textes générés dynamiquement en JS, mais seulement
   // s'ils sont déjà affichés (une partie n'a pas forcément commencé).
   mettreAJourRecapMenu();
-  if (etat.joueurs.length > 0) {
-    afficherJoueurs();
-    allumerLumiereJoueurActuel();
+  if (partieActuelle !== null) {
+    partieActuelle.afficherJoueurs();
+    partieActuelle.allumerLumiereJoueurActuel();
   }
-  if (etat.scene === "fin") {
+  if (scene === "fin") {
     afficherResultatFin();
     afficherStatistiquesFin();
   }
@@ -275,22 +273,22 @@ boutonLangue.addEventListener("click", () => {
 // ===================================================================
 // BARRE DE RÉGLAGES : LUMINOSITÉ JOUR / NUIT / ENTRE-DEUX
 // Cycle entre 3 niveaux de luminosité, combinés au thème visuel choisi dans le
-// menu (voir js/menu.js) : <body> porte donc 2 classes en même temps, par
-// exemple "theme-japon theme-jour". Les couleurs de chaque combinaison sont
-// définies en CSS (voir style.css, body.theme-<visuel>.theme-<luminosite>).
+// menu : <body> porte donc 2 classes en même temps, par exemple
+// "theme-japon theme-jour". Les couleurs de chaque combinaison sont définies
+// en CSS (voir style.css, body.theme-<visuel>.theme-<luminosite>).
 // "nuit" est la luminosité par défaut (pas de classe de luminosité).
 // ===================================================================
 const LUMINOSITES = ["nuit", "crepuscule", "jour"];
 let luminositeActuelleIndex = 0;
 
-// Applique sur <body> la classe du thème visuel choisi (etat.theme) et celle
-// de la luminosité actuelle, sans effacer l'autre (contrairement à une simple
-// affectation de body.className).
+// Applique sur <body> la classe du thème visuel choisi (config.theme) et
+// celle de la luminosité actuelle, sans effacer l'autre (contrairement à une
+// simple affectation de body.className).
 function appliquerClassesBody() {
   LUMINOSITES.forEach((luminosite) => document.body.classList.remove(`theme-${luminosite}`));
   THEMES_VISUELS.forEach((theme) => document.body.classList.remove(`theme-${theme}`));
 
-  document.body.classList.add(`theme-${etat.theme}`);
+  document.body.classList.add(`theme-${config.theme}`);
   const luminosite = LUMINOSITES[luminositeActuelleIndex];
   if (luminosite !== "nuit") {
     document.body.classList.add(`theme-${luminosite}`);
@@ -310,7 +308,7 @@ appliquerClassesBody(); // thème par défaut dès le chargement de la page
 // ÉCRAN 1 : MENU DE CONFIGURATION
 // Chaque groupe de boutons (thème, mode, joueurs, cartes, difficulté)
 // fonctionne pareil : un clic sélectionne le bouton, désélectionne les autres
-// du même groupe, et enregistre le choix dans "etat".
+// du même groupe, et enregistre le choix dans "config".
 // ===================================================================
 
 // Le thème "Animé / Pop culture" représente plusieurs univers à la fois : sa
@@ -338,9 +336,9 @@ boutonsTheme.forEach((bouton) => {
     boutonsTheme.forEach((b) => b.classList.remove("selectionne"));
     bouton.classList.add("selectionne");
 
-    etat.theme = bouton.dataset.theme;
+    config.theme = bouton.dataset.theme;
     appliquerClassesBody();
-    if (etat.theme === "anime") {
+    if (config.theme === "anime") {
       choisirAccentAnimeAuHasard();
     }
     mettreAJourLimiteCartes();
@@ -354,7 +352,7 @@ boutonsTheme.forEach((bouton) => {
 // déjà choisi n'est plus disponible pour le nouveau thème, on désélectionne
 // ce bouton (le joueur doit en choisir un autre valide).
 function mettreAJourLimiteCartes() {
-  const nbCartesMax = NB_SYMBOLES_PAR_THEME[etat.theme] * 2;
+  const nbCartesMax = NB_SYMBOLES_PAR_THEME[config.theme] * 2;
 
   document.querySelectorAll("[data-cartes]").forEach((bouton) => {
     const nbCartesBouton = Number(bouton.dataset.cartes);
@@ -363,7 +361,7 @@ function mettreAJourLimiteCartes() {
 
     if (!disponible && bouton.classList.contains("selectionne")) {
       bouton.classList.remove("selectionne");
-      etat.nbCartes = null;
+      config.nbCartes = null;
     }
   });
 }
@@ -378,15 +376,15 @@ boutonsMode.forEach((bouton) => {
     boutonsMode.forEach((b) => b.classList.remove("selectionne"));
     bouton.classList.add("selectionne");
 
-    etat.mode = bouton.dataset.mode;
-    blocNbJoueurs.hidden = etat.mode !== "multi";
-    blocDifficulteOrdi.hidden = etat.mode !== "ordinateur";
+    config.mode = bouton.dataset.mode;
+    blocNbJoueurs.hidden = config.mode !== "multi";
+    blocDifficulteOrdi.hidden = config.mode !== "ordinateur";
 
-    if (etat.mode !== "multi") {
-      etat.nbJoueurs = 1; // solo ou contre l'ordinateur : un seul joueur humain
+    if (config.mode !== "multi") {
+      config.nbJoueurs = 1; // solo ou contre l'ordinateur : un seul joueur humain
     }
-    if (etat.mode !== "ordinateur") {
-      etat.difficulteOrdi = null;
+    if (config.mode !== "ordinateur") {
+      config.difficulteOrdi = null;
     }
     mettreAJourRecapMenu();
   });
@@ -398,7 +396,7 @@ boutonsJoueurs.forEach((bouton) => {
     boutonsJoueurs.forEach((b) => b.classList.remove("selectionne"));
     bouton.classList.add("selectionne");
 
-    etat.nbJoueurs = Number(bouton.dataset.joueurs);
+    config.nbJoueurs = Number(bouton.dataset.joueurs);
     mettreAJourRecapMenu();
   });
 });
@@ -409,7 +407,7 @@ boutonsDifficulteOrdi.forEach((bouton) => {
     boutonsDifficulteOrdi.forEach((b) => b.classList.remove("selectionne"));
     bouton.classList.add("selectionne");
 
-    etat.difficulteOrdi = bouton.dataset.difficulteOrdi;
+    config.difficulteOrdi = bouton.dataset.difficulteOrdi;
     mettreAJourRecapMenu();
   });
 });
@@ -421,7 +419,7 @@ boutonsCartes.forEach((bouton) => {
     boutonsCartes.forEach((b) => b.classList.remove("selectionne"));
     bouton.classList.add("selectionne");
 
-    etat.nbCartes = Number(bouton.dataset.cartes);
+    config.nbCartes = Number(bouton.dataset.cartes);
     mettreAJourRecapMenu();
   });
 });
@@ -432,7 +430,7 @@ boutonsDifficulte.forEach((bouton) => {
     boutonsDifficulte.forEach((b) => b.classList.remove("selectionne"));
     bouton.classList.add("selectionne");
 
-    etat.difficulte = bouton.dataset.difficulte;
+    config.difficulte = bouton.dataset.difficulte;
     mettreAJourRecapMenu();
   });
 });
@@ -442,9 +440,9 @@ boutonsDifficulte.forEach((bouton) => {
 // nombre de cartes, difficulté du mélange). Sert à la fois pour activer/désactiver
 // le bouton et comme sécurité au moment du clic.
 function configurationComplete() {
-  const modeChoisi = etat.mode !== null;
-  const nbJoueursOk = etat.mode !== "multi" || document.querySelector("[data-joueurs].selectionne") !== null;
-  const difficulteOrdiOk = etat.mode !== "ordinateur" || document.querySelector("[data-difficulte-ordi].selectionne") !== null;
+  const modeChoisi = config.mode !== null;
+  const nbJoueursOk = config.mode !== "multi" || document.querySelector("[data-joueurs].selectionne") !== null;
+  const difficulteOrdiOk = config.mode !== "ordinateur" || document.querySelector("[data-difficulte-ordi].selectionne") !== null;
   const cartesChoisies = document.querySelector("[data-cartes].selectionne") !== null;
   const difficulteChoisie = document.querySelector("[data-difficulte].selectionne") !== null;
 
@@ -459,20 +457,20 @@ function mettreAJourRecapMenu() {
 
   if (pret) {
     let texteMode;
-    if (etat.mode === "multi") {
-      texteMode = `${etat.nbJoueurs} ${t("joueurs-mot")}`;
-    } else if (etat.mode === "ordinateur") {
-      texteMode = `${t("contre-ordinateur")} (${t("ordi-" + etat.difficulteOrdi).toLowerCase()})`;
+    if (config.mode === "multi") {
+      texteMode = `${config.nbJoueurs} ${t("joueurs-mot")}`;
+    } else if (config.mode === "ordinateur") {
+      texteMode = `${t("contre-ordinateur")} (${t("ordi-" + config.difficulteOrdi).toLowerCase()})`;
     } else {
       texteMode = t("mode-solo");
     }
-    recapMenu.textContent = `${t("theme-" + etat.theme)} · ${texteMode} · ${etat.nbCartes} ${t("cartes-mot")} · ${t("difficulte-mot")} ${t(etat.difficulte).toLowerCase()}`;
+    recapMenu.textContent = `${t("theme-" + config.theme)} · ${texteMode} · ${config.nbCartes} ${t("cartes-mot")} · ${t("difficulte-mot")} ${t(config.difficulte).toLowerCase()}`;
   } else {
     recapMenu.textContent = "";
   }
 }
 
-// Une fois la configuration validée, on prépare la partie (cartes, joueurs) et
+// Une fois la configuration validée, on crée la partie (cartes, joueurs) et
 // on ouvre directement le livre fermé sur sa page de garde, avant que le plateau
 // ne soit révélé.
 // La vérification est refaite ici (en plus du bouton désactivé) : une sécurité
@@ -480,7 +478,7 @@ function mettreAJourRecapMenu() {
 boutonValiderMenu.addEventListener("click", () => {
   if (!configurationComplete()) return;
 
-  preparerPartie();
+  partieActuelle = new Partie(config.mode, config.nbJoueurs, config.difficulteOrdi, config.theme, config.nbCartes, config.difficulte);
   changerEcran("jeu");
   ouvrirLivrePremierAcces();
 });
@@ -496,7 +494,7 @@ mettreAJourRecapMenu();
 // Affiche l'écran demandé et cache tous les autres, pour n'en montrer qu'un à la fois.
 // ===================================================================
 function changerEcran(nom) {
-  etat.scene = nom;
+  scene = nom;
   ecranMenu.hidden = nom !== "menu";
   ecranJeu.hidden = nom !== "jeu";
   ecranFin.hidden = nom !== "fin";
@@ -524,7 +522,7 @@ function ouvrirLivrePremierAcces() {
 // pas besoin de reposer la question "voulez-vous lire les règles ?".
 function ouvrirLivreEnPause() {
   livrePremierAcces = false;
-  mettreEnPause();
+  partieActuelle.mettreEnPause();
   afficherPage(pageRegles);
   boutonLancerPartie.textContent = t("relancer-partie");
   livre.classList.remove("livre-ferme");
@@ -577,10 +575,10 @@ function fermerLivreEtLancerPartie() {
   languetteLivre.hidden = false;
 
   if (livrePremierAcces) {
-    demarrerPartie();
+    partieActuelle.demarrerTour();
     livrePremierAcces = false;
   } else {
-    reprendrePartie();
+    partieActuelle.reprendre();
   }
 }
 
@@ -591,535 +589,575 @@ languetteLivre.addEventListener("click", () => {
 
 
 // ===================================================================
-// PRÉPARATION DE LA PARTIE
-// Crée les joueurs, mélange les cartes et affiche le plateau de jeu, mais sans
-// démarrer le chrono ni le tour : le plateau reste caché derrière le livre
-// jusqu'à ce que le joueur ait répondu à la question des règles.
+// CLASSE CARTE
+// Une carte de la grille : son identifiant, le symbole qu'elle porte (deux
+// cartes partagent le même numeroSymbole = une paire), et si elle est
+// actuellement retournée ou déjà trouvée.
 // ===================================================================
-function preparerPartie() {
-  creerJoueurs();
-  etat.cartes = creerEtMelangerCartes(etat.nbCartes, etat.difficulte);
-  etat.joueurActuelIndex = 0;
-  etat.cartesRetournees = [];
-  chronoDemarre = false;
-  chronoAffichage.textContent = "00:00";
-  reinitialiserMemoireRobot();
-
-  afficherJoueurs();
-  afficherCartes();
-}
-
-// Démarre réellement la partie (le tour), une fois le livre refermé.
-// Le chrono, lui, ne démarre qu'au premier clic sur une carte (voir choisirCarte()).
-function demarrerPartie() {
-  demarrerTour();
-}
-
-// Construit la liste des joueurs : des humains, puis un robot si le mode "ordinateur" est choisi.
-function creerJoueurs() {
-  etat.joueurs = [];
-
-  for (let i = 0; i < etat.nbJoueurs; i++) {
-    etat.joueurs.push({
-      numero: i + 1,          // le nom affiché ("Joueur 1", "Player 1"...) est composé avec t() à l'affichage
-      classeCouleur: CLASSES_COULEUR_JOUEURS[i],
-      coeurs: COEURS_DEPART,
-      estRobot: false,
-      pairesTrouvees: 0,      // pour les statistiques affichées à la fin de la partie
-      sommeTempsPaires: 0,    // somme des secondes mises à trouver chaque paire (pour la moyenne)
-      sommeTempsReflexion: 0, // somme des secondes entre le 1er et le 2e clic de chaque tour joué
-      nbToursJoues: 0,        // nombre de tours où les 2 cartes ont été retournées (pour la moyenne de réflexion)
-      erreurs: 0,             // nombre de paires ratées, utilisé par l'IA pour évaluer le niveau du joueur humain
-    });
+class Carte {
+  constructor(id, numeroSymbole) {
+    this.id = id;
+    this.numeroSymbole = numeroSymbole;
+    this.retournee = false;
+    this.trouvee = false;
   }
 
-  if (etat.mode === "ordinateur") {
-    etat.joueurs.push({
-      numero: null,
-      classeCouleur: "joueur-robot",
-      coeurs: COEURS_DEPART,
-      estRobot: true,
-      pairesTrouvees: 0,
-      sommeTempsPaires: 0,
-      sommeTempsReflexion: 0,
-      nbToursJoues: 0,
-      erreurs: 0,
-    });
+  // Deux cartes forment une paire si elles portent le même symbole.
+  estUnePaireAvec(autreCarte) {
+    return this.numeroSymbole === autreCarte.numeroSymbole;
+  }
+
+  retourner() {
+    this.retournee = true;
+  }
+
+  cacher() {
+    this.retournee = false;
+  }
+
+  marquerTrouvee() {
+    this.trouvee = true;
+  }
+
+  // Une carte est visible (son symbole se voit) si elle est retournée ou déjà trouvée.
+  estVisible() {
+    return this.retournee || this.trouvee;
   }
 }
 
-// Le nom affiché d'un joueur ("Joueur 1" / "Spieler 1" / "Player 1", ou le nom
-// de l'ordinateur), toujours recalculé dans la langue actuelle.
-function nomJoueur(joueur) {
-  return joueur.estRobot ? t("ordinateur-mot") : `${t("joueur-mot")} ${joueur.numero}`;
+
+// ===================================================================
+// CLASSE JOUEUR
+// Un joueur humain ou le robot : ses coeurs, sa couleur, et les statistiques
+// accumulées pendant la partie (paires trouvées, temps de réflexion, erreurs).
+// ===================================================================
+class Joueur {
+  constructor(numero, classeCouleur, estRobot) {
+    this.numero = numero;             // le nom affiché ("Joueur 1"...) est composé avec nomAffiche()
+    this.classeCouleur = classeCouleur;
+    this.estRobot = estRobot;
+    this.coeurs = COEURS_DEPART;
+    this.pairesTrouvees = 0;          // pour les statistiques affichées à la fin de la partie
+    this.sommeTempsPaires = 0;        // somme des secondes mises à trouver chaque paire (pour la moyenne)
+    this.sommeTempsReflexion = 0;     // somme des secondes entre le 1er et le 2e clic de chaque tour joué
+    this.nbToursJoues = 0;            // nombre de tours où les 2 cartes ont été retournées (pour la moyenne de réflexion)
+    this.erreurs = 0;                 // nombre de paires ratées, utilisé par l'IA pour évaluer le niveau du joueur humain
+  }
+
+  // Le nom affiché ("Joueur 1" / "Spieler 1" / "Player 1", ou le nom de
+  // l'ordinateur), toujours recalculé dans la langue actuelle.
+  nomAffiche() {
+    return this.estRobot ? t("ordinateur-mot") : `${t("joueur-mot")} ${this.numero}`;
+  }
+
+  estElimine() {
+    return this.coeurs <= 0;
+  }
+
+  gagnerCoeur() {
+    this.coeurs += 1;
+  }
+
+  // Fait perdre un coeur, sans jamais descendre sous 0.
+  perdreCoeur() {
+    this.coeurs = Math.max(0, this.coeurs - 1);
+    this.erreurs += 1;
+  }
+
+  // Une paire de plus, et le temps mis pour la trouver (donné par l'appelant,
+  // qui connaît le chrono de la partie) vient allonger la moyenne.
+  gagnerPaire(secondesDepuisDebutTour) {
+    this.pairesTrouvees += 1;
+    this.sommeTempsPaires += secondesDepuisDebutTour;
+  }
+
+  // Ajoute une mesure de temps de réflexion (entre le 1er et le 2e clic),
+  // utilisée pour calculer sa moyenne à l'écran de fin.
+  enregistrerTempsReflexion(secondes) {
+    this.sommeTempsReflexion += secondes;
+    this.nbToursJoues += 1;
+  }
 }
 
-// Crée les paires de cartes puis les mélange. La difficulté choisie change
-// simplement le nombre de mélanges effectués : plus il y en a, plus l'ordre
-// final est imprévisible. Chaque carte retient le numéro de son symbole
-// (1 à NB_SYMBOLES_PAR_THEME) : l'image affichée dépend du thème visuel choisi
-// (voir cheminSymboleCarte() plus haut), mais la comparaison de paires
-// se fait sur ce numéro, indépendamment du thème.
-function creerEtMelangerCartes(nbCartes, difficulte) {
-  const nbPaires = nbCartes / 2;
 
-  // Chaque symbole apparaît deux fois (= une paire)
-  let cartes = [];
-  let id = 0;
-  for (let numeroSymbole = 1; numeroSymbole <= nbPaires; numeroSymbole++) {
-    for (let exemplaire = 0; exemplaire < 2; exemplaire++) {
-      cartes.push({
-        id: id,
-        numeroSymbole: numeroSymbole,
-        retournee: false,
-        trouvee: false,
-      });
-      id++;
+// ===================================================================
+// CLASSE PARTIE
+// Regroupe tout ce qu'il faut savoir sur la partie en cours : les cartes, les
+// joueurs, le tour actuel, le chrono et le minuteur de tour. Une seule
+// instance vit à la fois, dans la variable "partieActuelle" (voir plus haut).
+// ===================================================================
+class Partie {
+  constructor(mode, nbJoueurs, difficulteOrdi, theme, nbCartes, difficulte) {
+    this.mode = mode;
+    this.difficulteOrdi = difficulteOrdi;
+    this.theme = theme;
+
+    this.joueurs = this.creerJoueurs(nbJoueurs);
+    this.cartes = this.creerEtMelangerCartes(nbCartes, difficulte);
+    this.joueurActuelIndex = 0;
+    this.cartesRetournees = [];
+    this.paireEnAttente = false; // true pendant la petite pause où on affiche 2 cartes qui ne correspondent pas
+    this.enPause = false;        // true pendant que le livre est rouvert en cours de partie
+
+    // Chronomètre de la partie (minutes : secondes)
+    this.identifiantChrono = null;
+    this.secondesEcoulees = 0;
+    this.chronoDemarre = false; // devient true au premier clic sur une carte, jusqu'à la fin de la partie
+
+    // Minuteur du tour en cours
+    this.identifiantMinuteurTour = null;
+    this.secondesRestantesTour = TEMPS_TOUR;
+    this.secondesDebutTourJoueur = 0;   // valeur du chrono au début du tour, pour mesurer le temps mis à trouver une paire
+    this.instantPremierClicTour = 0;    // Date.now() au premier clic du tour, pour le temps de réflexion réel
+
+    this.memoireRobot = {};             // symbole -> liste des ids de cartes vues avec ce symbole, encore cachées
+    this.dernierResultat = null;        // "victoire" | "defaite", mémorisé pour retraduire l'écran de fin
+
+    this.afficherJoueurs();
+    this.afficherCartes();
+  }
+
+  // Construit la liste des joueurs : des humains, puis un robot si le mode "ordinateur" est choisi.
+  creerJoueurs(nbJoueurs) {
+    const joueurs = [];
+
+    for (let i = 0; i < nbJoueurs; i++) {
+      joueurs.push(new Joueur(i + 1, CLASSES_COULEUR_JOUEURS[i], false));
+    }
+
+    if (this.mode === "ordinateur") {
+      joueurs.push(new Joueur(null, "joueur-robot", true));
+    }
+
+    return joueurs;
+  }
+
+  // Crée les paires de cartes puis les mélange. La difficulté choisie change
+  // simplement le nombre de mélanges effectués : plus il y en a, plus l'ordre
+  // final est imprévisible. Chaque carte retient le numéro de son symbole
+  // (1 à NB_SYMBOLES_PAR_THEME) : l'image affichée dépend du thème visuel
+  // choisi (voir cheminSymboleCarte() plus haut), mais la comparaison de
+  // paires se fait sur ce numéro, indépendamment du thème.
+  creerEtMelangerCartes(nbCartes, difficulte) {
+    const nbPaires = nbCartes / 2;
+
+    // Chaque symbole apparaît deux fois (= une paire)
+    let cartes = [];
+    let id = 0;
+    for (let numeroSymbole = 1; numeroSymbole <= nbPaires; numeroSymbole++) {
+      for (let exemplaire = 0; exemplaire < 2; exemplaire++) {
+        cartes.push(new Carte(id, numeroSymbole));
+        id++;
+      }
+    }
+
+    const nbMelanges = { facile: 1, moyen: 4, difficile: 10 }[difficulte];
+    for (let m = 0; m < nbMelanges; m++) {
+      cartes = this.melangerUneFois(cartes);
+    }
+
+    return cartes;
+  }
+
+  // Mélange de Fisher-Yates : parcourt le tableau depuis la fin et échange
+  // chaque carte avec une autre choisie au hasard avant elle.
+  melangerUneFois(cartes) {
+    const resultat = cartes.slice();
+    for (let i = resultat.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [resultat[i], resultat[j]] = [resultat[j], resultat[i]];
+    }
+    return resultat;
+  }
+
+
+  // ===== AFFICHAGE DES JOUEURS (colonne de gauche : lumière + nom + coeurs) =====
+
+  afficherJoueurs() {
+    listeJoueurs.innerHTML = "";
+
+    this.joueurs.forEach((joueur, index) => {
+      const ligne = document.createElement("div");
+      ligne.className = `ligne-joueur ${joueur.classeCouleur}`;
+      ligne.classList.toggle("elimine", joueur.estElimine()); // reste correct si on retraduit en cours de partie
+      ligne.id = `ligne-joueur-${index}`;
+
+      const nomCouleur = joueur.estRobot ? t("couleur-argente") : t(CLES_TRADUCTION_COULEURS[index]);
+      ligne.innerHTML = `
+        <span class="lumiere"></span>
+        <span>${joueur.nomAffiche()} (${nomCouleur})</span>
+        <span class="coeurs" id="coeurs-${index}">❤️ ${joueur.coeurs}</span>
+      `;
+      listeJoueurs.appendChild(ligne);
+    });
+  }
+
+  // Met à jour uniquement le nombre de coeurs affiché pour un joueur donné.
+  afficherCoeurs(index) {
+    const joueur = this.joueurs[index];
+    document.getElementById(`coeurs-${index}`).textContent = `❤️ ${joueur.coeurs}`;
+
+    const ligne = document.getElementById(`ligne-joueur-${index}`);
+    ligne.classList.toggle("elimine", joueur.estElimine());
+  }
+
+  // Allume la lumière du joueur dont c'est le tour et éteint celles des autres.
+  allumerLumiereJoueurActuel() {
+    this.joueurs.forEach((_, index) => {
+      const lumiere = document.querySelector(`#ligne-joueur-${index} .lumiere`);
+      lumiere.classList.toggle("allumee", index === this.joueurActuelIndex);
+    });
+  }
+
+
+  // ===== AFFICHAGE DES CARTES =====
+
+  afficherCartes() {
+    grilleCartes.innerHTML = "";
+
+    this.cartes.forEach((carte) => {
+      const bouton = document.createElement("button");
+      bouton.className = "carte";
+      bouton.id = `carte-${carte.id}`;
+      bouton.addEventListener("click", () => this.choisirCarte(carte.id));
+
+      // Le dos (face cachée) est posé en CSS via background-image (voir .carte
+      // dans style.css) : il suit automatiquement le thème choisi. Seule l'image
+      // du symbole (face visible) est gérée ici, une fois la carte retournée.
+      const imageSymbole = document.createElement("img");
+      imageSymbole.className = "image-symbole-carte";
+      imageSymbole.src = cheminSymboleCarte(this.theme, carte.numeroSymbole);
+      imageSymbole.alt = "";
+      imageSymbole.hidden = true;
+      bouton.appendChild(imageSymbole);
+
+      grilleCartes.appendChild(bouton);
+    });
+  }
+
+  // Met à jour l'apparence d'une carte en fonction de son état (cachée / retournée / trouvée).
+  rafraichirCarte(carte) {
+    const bouton = document.getElementById(`carte-${carte.id}`);
+    bouton.classList.toggle("retournee", carte.retournee);
+    bouton.classList.toggle("trouvee", carte.trouvee);
+    bouton.querySelector(".image-symbole-carte").hidden = !carte.estVisible();
+  }
+
+
+  // ===== TOUR DE JEU =====
+  // Un tour = un joueur retourne 2 cartes (ou le temps s'écoule).
+
+  demarrerTour() {
+    this.cartesRetournees = [];
+    this.allumerLumiereJoueurActuel();
+
+    this.secondesRestantesTour = TEMPS_TOUR;
+    tempsTourAffichage.textContent = `${this.secondesRestantesTour}s`;
+    this.secondesDebutTourJoueur = this.secondesEcoulees;
+
+    this.lancerMinuteurTour();
+
+    // Si c'est le tour de l'ordinateur, il joue automatiquement après un court délai.
+    const joueurActuel = this.joueurs[this.joueurActuelIndex];
+    if (joueurActuel.estRobot) {
+      setTimeout(() => {
+        if (!this.enPause) this.jouerTourRobot();
+      }, 800);
     }
   }
 
-  const nbMelanges = { facile: 1, moyen: 4, difficile: 10 }[difficulte];
-  for (let m = 0; m < nbMelanges; m++) {
-    cartes = melangerUneFois(cartes);
+  // Démarre le décompte du tour à partir de la valeur actuelle de
+  // "secondesRestantesTour" (utilisé au début d'un tour, mais aussi pour
+  // reprendre après une pause).
+  lancerMinuteurTour() {
+    clearInterval(this.identifiantMinuteurTour);
+    this.identifiantMinuteurTour = setInterval(() => {
+      this.secondesRestantesTour -= 1;
+      tempsTourAffichage.textContent = `${this.secondesRestantesTour}s`;
+
+      if (this.secondesRestantesTour <= 0) {
+        // Le temps est écoulé : le joueur n'a pas terminé son tour, il perd un coeur.
+        clearInterval(this.identifiantMinuteurTour);
+        this.perdreCoeurJoueurActuel();
+        this.passerAuJoueurSuivant();
+      }
+    }, 1000);
   }
 
-  return cartes;
-}
+  // Le joueur (ou le robot) clique sur une carte pour la retourner.
+  choisirCarte(idCarte) {
+    if (this.enPause) return; // le livre est ouvert : le plateau est bloqué
+    if (this.paireEnAttente) return; // on attend que la paire précédente soit masquée
 
-// Mélange de Fisher-Yates : parcourt le tableau depuis la fin et échange
-// chaque carte avec une autre choisie au hasard avant elle.
-function melangerUneFois(cartes) {
-  const resultat = cartes.slice();
-  for (let i = resultat.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [resultat[i], resultat[j]] = [resultat[j], resultat[i]];
-  }
-  return resultat;
-}
+    const carte = this.cartes.find((c) => c.id === idCarte);
+    if (carte.estVisible()) return; // carte déjà visible : rien à faire
+    if (this.cartesRetournees.length >= 2) return; // déjà 2 cartes retournées ce tour-ci
 
+    // Le chrono de la partie démarre seulement au tout premier clic sur une carte.
+    if (!this.chronoDemarre) {
+      this.demarrerChrono();
+    }
 
-// ===================================================================
-// AFFICHAGE DES JOUEURS (colonne de gauche : lumière + nom + coeurs)
-// ===================================================================
-function afficherJoueurs() {
-  listeJoueurs.innerHTML = "";
+    // Horodatage du premier clic du tour, pour mesurer le temps de réflexion
+    // réel jusqu'au second clic (voir verifierPaire()).
+    if (this.cartesRetournees.length === 0) {
+      this.instantPremierClicTour = Date.now();
+    }
 
-  etat.joueurs.forEach((joueur, index) => {
-    const ligne = document.createElement("div");
-    ligne.className = `ligne-joueur ${joueur.classeCouleur}`;
-    ligne.classList.toggle("elimine", joueur.coeurs <= 0); // reste correct si on retraduit en cours de partie
-    ligne.id = `ligne-joueur-${index}`;
+    carte.retourner();
+    this.rafraichirCarte(carte);
+    this.cartesRetournees.push(carte);
+    this.memoriserCartePourRobot(carte);
 
-    const nomCouleur = joueur.estRobot ? t("couleur-argente") : t(CLES_TRADUCTION_COULEURS[index]);
-    ligne.innerHTML = `
-      <span class="lumiere"></span>
-      <span>${nomJoueur(joueur)} (${nomCouleur})</span>
-      <span class="coeurs" id="coeurs-${index}">❤️ ${joueur.coeurs}</span>
-    `;
-    listeJoueurs.appendChild(ligne);
-  });
-}
-
-// Met à jour uniquement le nombre de coeurs affiché pour un joueur donné.
-function afficherCoeurs(index) {
-  const joueur = etat.joueurs[index];
-  document.getElementById(`coeurs-${index}`).textContent = `❤️ ${joueur.coeurs}`;
-
-  const ligne = document.getElementById(`ligne-joueur-${index}`);
-  ligne.classList.toggle("elimine", joueur.coeurs <= 0);
-}
-
-// Allume la lumière du joueur dont c'est le tour et éteint celles des autres.
-function allumerLumiereJoueurActuel() {
-  etat.joueurs.forEach((_, index) => {
-    const lumiere = document.querySelector(`#ligne-joueur-${index} .lumiere`);
-    lumiere.classList.toggle("allumee", index === etat.joueurActuelIndex);
-  });
-}
-
-
-// ===================================================================
-// AFFICHAGE DES CARTES
-// ===================================================================
-
-function afficherCartes() {
-  grilleCartes.innerHTML = "";
-
-  etat.cartes.forEach((carte) => {
-    const bouton = document.createElement("button");
-    bouton.className = "carte";
-    bouton.id = `carte-${carte.id}`;
-    bouton.addEventListener("click", () => choisirCarte(carte.id));
-
-    // Le dos (face cachée) est posé en CSS via background-image (voir .carte
-    // dans style.css) : il suit automatiquement le thème choisi. Seule l'image
-    // du symbole (face visible) est gérée ici, une fois la carte retournée.
-    const imageSymbole = document.createElement("img");
-    imageSymbole.className = "image-symbole-carte";
-    imageSymbole.src = cheminSymboleCarte(etat.theme, carte.numeroSymbole);
-    imageSymbole.alt = "";
-    imageSymbole.hidden = true;
-    bouton.appendChild(imageSymbole);
-
-    grilleCartes.appendChild(bouton);
-  });
-}
-
-// Met à jour l'apparence d'une carte en fonction de son état (cachée / retournée / trouvée).
-function rafraichirCarte(carte) {
-  const bouton = document.getElementById(`carte-${carte.id}`);
-  bouton.classList.toggle("retournee", carte.retournee);
-  bouton.classList.toggle("trouvee", carte.trouvee);
-  bouton.querySelector(".image-symbole-carte").hidden = !(carte.retournee || carte.trouvee);
-}
-
-
-// ===================================================================
-// IA DU ROBOT (mode "contre l'ordinateur")
-// Le robot a une mémoire des cartes déjà vues (les siennes et celles du joueur
-// humain) et l'utilise plus ou moins selon la difficulté choisie dans le menu :
-// - "naze"  : mémorise mais évite volontairement de jouer une paire connue.
-// - "moyen" : joue parfois la paire connue, parfois au hasard (des feintes).
-// - "fort"  : joue la paire connue dès que possible, sauf s'il écrase déjà
-//             trop le joueur, auquel cas il rate volontairement un tour de
-//             temps en temps pour garder la partie intéressante.
-// ===================================================================
-
-// symbole -> liste des ids de cartes vues avec ce symbole, encore cachées.
-let memoireRobot = {};
-
-// Remise à zéro de la mémoire à chaque nouvelle partie (voir preparerPartie() plus haut).
-function reinitialiserMemoireRobot() {
-  memoireRobot = {};
-}
-
-// Appelée à chaque carte retournée (par le joueur humain ou le robot lui-même) :
-// le robot "voit" toujours les cartes retournées, comme un joueur humain le ferait.
-function memoriserCartePourRobot(carte) {
-  if (!memoireRobot[carte.numeroSymbole]) {
-    memoireRobot[carte.numeroSymbole] = [];
-  }
-  if (!memoireRobot[carte.numeroSymbole].includes(carte.id)) {
-    memoireRobot[carte.numeroSymbole].push(carte.id);
-  }
-}
-
-// Cherche un symbole dont le robot connaît 2 cartes différentes, encore cachées
-// et non trouvées. Retourne les 2 cartes si une paire connue existe, sinon null.
-function chercherPaireConnue() {
-  for (const symbole in memoireRobot) {
-    const idsConnus = memoireRobot[symbole].filter((id) => {
-      const carte = etat.cartes.find((c) => c.id === id);
-      return carte && !carte.retournee && !carte.trouvee;
-    });
-    if (idsConnus.length >= 2) {
-      const carteA = etat.cartes.find((c) => c.id === idsConnus[0]);
-      const carteB = etat.cartes.find((c) => c.id === idsConnus[1]);
-      return [carteA, carteB];
+    if (this.cartesRetournees.length === 2) {
+      this.verifierPaire();
     }
   }
-  return null;
-}
 
-// Tire une carte cachée au hasard, en excluant éventuellement une carte déjà choisie.
-function carteAuHasard(carteAExclure) {
-  const cartesDisponibles = etat.cartes.filter(
-    (c) => !c.retournee && !c.trouvee && c !== carteAExclure
-  );
-  return cartesDisponibles[Math.floor(Math.random() * cartesDisponibles.length)];
-}
+  // Compare les deux cartes retournées : paire trouvée (+1 coeur) ou erreur (-1 coeur).
+  verifierPaire() {
+    clearInterval(this.identifiantMinuteurTour);
+    this.paireEnAttente = true;
 
+    const [carteA, carteB] = this.cartesRetournees;
+    const estUnePaire = carteA.estUnePaireAvec(carteB);
 
-// ===================================================================
-// SUIVI DE LA PERFORMANCE DU JOUEUR HUMAIN
-// Utilisé par le niveau "fort" pour savoir s'il écrase trop la partie.
-// ===================================================================
+    // Temps de réflexion réel entre le 1er et le 2e clic de ce tour (en secondes).
+    const tempsReflexion = (Date.now() - this.instantPremierClicTour) / 1000;
+    this.joueurs[this.joueurActuelIndex].enregistrerTempsReflexion(tempsReflexion);
 
-// Le joueur humain de référence face au robot (mode "ordinateur" = un seul humain).
-function joueurHumain() {
-  return etat.joueurs.find((j) => !j.estRobot);
-}
-
-function joueurRobot() {
-  return etat.joueurs.find((j) => j.estRobot);
-}
-
-// Écart de coeurs robot - humain : positif si le robot mène.
-function ecartCoeursRobot() {
-  return joueurRobot().coeurs - joueurHumain().coeurs;
-}
-
-
-// ===================================================================
-// DÉCISION DE JEU DU ROBOT SELON LA DIFFICULTÉ
-// ===================================================================
-
-// Probabilité que le robot joue la paire connue plutôt qu'au hasard, si il en a une.
-function probabiliteJouerPaireConnue() {
-  if (etat.difficulteOrdi === "naze") {
-    return 0; // ne joue jamais la paire connue : il perd naturellement
-  }
-  if (etat.difficulteOrdi === "moyen") {
-    return 0.5; // une feinte sur deux
-  }
-  // "fort" : joue quasi toujours la paire connue, sauf s'il écrase déjà le
-  // joueur humain (grand écart de coeurs en sa faveur) : il se retient alors
-  // un tour sur trois pour laisser la partie ouverte.
-  const ecrasement = ecartCoeursRobot() >= 4;
-  return ecrasement ? 0.7 : 0.95;
-}
-
-// Choisit les 2 cartes que le robot va retourner ce tour-ci, selon sa mémoire
-// et la difficulté choisie.
-function choisirCartesRobot() {
-  const paireConnue = chercherPaireConnue();
-
-  if (paireConnue && Math.random() < probabiliteJouerPaireConnue()) {
-    return paireConnue;
-  }
-
-  // Pas de paire connue exploitée : 2 cartes au hasard parmi les cachées
-  // (c'est aussi ce qui fait "découvrir" nos propres cartes pour plus tard).
-  const premiereCarte = carteAuHasard();
-  const deuxiemeCarte = carteAuHasard(premiereCarte);
-  return [premiereCarte, deuxiemeCarte];
-}
-
-// Le robot joue son tour : un court délai avant chaque clic pour rester lisible
-// à l'écran, comme un joueur qui regarde le plateau avant de choisir.
-function jouerTourRobot() {
-  if (etat.scene !== "jeu") return;
-
-  const [premiereCarte, deuxiemeCarte] = choisirCartesRobot();
-  choisirCarte(premiereCarte.id);
-
-  setTimeout(() => {
-    if (etat.scene !== "jeu" || etat.enPause) return;
-    choisirCarte(deuxiemeCarte.id);
-  }, 600);
-}
-
-
-// ===================================================================
-// TOUR DE JEU
-// Un tour = un joueur retourne 2 cartes (ou le temps s'écoule).
-// ===================================================================
-let identifiantMinuteurTour = null;
-let secondesRestantesTour = TEMPS_TOUR;
-let secondesDebutTourJoueur = 0; // valeur du chrono au début du tour en cours, pour mesurer le temps mis à trouver une paire
-let instantPremierClicTour = 0; // Date.now() au premier clic du tour, pour mesurer le temps réel jusqu'au 2e clic
-
-function demarrerTour() {
-  etat.cartesRetournees = [];
-  allumerLumiereJoueurActuel();
-
-  secondesRestantesTour = TEMPS_TOUR;
-  tempsTourAffichage.textContent = `${secondesRestantesTour}s`;
-  secondesDebutTourJoueur = secondesEcoulees;
-
-  lancerMinuteurTour();
-
-  // Si c'est le tour de l'ordinateur, il joue automatiquement après un court délai.
-  const joueurActuel = etat.joueurs[etat.joueurActuelIndex];
-  if (joueurActuel.estRobot) {
     setTimeout(() => {
-      if (!etat.enPause) jouerTourRobot();
+      if (estUnePaire) {
+        carteA.marquerTrouvee();
+        carteB.marquerTrouvee();
+        this.gagnerCoeurJoueurActuel();
+      } else {
+        carteA.cacher();
+        carteB.cacher();
+        this.perdreCoeurJoueurActuel();
+      }
+      this.rafraichirCarte(carteA);
+      this.rafraichirCarte(carteB);
+      this.paireEnAttente = false;
+
+      if (this.toutesLesPairesTrouvees()) {
+        this.terminer("victoire");
+        return;
+      }
+
+      // En cas de paire trouvée, le même joueur rejoue ; sinon on passe au suivant.
+      if (estUnePaire) {
+        this.demarrerTour();
+      } else {
+        this.passerAuJoueurSuivant();
+      }
     }, 800);
   }
-}
 
-// Démarre le décompte du tour à partir de la valeur actuelle de "secondesRestantesTour"
-// (utilisé au début d'un tour, mais aussi pour reprendre après une pause).
-function lancerMinuteurTour() {
-  clearInterval(identifiantMinuteurTour);
-  identifiantMinuteurTour = setInterval(() => {
-    secondesRestantesTour -= 1;
-    tempsTourAffichage.textContent = `${secondesRestantesTour}s`;
+  toutesLesPairesTrouvees() {
+    return this.cartes.every((carte) => carte.trouvee);
+  }
 
-    if (secondesRestantesTour <= 0) {
-      // Le temps est écoulé : le joueur n'a pas terminé son tour, il perd un coeur.
-      clearInterval(identifiantMinuteurTour);
-      perdreCoeurJoueurActuel();
-      passerAuJoueurSuivant();
+  gagnerCoeurJoueurActuel() {
+    const joueur = this.joueurs[this.joueurActuelIndex];
+    joueur.gagnerCoeur();
+    this.afficherCoeurs(this.joueurActuelIndex);
+
+    // Statistiques pour l'écran de fin : une paire de plus, et le temps mis
+    // pour la trouver (depuis le début de ce tour) vient allonger la moyenne.
+    joueur.gagnerPaire(this.secondesEcoulees - this.secondesDebutTourJoueur);
+  }
+
+  // Fait perdre un coeur au joueur actuel et vérifie s'il est éliminé.
+  perdreCoeurJoueurActuel() {
+    const joueur = this.joueurs[this.joueurActuelIndex];
+    joueur.perdreCoeur();
+    this.afficherCoeurs(this.joueurActuelIndex);
+
+    if (joueur.estElimine() && this.plusAucunJoueurEnVie()) {
+      this.terminer("defaite");
     }
-  }, 1000);
-}
-
-// Le joueur (ou le robot) clique sur une carte pour la retourner.
-function choisirCarte(idCarte) {
-  if (etat.enPause) return; // le livre est ouvert : le plateau est bloqué
-  if (etat.paireEnAttente) return; // on attend que la paire précédente soit masquée
-
-  const carte = etat.cartes.find((c) => c.id === idCarte);
-  if (carte.retournee || carte.trouvee) return; // carte déjà visible : rien à faire
-  if (etat.cartesRetournees.length >= 2) return; // déjà 2 cartes retournées ce tour-ci
-
-  // Le chrono de la partie démarre seulement au tout premier clic sur une carte.
-  if (!chronoDemarre) {
-    demarrerChrono();
   }
 
-  // Horodatage du premier clic du tour, pour mesurer le temps de réflexion
-  // réel jusqu'au second clic (voir verifierPaire()).
-  if (etat.cartesRetournees.length === 0) {
-    instantPremierClicTour = Date.now();
+  plusAucunJoueurEnVie() {
+    return this.joueurs.every((joueur) => joueur.estElimine());
   }
 
-  carte.retournee = true;
-  rafraichirCarte(carte);
-  etat.cartesRetournees.push(carte);
-  memoriserCartePourRobot(carte);
+  // Passe la main au prochain joueur encore en vie.
+  passerAuJoueurSuivant() {
+    if (scene !== "jeu") return; // la partie est peut-être déjà terminée
 
-  if (etat.cartesRetournees.length === 2) {
-    verifierPaire();
+    do {
+      this.joueurActuelIndex = (this.joueurActuelIndex + 1) % this.joueurs.length;
+    } while (this.joueurs[this.joueurActuelIndex].estElimine());
+
+    this.demarrerTour();
   }
-}
 
-// Compare les deux cartes retournées : paire trouvée (+1 coeur) ou erreur (-1 coeur).
-function verifierPaire() {
-  clearInterval(identifiantMinuteurTour);
-  etat.paireEnAttente = true;
 
-  const [carteA, carteB] = etat.cartesRetournees;
-  const estUnePaire = carteA.numeroSymbole === carteB.numeroSymbole;
+  // ===== IA DU ROBOT (mode "contre l'ordinateur") =====
+  // Le robot a une mémoire des cartes déjà vues (les siennes et celles du
+  // joueur humain) et l'utilise plus ou moins selon la difficulté choisie :
+  // - "naze"  : mémorise mais évite volontairement de jouer une paire connue.
+  // - "moyen" : joue parfois la paire connue, parfois au hasard (des feintes).
+  // - "fort"  : joue la paire connue dès que possible, sauf s'il écrase déjà
+  //             trop le joueur, auquel cas il rate volontairement un tour de
+  //             temps en temps pour garder la partie intéressante.
 
-  // Temps de réflexion réel entre le 1er et le 2e clic de ce tour (en secondes).
-  const tempsReflexion = (Date.now() - instantPremierClicTour) / 1000;
-  enregistrerTempsReflexion(etat.joueurActuelIndex, tempsReflexion);
-
-  setTimeout(() => {
-    if (estUnePaire) {
-      carteA.trouvee = true;
-      carteB.trouvee = true;
-      gagnerCoeurJoueurActuel();
-    } else {
-      carteA.retournee = false;
-      carteB.retournee = false;
-      perdreCoeurJoueurActuel();
+  // Appelée à chaque carte retournée (par le joueur humain ou le robot
+  // lui-même) : le robot "voit" toujours les cartes retournées, comme un
+  // joueur humain le ferait.
+  memoriserCartePourRobot(carte) {
+    if (!this.memoireRobot[carte.numeroSymbole]) {
+      this.memoireRobot[carte.numeroSymbole] = [];
     }
-    rafraichirCarte(carteA);
-    rafraichirCarte(carteB);
-    etat.paireEnAttente = false;
+    if (!this.memoireRobot[carte.numeroSymbole].includes(carte.id)) {
+      this.memoireRobot[carte.numeroSymbole].push(carte.id);
+    }
+  }
 
-    if (toutesLesPairesTrouvees()) {
-      terminerPartie("victoire");
-      return;
+  // Cherche un symbole dont le robot connaît 2 cartes différentes, encore
+  // cachées et non trouvées. Retourne les 2 cartes si une paire connue existe,
+  // sinon null.
+  chercherPaireConnue() {
+    for (const symbole in this.memoireRobot) {
+      const idsConnus = this.memoireRobot[symbole].filter((id) => {
+        const carte = this.cartes.find((c) => c.id === id);
+        return carte && !carte.estVisible();
+      });
+      if (idsConnus.length >= 2) {
+        const carteA = this.cartes.find((c) => c.id === idsConnus[0]);
+        const carteB = this.cartes.find((c) => c.id === idsConnus[1]);
+        return [carteA, carteB];
+      }
+    }
+    return null;
+  }
+
+  // Tire une carte cachée au hasard, en excluant éventuellement une carte déjà choisie.
+  carteAuHasard(carteAExclure) {
+    const cartesDisponibles = this.cartes.filter(
+      (c) => !c.estVisible() && c !== carteAExclure
+    );
+    return cartesDisponibles[Math.floor(Math.random() * cartesDisponibles.length)];
+  }
+
+  joueurHumain() {
+    return this.joueurs.find((j) => !j.estRobot);
+  }
+
+  joueurRobot() {
+    return this.joueurs.find((j) => j.estRobot);
+  }
+
+  // Écart de coeurs robot - humain : positif si le robot mène.
+  ecartCoeursRobot() {
+    return this.joueurRobot().coeurs - this.joueurHumain().coeurs;
+  }
+
+  // Probabilité que le robot joue la paire connue plutôt qu'au hasard, si il en a une.
+  probabiliteJouerPaireConnue() {
+    if (this.difficulteOrdi === "naze") {
+      return 0; // ne joue jamais la paire connue : il perd naturellement
+    }
+    if (this.difficulteOrdi === "moyen") {
+      return 0.5; // une feinte sur deux
+    }
+    // "fort" : joue quasi toujours la paire connue, sauf s'il écrase déjà le
+    // joueur humain (grand écart de coeurs en sa faveur) : il se retient alors
+    // un tour sur trois pour laisser la partie ouverte.
+    const ecrasement = this.ecartCoeursRobot() >= 4;
+    return ecrasement ? 0.7 : 0.95;
+  }
+
+  // Choisit les 2 cartes que le robot va retourner ce tour-ci, selon sa
+  // mémoire et la difficulté choisie.
+  choisirCartesRobot() {
+    const paireConnue = this.chercherPaireConnue();
+
+    if (paireConnue && Math.random() < this.probabiliteJouerPaireConnue()) {
+      return paireConnue;
     }
 
-    // En cas de paire trouvée, le même joueur rejoue ; sinon on passe au suivant.
-    if (estUnePaire) {
-      demarrerTour();
-    } else {
-      passerAuJoueurSuivant();
+    // Pas de paire connue exploitée : 2 cartes au hasard parmi les cachées
+    // (c'est aussi ce qui fait "découvrir" nos propres cartes pour plus tard).
+    const premiereCarte = this.carteAuHasard();
+    const deuxiemeCarte = this.carteAuHasard(premiereCarte);
+    return [premiereCarte, deuxiemeCarte];
+  }
+
+  // Le robot joue son tour : un court délai avant chaque clic pour rester
+  // lisible à l'écran, comme un joueur qui regarde le plateau avant de choisir.
+  jouerTourRobot() {
+    if (scene !== "jeu") return;
+
+    const [premiereCarte, deuxiemeCarte] = this.choisirCartesRobot();
+    this.choisirCarte(premiereCarte.id);
+
+    setTimeout(() => {
+      if (scene !== "jeu" || this.enPause) return;
+      this.choisirCarte(deuxiemeCarte.id);
+    }, 600);
+  }
+
+
+  // ===== CHRONOMÈTRE ET PAUSE =====
+
+  demarrerChrono() {
+    this.chronoDemarre = true;
+    this.secondesEcoulees = 0;
+    chronoAffichage.textContent = "00:00";
+
+    this.identifiantChrono = setInterval(() => {
+      this.secondesEcoulees += 1;
+      chronoAffichage.textContent = formaterTemps(this.secondesEcoulees);
+    }, 1000);
+  }
+
+  arreterChrono() {
+    clearInterval(this.identifiantChrono);
+  }
+
+  // Reprend le chrono là où il en était, sans le remettre à zéro.
+  reprendreChrono() {
+    clearInterval(this.identifiantChrono);
+    this.identifiantChrono = setInterval(() => {
+      this.secondesEcoulees += 1;
+      chronoAffichage.textContent = formaterTemps(this.secondesEcoulees);
+    }, 1000);
+  }
+
+  // Le chrono et le minuteur de tour s'arrêtent sans se réinitialiser ;
+  // choisirCarte() est aussi bloqué via this.enPause.
+  mettreEnPause() {
+    this.enPause = true;
+    this.arreterChrono();
+    clearInterval(this.identifiantMinuteurTour);
+  }
+
+  reprendre() {
+    this.enPause = false;
+    // Le chrono ne reprend que s'il avait déjà démarré (le joueur a pu ouvrir
+    // le livre en pause avant même d'avoir retourné sa première carte).
+    if (this.chronoDemarre) {
+      this.reprendreChrono();
     }
-  }, 800);
-}
-
-function toutesLesPairesTrouvees() {
-  return etat.cartes.every((carte) => carte.trouvee);
-}
-
-// Ajoute une mesure de temps de réflexion (entre le 1er et le 2e clic) pour un
-// joueur donné, utilisée pour calculer sa moyenne à l'écran de fin.
-function enregistrerTempsReflexion(indexJoueur, secondes) {
-  const joueur = etat.joueurs[indexJoueur];
-  joueur.sommeTempsReflexion += secondes;
-  joueur.nbToursJoues += 1;
-}
-
-function gagnerCoeurJoueurActuel() {
-  const joueur = etat.joueurs[etat.joueurActuelIndex];
-  joueur.coeurs += 1;
-  afficherCoeurs(etat.joueurActuelIndex);
-
-  // Statistiques pour l'écran de fin : une paire de plus, et le temps mis
-  // pour la trouver (depuis le début de ce tour) vient allonger la moyenne.
-  joueur.pairesTrouvees += 1;
-  joueur.sommeTempsPaires += secondesEcoulees - secondesDebutTourJoueur;
-}
-
-// Fait perdre un coeur au joueur actuel et vérifie s'il est éliminé.
-function perdreCoeurJoueurActuel() {
-  const joueur = etat.joueurs[etat.joueurActuelIndex];
-  joueur.coeurs = Math.max(0, joueur.coeurs - 1);
-  joueur.erreurs += 1;
-  afficherCoeurs(etat.joueurActuelIndex);
-
-  if (joueur.coeurs === 0 && plusAucunJoueurEnVie()) {
-    terminerPartie("defaite");
+    this.lancerMinuteurTour();
   }
-}
-
-function plusAucunJoueurEnVie() {
-  return etat.joueurs.every((joueur) => joueur.coeurs <= 0);
-}
-
-// Passe la main au prochain joueur encore en vie.
-function passerAuJoueurSuivant() {
-  if (etat.scene !== "jeu") return; // la partie est peut-être déjà terminée
-
-  do {
-    etat.joueurActuelIndex = (etat.joueurActuelIndex + 1) % etat.joueurs.length;
-  } while (etat.joueurs[etat.joueurActuelIndex].coeurs <= 0);
-
-  demarrerTour();
-}
-
-// La logique du robot (jouerTourRobot, mémoire, adaptation à la difficulté)
-// vit dans la section IA DU ROBOT plus haut.
 
 
-// ===================================================================
-// CHRONOMÈTRE DE LA PARTIE (minutes : secondes)
-// Démarre avec la partie et s'arrête à la victoire ou à la défaite finale.
-// ===================================================================
-let identifiantChrono = null;
-let secondesEcoulees = 0;
-let chronoDemarre = false; // devient true au premier clic sur une carte, jusqu'à la fin de la partie
+  // ===== FIN DE PARTIE =====
 
-function demarrerChrono() {
-  chronoDemarre = true;
-  secondesEcoulees = 0;
-  chronoAffichage.textContent = "00:00";
+  terminer(resultat) {
+    this.arreterChrono();
+    clearInterval(this.identifiantMinuteurTour);
+    languetteLivre.hidden = true;
 
-  identifiantChrono = setInterval(() => {
-    secondesEcoulees += 1;
-    chronoAffichage.textContent = formaterTemps(secondesEcoulees);
-  }, 1000);
-}
-
-function arreterChrono() {
-  clearInterval(identifiantChrono);
-}
-
-// Reprend le chrono là où il en était, sans le remettre à zéro.
-function reprendreChrono() {
-  clearInterval(identifiantChrono);
-  identifiantChrono = setInterval(() => {
-    secondesEcoulees += 1;
-    chronoAffichage.textContent = formaterTemps(secondesEcoulees);
-  }, 1000);
-}
-
-// ===================================================================
-// PAUSE (livre rouvert pendant la partie)
-// Le chrono et le minuteur de tour s'arrêtent sans se réinitialiser ;
-// choisirCarte() est aussi bloqué via etat.enPause.
-// ===================================================================
-function mettreEnPause() {
-  etat.enPause = true;
-  arreterChrono();
-  clearInterval(identifiantMinuteurTour);
-}
-
-function reprendrePartie() {
-  etat.enPause = false;
-  // Le chrono ne reprend que s'il avait déjà démarré (le joueur a pu ouvrir
-  // le livre en pause avant même d'avoir retourné sa première carte).
-  if (chronoDemarre) {
-    reprendreChrono();
+    this.dernierResultat = resultat;
+    afficherResultatFin();
+    afficherStatistiquesFin();
+    changerEcran("fin");
   }
-  lancerMinuteurTour();
 }
 
 // Transforme un nombre de secondes en texte "MM:SS".
@@ -1131,27 +1169,15 @@ function formaterTemps(totalSecondes) {
 
 
 // ===================================================================
-// FIN DE PARTIE
+// FIN DE PARTIE (affichage)
 // ===================================================================
-let dernierResultatPartie = null; // mémorisé pour pouvoir retraduire l'écran de fin si la langue change
-
-function terminerPartie(resultat) {
-  arreterChrono();
-  clearInterval(identifiantMinuteurTour);
-  languetteLivre.hidden = true;
-
-  dernierResultatPartie = resultat;
-  afficherResultatFin();
-  afficherStatistiquesFin();
-  changerEcran("fin");
-}
 
 // Affiche le titre et le message de fin dans la langue actuelle. Appelée à la
 // fin de la partie, et de nouveau si la langue change pendant l'écran de fin.
 function afficherResultatFin() {
-  if (dernierResultatPartie === "victoire") {
+  if (partieActuelle.dernierResultat === "victoire") {
     titreFin.textContent = t("victoire-titre");
-    messageFin.textContent = `${t("victoire-message")} ${formaterTemps(secondesEcoulees)}.`;
+    messageFin.textContent = `${t("victoire-message")} ${formaterTemps(partieActuelle.secondesEcoulees)}.`;
   } else {
     titreFin.textContent = t("defaite-titre");
     messageFin.textContent = t("defaite-message");
@@ -1160,12 +1186,11 @@ function afficherResultatFin() {
 
 // Affiche, pour chaque joueur, ses paires trouvées, ses vies restantes, le
 // temps moyen mis pour trouver une paire, et le temps de réflexion moyen réel
-// entre le 1er et le 2e clic de chaque tour (mesuré en millisecondes puis
-// arrondi à la seconde, voir enregistrerTempsReflexion() plus haut).
+// entre le 1er et le 2e clic de chaque tour.
 function afficherStatistiquesFin() {
   statistiquesFin.innerHTML = "";
 
-  etat.joueurs.forEach((joueur) => {
+  partieActuelle.joueurs.forEach((joueur) => {
     const tempsMoyen = joueur.pairesTrouvees > 0
       ? Math.round(joueur.sommeTempsPaires / joueur.pairesTrouvees)
       : null;
@@ -1182,7 +1207,7 @@ function afficherStatistiquesFin() {
     ligne.className = `ligne-stat-fin ${joueur.classeCouleur}`;
     ligne.innerHTML = `
       <span class="lumiere"></span>
-      <span class="nom-stat-fin">${nomJoueur(joueur)}</span>
+      <span class="nom-stat-fin">${joueur.nomAffiche()}</span>
       <span>${joueur.pairesTrouvees} ${t("paires-trouvees")}</span>
       <span>❤️ ${joueur.coeurs}</span>
       <span>${texteTempsMoyen}</span>
