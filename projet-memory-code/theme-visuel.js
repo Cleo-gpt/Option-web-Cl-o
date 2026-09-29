@@ -45,13 +45,14 @@ class ThemeVisuel {
 
 // Un thème par identifiant, construit une fois pour toutes au chargement de
 // la page. La plupart ont 28 symboles placeholders (les 56 cartes maximum
-// proposées dans le menu) ; le thème "mediamatique" n'a que 20 vraies images,
-// donc son nombre de cartes max dans le menu est limité en conséquence (voir
-// Menu.mettreAJourLimiteCartes() dans menu.js).
+// proposées dans le menu) ; le thème "mediamatique" n'a que 12 vraies images
+// distinctes (8 doublons d'une même icône, juste recolorée, ont été retirés
+// du dossier), donc son nombre de cartes max dans le menu est limité en
+// conséquence (voir Menu.mettreAJourLimiteCartes() dans menu.js).
 const THEMES_VISUELS = {
   anime: new ThemeVisuel("anime", 28, "svg"),
   japon: new ThemeVisuel("japon", 28, "jpeg"),
-  mediamatique: new ThemeVisuel("mediamatique", 20, "png"),
+  mediamatique: new ThemeVisuel("mediamatique", 12, "png"),
   medieval: new ThemeVisuel("medieval", 28, "svg"),
   communaute: new ThemeVisuel("communaute", 28, "svg"),
   youtube: new ThemeVisuel("youtube", 28, "svg"),
