@@ -44,21 +44,29 @@ class ThemeVisuel {
 }
 
 // Un thème par identifiant, construit une fois pour toutes au chargement de
-// la page. La plupart ont 28 symboles placeholders (les 56 cartes maximum
-// proposées dans le menu) ; le thème "mediamatique" n'a que 12 vraies images
-// distinctes (8 doublons d'une même icône, juste recolorée, ont été retirés
-// du dossier), donc son nombre de cartes max dans le menu est limité en
-// conséquence (voir Menu.mettreAJourLimiteCartes() dans menu.js).
+// la page. Tous ont 28 symboles placeholders (les 56 cartes maximum proposées
+// dans le menu) ; certains n'ont encore que quelques vraies images, le reste
+// étant des placeholders SVG en attendant (voir les exceptions plus bas).
 const THEMES_VISUELS = {
   anime: new ThemeVisuel("anime", 28, "svg"),
   japon: new ThemeVisuel("japon", 28, "jpeg"),
-  mediamatique: new ThemeVisuel("mediamatique", 12, "png"),
+  mediamatique: new ThemeVisuel("mediamatique", 28, "svg"),
   medieval: new ThemeVisuel("medieval", 28, "svg"),
   communaute: new ThemeVisuel("communaute", 28, "svg"),
   youtube: new ThemeVisuel("youtube", 28, "svg"),
 };
 
-THEMES_VISUELS.mediamatique.ajouterException(11, "svg"); // logo PhpMyAdmin
+THEMES_VISUELS.mediamatique.ajouterException(1, "png");
+THEMES_VISUELS.mediamatique.ajouterException(2, "png");
+THEMES_VISUELS.mediamatique.ajouterException(3, "png");
+THEMES_VISUELS.mediamatique.ajouterException(4, "png");
+THEMES_VISUELS.mediamatique.ajouterException(5, "png");
+THEMES_VISUELS.mediamatique.ajouterException(6, "png");
+THEMES_VISUELS.mediamatique.ajouterException(7, "png");
+THEMES_VISUELS.mediamatique.ajouterException(8, "png");
+THEMES_VISUELS.mediamatique.ajouterException(9, "png");
+THEMES_VISUELS.mediamatique.ajouterException(10, "png");
+THEMES_VISUELS.mediamatique.ajouterException(12, "png");
 
 THEMES_VISUELS.anime.ajouterException(1, "png");
 THEMES_VISUELS.anime.ajouterException(2, "jpg");
