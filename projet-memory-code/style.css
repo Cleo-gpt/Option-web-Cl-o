@@ -689,10 +689,22 @@ body.theme-communaute .bouton-choix:hover {
   cursor: default;
 }
 
+/* Chaque symbole prend l'aspect d'un polaroid : cadre blanc, ombre portée,
+   légère rotation (alternée selon le numéro du symbole pour ne pas avoir
+   toutes les cartes penchées du même côté). */
 .image-symbole-carte {
-  width: 80%;
-  height: 80%;
-  object-fit: contain;
+  width: 74%;
+  height: 74%;
+  object-fit: cover;
+  background-color: #f4f1ea;
+  padding: 6px 6px 14px;
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.4);
+  transform: rotate(-3deg);
+  box-sizing: border-box;
+}
+
+.carte:nth-child(even) .image-symbole-carte {
+  transform: rotate(3deg);
 }
 
 /* ===== Écran de fin ===== */

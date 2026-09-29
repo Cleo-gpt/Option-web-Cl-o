@@ -50,7 +50,7 @@ class ThemeVisuel {
 // Menu.mettreAJourLimiteCartes() dans menu.js).
 const THEMES_VISUELS = {
   anime: new ThemeVisuel("anime", 28, "svg"),
-  japon: new ThemeVisuel("japon", 28, "svg"),
+  japon: new ThemeVisuel("japon", 28, "jpeg"),
   mediamatique: new ThemeVisuel("mediamatique", 20, "png"),
   medieval: new ThemeVisuel("medieval", 28, "svg"),
   communaute: new ThemeVisuel("communaute", 28, "svg"),
@@ -60,10 +60,6 @@ const THEMES_VISUELS = {
 THEMES_VISUELS.mediamatique.ajouterException(11, "svg"); // logo PhpMyAdmin
 
 THEMES_VISUELS.anime.ajouterException(1, "png");
-
-for (let numero = 1; numero <= 16; numero++) {
-  THEMES_VISUELS.japon.ajouterException(numero, "jpeg");
-}
 
 THEMES_VISUELS.communaute.ajouterException(1, "jpg");
 THEMES_VISUELS.communaute.ajouterException(2, "jpg");
