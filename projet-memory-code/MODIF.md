@@ -46,4 +46,9 @@
 *(Se remplit à chaque demande ou idée qui va à contre-sens des ateliers ; chaque entrée est
 notifiée à l'utilisateur au moment où elle est ajoutée.)*
 
-Rien à signaler pour l'instant.
+- **Classes séparées dans leurs propres fichiers (2026-09-30)** : `Carte`, `Joueur` et `Partie`
+  vivent maintenant chacune dans `carte.js`, `joueur.js`, `partie.js` (demande explicite,
+  malgré la fusion en un seul fichier faite peu avant pour coller aux ateliers). Aucun atelier
+  ne sépare ses classes dans des fichiers distincts (`Meule`, `Billet`, etc. sont toujours dans
+  le même fichier que le reste de leur atelier) — écart assumé, la règle 2 du README a été
+  mise à jour en conséquence.

@@ -15,7 +15,10 @@ projet-memory-code/
 ├── README.md        (ce fichier)
 ├── index.html        structure de la page (menu, règles, plateau de jeu)
 ├── style.css          apparence (couleurs, cartes, lumières des joueurs, coeurs)
-└── code.js            logique du jeu (menu, mélange, tour par tour, vies, chrono)
+├── carte.js           classe Carte
+├── joueur.js          classe Joueur
+├── partie.js          classe Partie (cartes, joueurs, tour actuel, chrono, IA)
+└── code.js            reste de la logique (menu, traductions, livre des règles, fin de partie)
 ```
 
 Pas de framework, pas d'outil de build : on ouvre `index.html` dans le navigateur et ça fonctionne. HTML + CSS + JavaScript "vanilla" uniquement.
@@ -24,8 +27,11 @@ Pas de framework, pas d'outil de build : on ouvre `index.html` dans le navigateu
 
 Ces règles servent à garder le projet simple et lisible, même en avançant petit à petit.
 
-1. **Rester simple (KISS).** Pas de framework (React, Vue, ...), pas de build tool, pas de librairie externe. Trois fichiers suffisent : `index.html`, `style.css`, `code.js`.
-2. **Un seul fichier JS.** Toute la logique reste dans `code.js`. Pas de multiplication de petits fichiers pour un projet de cette taille.
+1. **Rester simple (KISS).** Pas de framework (React, Vue, ...), pas de build tool, pas de librairie externe.
+2. **Un fichier JS par classe, le reste dans `code.js`.** `Carte`, `Joueur` et `Partie` vivent
+   chacune dans leur propre fichier (`carte.js`, `joueur.js`, `partie.js`) ; tout ce qui n'est pas
+   une classe (menu, traductions, livre des règles, fin de partie) reste dans `code.js`. Pas
+   d'autre découpage : on ne multiplie pas les petits fichiers au-delà de ces 4.
 3. **Noms en français.** Variables, fonctions et commentaires sont écrits en français, comme dans le reste du dépôt (ex: `joueurs`, `cartesRetournees`, `melangerCartes()`).
 4. **Un commentaire par bloc de logique.** Chaque paragraphe de code un peu complexe (une fonction, une condition importante) doit avoir un court commentaire au-dessus qui explique **à quoi il sert**, pas comment JavaScript fonctionne. Voir l'exemple ci-dessous.
 5. **Pas de code mort ni de fonctionnalité inutilisée.** Si une règle du jeu n'est pas demandée (ex: sauvegarde en ligne, comptes utilisateurs), on ne l'ajoute pas "au cas où".
