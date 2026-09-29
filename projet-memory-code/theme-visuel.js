@@ -73,6 +73,11 @@ THEMES_VISUELS.anime.ajouterException(10, "jpg");
 THEMES_VISUELS.anime.ajouterException(11, "webp");
 THEMES_VISUELS.anime.ajouterException(12, "webp");
 THEMES_VISUELS.anime.ajouterException(13, "webp");
+THEMES_VISUELS.anime.ajouterException(14, "jpg");
+THEMES_VISUELS.anime.ajouterException(15, "jpg");
+THEMES_VISUELS.anime.ajouterException(16, "jpg");
+THEMES_VISUELS.anime.ajouterException(17, "jpg");
+THEMES_VISUELS.anime.ajouterException(18, "jpg");
 
 THEMES_VISUELS.communaute.ajouterException(1, "jpg");
 THEMES_VISUELS.communaute.ajouterException(2, "jpg");
