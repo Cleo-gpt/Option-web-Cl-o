@@ -52,11 +52,15 @@ class Menu {
 
   // Certains thèmes ont moins de symboles disponibles que d'autres (voir
   // ThemeVisuel.nbCartesMax() dans theme-visuel.js) : leurs boutons "Nombre de
-  // cartes" au-delà de cette limite sont désactivés. Si le nombre de cartes
-  // déjà choisi n'est plus disponible pour le nouveau thème, on désélectionne
-  // ce bouton (le joueur doit en choisir un autre valide).
+  // cartes" au-delà de cette limite sont désactivés. Le mode solo est en plus
+  // toujours limité à 32 cartes (une partie à un seul joueur avec un trop
+  // grand plateau devient longue et répétitive). Si le nombre de cartes déjà
+  // choisi n'est plus disponible, on désélectionne ce bouton (le joueur doit
+  // en choisir un autre valide).
   mettreAJourLimiteCartes() {
-    const nbCartesMax = THEMES_VISUELS[this.theme].nbCartesMax();
+    const nbCartesMaxSolo = 32;
+    const nbCartesMaxTheme = THEMES_VISUELS[this.theme].nbCartesMax();
+    const nbCartesMax = this.mode === "solo" ? Math.min(nbCartesMaxSolo, nbCartesMaxTheme) : nbCartesMaxTheme;
 
     document.querySelectorAll("[data-cartes]").forEach((bouton) => {
       const nbCartesBouton = Number(bouton.dataset.cartes);
@@ -136,6 +140,7 @@ boutonsMode.forEach((bouton) => {
     if (menu.mode !== "ordinateur") {
       menu.difficulteOrdi = null;
     }
+    menu.mettreAJourLimiteCartes();
     menu.mettreAJourRecapMenu();
   });
 });
