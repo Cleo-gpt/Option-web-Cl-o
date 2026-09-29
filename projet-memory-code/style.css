@@ -674,11 +674,20 @@ body.theme-communaute .bouton-choix:hover {
   user-select: none;
 }
 
-/* Carte retournée : le dos disparaît, le symbole (image-symbole-carte) prend sa place */
+/* Carte retournée : le dos disparaît, la carte elle-même prend l'aspect d'un
+   polaroid (cadre blanc épais en bas, coins arrondis, légère rotation) plutôt
+   que d'être un simple cadre brun autour d'une petite photo. */
 .carte.retournee {
   background-image: none;
-  background-color: #4a4032;
-  border-color: var(--accent);
+  background-color: #f4f1ea;
+  border-color: #f4f1ea;
+  padding: 6px 6px 16px;
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.4);
+  transform: rotate(-3deg);
+}
+
+.carte:nth-child(even).retournee {
+  transform: rotate(3deg);
 }
 
 /* Carte déjà associée en paire : elle reste visible mais désactivée */
@@ -687,24 +696,14 @@ body.theme-communaute .bouton-choix:hover {
   border-color: var(--joueur-2);
   opacity: 0.6;
   cursor: default;
+  transform: none;
 }
 
-/* Chaque symbole prend l'aspect d'un polaroid : cadre blanc, ombre portée,
-   légère rotation (alternée selon le numéro du symbole pour ne pas avoir
-   toutes les cartes penchées du même côté). */
 .image-symbole-carte {
-  width: 74%;
-  height: 74%;
+  width: 100%;
+  height: 100%;
   object-fit: cover;
-  background-color: #f4f1ea;
-  padding: 6px 6px 14px;
-  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.4);
-  transform: rotate(-3deg);
-  box-sizing: border-box;
-}
-
-.carte:nth-child(even) .image-symbole-carte {
-  transform: rotate(3deg);
+  border-radius: 4px;
 }
 
 /* ===== Écran de fin ===== */
