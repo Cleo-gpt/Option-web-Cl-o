@@ -32,18 +32,17 @@
 const THEMES_VISUELS = ["anime", "japon", "mediamatique", "medieval", "communaute", "youtube"];
 const THEME_PAR_DEFAUT = "medieval";
 
-// Nombre de symboles (= paires max) disponibles par thème. La plupart ont 36
-// placeholders (largement assez pour les 56 cartes maximum proposées dans le
-// menu) ; le thème "mediamatique" n'a que 20 vraies images, donc son nombre
-// de cartes max dans le menu est limité en conséquence (voir
-// mettreAJourLimiteCartes()).
+// Nombre de symboles (= paires max) disponibles par thème. La plupart ont 28
+// placeholders, exactement les 56 cartes maximum proposées dans le menu ; le
+// thème "mediamatique" n'a que 20 vraies images, donc son nombre de cartes
+// max dans le menu est limité en conséquence (voir mettreAJourLimiteCartes()).
 const NB_SYMBOLES_PAR_THEME = {
-  anime: 36,
-  japon: 36,
+  anime: 28,
+  japon: 28,
   mediamatique: 20,
-  medieval: 36,
-  communaute: 36,
-  youtube: 36,
+  medieval: 28,
+  communaute: 28,
+  youtube: 28,
 };
 
 // Extension de fichier par thème (tous les thèmes en placeholders utilisent
@@ -77,6 +76,10 @@ const EXCEPTIONS_EXTENSION_SYMBOLE = [
   { theme: "communaute", numeroSymbole: 11, extension: "jpeg" },
   { theme: "communaute", numeroSymbole: 12, extension: "jpeg" },
   { theme: "communaute", numeroSymbole: 13, extension: "jpeg" },
+  { theme: "communaute", numeroSymbole: 14, extension: "jpg" },
+  { theme: "communaute", numeroSymbole: 15, extension: "jpeg" },
+  { theme: "communaute", numeroSymbole: 16, extension: "jpg" },
+  { theme: "communaute", numeroSymbole: 17, extension: "jpeg" },
 ];
 
 // Chemin de l'image de dos (face cachée, identique pour toutes les cartes d'un thème).
@@ -361,7 +364,7 @@ boutonsTheme.forEach((bouton) => {
   });
 });
 
-// Certains thèmes ont moins de 36 symboles disponibles (voir
+// Certains thèmes ont moins de 28 symboles disponibles (voir
 // NB_SYMBOLES_PAR_THEME plus haut) : leurs boutons "Nombre de cartes"
 // au-delà de 2× ce nombre de symboles sont désactivés. Si le nombre de cartes
 // déjà choisi n'est plus disponible pour le nouveau thème, on désélectionne
