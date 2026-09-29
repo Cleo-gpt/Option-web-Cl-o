@@ -33,9 +33,10 @@ const THEMES_VISUELS = ["anime", "japon", "mediamatique", "medieval", "communaut
 const THEME_PAR_DEFAUT = "medieval";
 
 // Nombre de symboles (= paires max) disponibles par thème. La plupart ont 36
-// placeholders (de quoi couvrir les 72 cartes proposées dans le menu) ; le
-// thème "mediamatique" n'a que 20 vraies images, donc son nombre de cartes
-// max dans le menu est limité en conséquence (voir mettreAJourLimiteCartes()).
+// placeholders (largement assez pour les 56 cartes maximum proposées dans le
+// menu) ; le thème "mediamatique" n'a que 20 vraies images, donc son nombre
+// de cartes max dans le menu est limité en conséquence (voir
+// mettreAJourLimiteCartes()).
 const NB_SYMBOLES_PAR_THEME = {
   anime: 36,
   japon: 36,
@@ -69,6 +70,13 @@ const EXCEPTIONS_EXTENSION_SYMBOLE = [
   { theme: "communaute", numeroSymbole: 4, extension: "jpg" },
   { theme: "communaute", numeroSymbole: 5, extension: "jpg" },
   { theme: "communaute", numeroSymbole: 6, extension: "jpg" },
+  { theme: "communaute", numeroSymbole: 7, extension: "JPG" },
+  { theme: "communaute", numeroSymbole: 8, extension: "jpeg" },
+  { theme: "communaute", numeroSymbole: 9, extension: "jpeg" },
+  { theme: "communaute", numeroSymbole: 10, extension: "jpeg" },
+  { theme: "communaute", numeroSymbole: 11, extension: "jpeg" },
+  { theme: "communaute", numeroSymbole: 12, extension: "jpeg" },
+  { theme: "communaute", numeroSymbole: 13, extension: "jpeg" },
 ];
 
 // Chemin de l'image de dos (face cachée, identique pour toutes les cartes d'un thème).
@@ -419,7 +427,7 @@ boutonsDifficulteOrdi.forEach((bouton) => {
   });
 });
 
-// Boutons 12 à 72 (pas de 4/8) : le nombre maximum de cartes proposé.
+// Boutons 12 à 56 (pas de 4/8) : le nombre maximum de cartes proposé.
 const boutonsCartes = document.querySelectorAll("[data-cartes]");
 boutonsCartes.forEach((bouton) => {
   bouton.addEventListener("click", () => {
