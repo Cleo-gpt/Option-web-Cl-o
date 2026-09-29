@@ -92,6 +92,10 @@ THEMES_VISUELS.anime.ajouterException(21, "jpg");
 THEMES_VISUELS.anime.ajouterException(22, "webp");
 THEMES_VISUELS.anime.ajouterException(23, "webp");
 THEMES_VISUELS.anime.ajouterException(24, "jpg");
+THEMES_VISUELS.anime.ajouterException(25, "jpeg");
+THEMES_VISUELS.anime.ajouterException(26, "webp");
+THEMES_VISUELS.anime.ajouterException(27, "jpg");
+THEMES_VISUELS.anime.ajouterException(28, "jpg");
 
 THEMES_VISUELS.communaute.ajouterException(1, "jpg");
 THEMES_VISUELS.communaute.ajouterException(2, "jpg");
