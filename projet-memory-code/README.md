@@ -11,17 +11,33 @@ Un jeu de Memory (paires de cartes à retrouver) jouable en local, seul contre u
 
 ```
 projet-memory-code/
-├── README.md            (ce fichier)
-├── index.html            structure de la page (menu, règles, plateau de jeu)
-├── style.css              apparence (couleurs, cartes, lumières des joueurs, coeurs)
-├── theme-visuel.js        classe ThemeVisuel (données par thème : symboles, images)
-├── traducteur.js          classe Traducteur (dictionnaire FR/DE/EN + langue actuelle)
-├── carte.js               classe Carte
-├── joueur.js              classe Joueur
-├── partie.js              classe Partie (cartes, joueurs, tour actuel, chrono, IA)
-├── menu.js                classe Menu (configuration choisie, validation)
-├── livre-des-regles.js    classe LivreDesRegles (ouverture, pause, pages)
-└── code.js                reste de la logique (constantes, éléments HTML, écrans, fin de partie)
+│
+├── Documentation
+│   ├── README.md            ce fichier : règles du projet, déroulement du jeu
+│   ├── MODIF.md             suivi des écarts avec les ateliers du cours
+│   └── LEXIQUE.md           vocabulaire JS et CSS utilisé, expliqué simplement
+│
+├── Page et apparence
+│   ├── index.html           structure de la page (menu, règles, plateau de jeu)
+│   └── style.css            apparence (couleurs, cartes, lumières des joueurs, coeurs)
+│
+├── Classes du jeu (une par fichier)
+│   ├── theme-visuel.js      ThemeVisuel : données par thème (symboles, images)
+│   ├── traducteur.js        Traducteur : dictionnaire FR/DE/EN + langue actuelle
+│   ├── carte.js             Carte
+│   ├── joueur.js            Joueur
+│   ├── menu.js              Menu : configuration choisie, validation
+│   ├── partie.js            Partie : cartes, joueurs, tour actuel, chrono, IA
+│   └── livre-des-regles.js  LivreDesRegles : ouverture, pause, pages
+│
+├── code.js                  reste de la logique (constantes, éléments HTML, écrans, fin de partie)
+│
+└── images/themes/           images de cartes, un dossier par thème visuel
+    ├── anime/                 28 symboles (symbole-01.png à symbole-28.png) + dos.svg
+    ├── communaute/
+    ├── japon/
+    ├── mediamatique/
+    └── youtube/
 ```
 
 Pas de framework, pas d'outil de build : on ouvre `index.html` dans le navigateur et ça fonctionne. HTML + CSS + JavaScript "vanilla" uniquement.
