@@ -1,11 +1,16 @@
 /* ===================================================================
    THÈMES VISUELS
-   Chaque thème (choisi dans le menu, voir js/menu.js et js/themes.js) pose une
-   classe "theme-<id>" sur <body> et redéfinit entièrement ses variables :
-   fond, couleurs, police et image de dos de carte. Le bouton 🌗 ajoute en plus
-   une classe de luminosité ("theme-jour" ou "theme-crepuscule", rien pour la
-   nuit) qui vient éclaircir la palette du thème actif — d'où les sélecteurs
-   combinés "body.theme-<id>.theme-jour" ci-dessous.
+
+   Chaque thème (choisi dans le menu) pose une classe "theme-<id>" sur
+   <body> et redéfinit entièrement ses variables : fond, couleurs, police
+   et image de dos de carte. Le bouton 🌗 ajoute en plus une classe de
+   luminosité ("theme-jour" ou "theme-crepuscule", rien pour la nuit) qui
+   vient éclaircir la palette du thème actif — d'où les sélecteurs combinés
+   "body.theme-<id>.theme-jour" ci-dessous.
+
+   Fichiers : style.css (variables de chaque thème, ci-dessous) ;
+   menu.js (classe posée sur <body> au choix du thème) ; theme-visuel.js
+   (liste des thèmes disponibles).
    =================================================================== */
 
 /* Couleurs communes à tous les thèmes (lumières des joueurs) : elles doivent
@@ -48,15 +53,19 @@ h1, h2 {
   font-family: var(--police-titres);
 }
 
-/* 🔴🔴🔴 ÉCART ATELIERS — linear-gradient() et background-clip: text ne sont
-   couverts par aucun atelier du cours (voir MODIF.md, section "Impossibles à
-   corriger sans trop s'éloigner du cours") ; conservés car demandés
-   explicitement pour l'apparence des thèmes, une couleur unie changerait le
-   rendu voulu. 🔴🔴🔴
-   Chaque thème définit --degrade-titre (voir plus bas) : un dégradé pour le
-   titre principal de l'écran menu. La plupart des thèmes y mettent un dégradé
-   discret de deux tons de --accent ; les thèmes "très colorés" (Animé,
-   Communauté engagée) y mettent un vrai dégradé multicolore. */
+/* 🔴🔴🔴 ÉCART ATELIERS — linear-gradient() et background-clip: text ne
+   sont couverts par aucun atelier du cours (voir MODIF.md, section
+   "Impossibles à corriger sans trop s'éloigner du cours") ; conservés car
+   demandés explicitement pour l'apparence des thèmes, une couleur unie
+   changerait le rendu voulu. 🔴🔴🔴 */
+
+/* Dégradé du titre principal de l'écran menu.
+   Chaque thème définit --degrade-titre (voir plus bas) : la plupart des
+   thèmes y mettent un dégradé discret de deux tons de --accent ; les
+   thèmes "très colorés" (Animé, Communauté engagée) y mettent un vrai
+   dégradé multicolore.
+   Fichier : style.css (règle ci-dessous, + --degrade-titre dans chaque
+   bloc de thème plus bas). */
 h1 {
   background: var(--degrade-titre);
   background-clip: text;
