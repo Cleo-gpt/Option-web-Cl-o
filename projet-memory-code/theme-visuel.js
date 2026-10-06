@@ -126,4 +126,24 @@ THEMES_VISUELS.communaute.ajouterException(26, "jpg");
 THEMES_VISUELS.communaute.ajouterException(27, "jpg");
 THEMES_VISUELS.communaute.ajouterException(28, "webp");
 
+THEMES_VISUELS.youtube.ajouterException(1, "png");
+THEMES_VISUELS.youtube.ajouterException(2, "jpg");
+THEMES_VISUELS.youtube.ajouterException(3, "jpg");
+THEMES_VISUELS.youtube.ajouterException(4, "jpg");
+THEMES_VISUELS.youtube.ajouterException(5, "jpg");
+THEMES_VISUELS.youtube.ajouterException(6, "png");
+THEMES_VISUELS.youtube.ajouterException(7, "jpg");
+THEMES_VISUELS.youtube.ajouterException(8, "jpg");
+THEMES_VISUELS.youtube.ajouterException(9, "jpg");
+THEMES_VISUELS.youtube.ajouterException(10, "webp");
+THEMES_VISUELS.youtube.ajouterException(11, "webp");
+THEMES_VISUELS.youtube.ajouterException(12, "jpg");
+THEMES_VISUELS.youtube.ajouterException(13, "webp");
+THEMES_VISUELS.youtube.ajouterException(14, "png");
+THEMES_VISUELS.youtube.ajouterException(15, "jpg");
+THEMES_VISUELS.youtube.ajouterException(16, "jpg");
+THEMES_VISUELS.youtube.ajouterException(17, "png");
+THEMES_VISUELS.youtube.ajouterException(18, "jpg");
+THEMES_VISUELS.youtube.ajouterException(19, "png");
+
 const THEME_PAR_DEFAUT = "medieval";
