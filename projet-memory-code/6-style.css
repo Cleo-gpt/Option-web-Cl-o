@@ -8,8 +8,8 @@
    vient éclaircir la palette du thème actif — d'où les sélecteurs combinés
    "body.theme-<id>.theme-jour" ci-dessous.
 
-   Fichiers : style.css (variables de chaque thème, ci-dessous) ;
-   menu.js (classe posée sur <body> au choix du thème) ; theme-visuel.js
+   Fichiers : 6-style.css (variables de chaque thème, ci-dessous) ;
+   4-menu.js (classe posée sur <body> au choix du thème) ; 4-theme-visuel.js
    (liste des thèmes disponibles).
    =================================================================== */
 
@@ -38,7 +38,7 @@ body {
 
 /* Le fond et le padding vivent sur #contenu-app plutôt que directement sur
    body, qui ne garde que la barre de réglages et le livre des règles (voir
-   index.html) hors de cette zone.
+   5-index.html) hors de cette zone.
    "background" (et pas "background-color") : --fond est une simple couleur
    pour la plupart des thèmes, mais un linear-gradient() pour "Communauté
    engagée" (voir plus bas) — background-color n'accepterait pas un dégradé. */
@@ -64,7 +64,7 @@ h1, h2 {
    thèmes y mettent un dégradé discret de deux tons de --accent ; les
    thèmes "très colorés" (Animé, Communauté engagée) y mettent un vrai
    dégradé multicolore.
-   Fichier : style.css (règle ci-dessous, + --degrade-titre dans chaque
+   Fichier : 6-style.css (règle ci-dessous, + --degrade-titre dans chaque
    bloc de thème plus bas). */
 h1 {
   background: var(--degrade-titre);
@@ -84,7 +84,7 @@ button {
    sombre (net différent du rose sakura de Japon), dégradé multicolore néon
    sur le titre, et --accent tiré au hasard parmi plusieurs teintes vives à
    chaque chargement de page (voir choisirAccentAnimeAuHasard() dans
-   js/menu.js) : la couleur d'accent change à chaque partie plutôt que de se
+   4-menu.js) : la couleur d'accent change à chaque partie plutôt que de se
    fixer sur une seule teinte (qui finirait par rappeler un autre thème). */
 body.theme-anime {
   --fond: #170f2e;
@@ -116,7 +116,7 @@ body.theme-anime.theme-jour {
 }
 
 /* Une classe par teinte possible : posée/retirée par choisirAccentAnimeAuHasard()
-   dans js/menu.js (via classList), à chaque sélection du thème "Animé". */
+   dans 4-menu.js (via classList), à chaque sélection du thème "Animé". */
 body.theme-anime.accent-anime-1 { --accent: #4fd3ff; }
 body.theme-anime.accent-anime-2 { --accent: #6bffb0; }
 body.theme-anime.accent-anime-3 { --accent: #ffe14d; }
@@ -287,8 +287,8 @@ body.theme-youtube.theme-jour {
    et de leurs boutons sur l'écran de menu : sélection, désactivation,
    couleurs d'accent par thème.
 
-   Fichier : style.css (règles ci-dessous) ; index.html (#ecran-menu) ;
-   menu.js (classe "selectionne" posée/retirée au clic).
+   Fichier : 6-style.css (règles ci-dessous) ; 5-index.html (#ecran-menu) ;
+   4-menu.js (classe "selectionne" posée/retirée au clic).
    =================================================================== */
 
 .bloc-choix {
@@ -326,7 +326,7 @@ body.theme-communaute .bouton-choix:hover {
 }
 
 /* Bouton indisponible (ex: nombre de cartes au-delà de ce que le thème visuel
-   choisi propose comme symboles, voir mettreAJourLimiteCartes() dans menu.js) */
+   choisi propose comme symboles, voir mettreAJourLimiteCartes() dans 4-menu.js) */
 .bouton-choix:disabled {
   opacity: 0.35;
   cursor: not-allowed;
@@ -361,8 +361,8 @@ body.theme-communaute .bouton-choix:hover {
    Apparence du livre fermé (couverture cliquable) et ouvert (pages,
    tournage de page), affiché au premier accès à la partie et en pause.
 
-   Fichier : style.css (règles ci-dessous) ; index.html (#livre et ses
-   pages) ; livre-des-regles.js (classes "livre-ferme"/"livre-ouvert"
+   Fichier : 6-style.css (règles ci-dessous) ; 5-index.html (#livre et ses
+   pages) ; 4-livre-des-regles.js (classes "livre-ferme"/"livre-ouvert"
    posées/retirées, page affichée).
    =================================================================== */
 
@@ -470,8 +470,8 @@ body.theme-communaute .bouton-choix:hover {
    endroit, visible sur tous les écrans : changer de luminosité, de
    langue, ou rouvrir le livre des règles en cours de partie.
 
-   Fichier : style.css (règles ci-dessous) ; index.html (#barre-reglages) ;
-   code.js (bouton thème) et traducteur.js (bouton langue).
+   Fichier : 6-style.css (règles ci-dessous) ; 5-index.html (#barre-reglages) ;
+   4-code.js (bouton thème) et 4-traducteur.js (bouton langue).
    =================================================================== */
 #barre-reglages {
   position: fixed;
@@ -523,8 +523,8 @@ body.theme-communaute .bouton-choix:hover {
    que de faire retomber la colonne de droite sous les joueurs (voir
    .arene plus bas, qui gère le débordement).
 
-   Fichier : style.css (règles ci-dessous) ; index.html (#zone-jeu et ses
-   3 colonnes) ; partie.js (contenu des colonnes, rempli en JS).
+   Fichier : 6-style.css (règles ci-dessous) ; 5-index.html (#zone-jeu et ses
+   3 colonnes) ; 4-partie.js (contenu des colonnes, rempli en JS).
    =================================================================== */
 #zone-jeu {
   display: flex;
@@ -670,7 +670,7 @@ body.theme-communaute .bouton-choix:hover {
 
 /* Paires déjà trouvées : une colonne à droite de la grille de cartes, une
    petite vignette par paire trouvée empilée verticalement dans l'ordre de
-   découverte (voir Partie.afficherPairesTrouvees() dans partie.js). Occupe
+   découverte (voir Partie.afficherPairesTrouvees() dans 4-partie.js). Occupe
    l'espace restant à droite de la grille plutôt que de le laisser vide. */
 #paires-trouvees {
   display: flex;
@@ -696,8 +696,8 @@ body.theme-communaute .bouton-choix:hover {
    Une ligne par joueur sur l'écran de fin : paires trouvées, coeurs
    restants, temps moyen par paire et temps de réflexion moyen.
 
-   Fichier : style.css (règles ci-dessous) ; index.html (#statistiques-fin,
-   vide au départ) ; code.js (afficherStatistiquesFin(), qui remplit ces
+   Fichier : 6-style.css (règles ci-dessous) ; 5-index.html (#statistiques-fin,
+   vide au départ) ; 4-code.js (afficherStatistiquesFin(), qui remplit ces
    lignes en JS).
    =================================================================== */
 
@@ -803,8 +803,8 @@ body.theme-communaute .bouton-choix:hover {
    Apparence de l'écran affiché à la fin de la partie (victoire ou
    défaite) : titre, message, statistiques et bouton "Rejouer".
 
-   Fichier : style.css (règles ci-dessous) ; index.html (#ecran-fin) ;
-   code.js (afficherResultatFin(), qui remplit le titre et le message).
+   Fichier : 6-style.css (règles ci-dessous) ; 5-index.html (#ecran-fin) ;
+   4-code.js (afficherResultatFin(), qui remplit le titre et le message).
    =================================================================== */
 
 #ecran-fin {

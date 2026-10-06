@@ -2,7 +2,7 @@
 // 🔴🔴🔴 ÉCART ATELIERS — séparer chaque classe dans son propre fichier
 // n'a pas d'équivalent dans les ateliers du cours : leurs classes (Meule,
 // Billet...) vivent toujours dans le même fichier que le reste de l'atelier
-// (voir MODIF.md, section "À partir de maintenant"). Écart assumé, demandé
+// (voir 2-MODIF.md, section "À partir de maintenant"). Écart assumé, demandé
 // explicitement par l'utilisateur. 🔴🔴🔴
 // ===================================================================
 
@@ -14,10 +14,10 @@
 // éléments HTML récupérés une fois pour toutes, la barre de réglages
 // (luminosité jour/nuit), la gestion des écrans, et l'affichage de fin de
 // partie. Les classes vivent chacune dans leur propre fichier, chargés
-// juste avant celui-ci : theme-visuel.js, traducteur.js, carte.js,
-// joueur.js, partie.js, menu.js, livre-des-regles.js.
+// juste avant celui-ci : 4-theme-visuel.js, 4-traducteur.js, 4-carte.js,
+// 4-joueur.js, 4-partie.js, 4-menu.js, 4-livre-des-regles.js.
 //
-// Fichier : code.js (fichier entier).
+// Fichier : 4-code.js (fichier entier).
 // ===================================================================
 
 
@@ -31,14 +31,14 @@
 // durée d'un tour) sont des valeurs fixes du jeu, utilisées par plusieurs
 // classes.
 //
-// Fichier : code.js (ci-dessous) ; "partieActuelle" est une instance de la
-// classe Partie (voir partie.js), "scene" et ces constantes sont lues depuis
-// partie.js et menu.js.
+// Fichier : 4-code.js (ci-dessous) ; "partieActuelle" est une instance de la
+// classe Partie (voir 4-partie.js), "scene" et ces constantes sont lues depuis
+// 4-partie.js et 4-menu.js.
 // ===================================================================
 let scene = "menu"; // "menu" | "jeu" | "fin"
 let partieActuelle = null;
 
-// Couleurs des lumières, dans l'ordre des joueurs (voir style.css)
+// Couleurs des lumières, dans l'ordre des joueurs (voir 6-style.css)
 const CLASSES_COULEUR_JOUEURS = ["joueur-1", "joueur-2", "joueur-3", "joueur-4"];
 const CLES_TRADUCTION_COULEURS = ["couleur-bleu", "couleur-vert", "couleur-rose", "couleur-jaune"];
 
@@ -52,8 +52,8 @@ const TEMPS_TOUR = 45; // secondes laissées à chaque joueur pour retourner 2 c
 // Récupère une fois pour toutes les éléments qu'on va devoir modifier,
 // plutôt que de refaire document.getElementById() à chaque fois.
 //
-// Fichier : code.js (ci-dessous) ; les éléments correspondent aux ids
-// déclarés dans index.html.
+// Fichier : 4-code.js (ci-dessous) ; les éléments correspondent aux ids
+// déclarés dans 5-index.html.
 // ===================================================================
 const ecranMenu = document.getElementById("ecran-menu");
 const ecranJeu = document.getElementById("ecran-jeu");
@@ -92,8 +92,8 @@ const languetteLivre = document.getElementById("languette-livre");
 // "theme-japon theme-jour" ("nuit" est la luminosité par défaut, sans
 // classe).
 //
-// Fichier : code.js (ci-dessous) ; les couleurs de chaque combinaison sont
-// définies en CSS dans style.css
+// Fichier : 4-code.js (ci-dessous) ; les couleurs de chaque combinaison sont
+// définies en CSS dans 6-style.css
 // (body.theme-<visuel>.theme-<luminosite>).
 // ===================================================================
 const LUMINOSITES = ["nuit", "crepuscule", "jour"];
@@ -126,8 +126,8 @@ boutonTheme.addEventListener("click", () => {
 // Affiche l'écran demandé (menu / jeu / fin) et cache tous les autres, pour
 // n'en montrer qu'un à la fois.
 //
-// Fichier : code.js, fonction changerEcran() ; appelée depuis menu.js et
-// partie.js à chaque changement d'écran.
+// Fichier : 4-code.js, fonction changerEcran() ; appelée depuis 4-menu.js et
+// 4-partie.js à chaque changement d'écran.
 // ===================================================================
 function changerEcran(nom) {
   scene = nom;
@@ -151,9 +151,9 @@ function formaterTemps(totalSecondes) {
 // Affiche le titre, le message de fin et les statistiques de chaque joueur
 // (paires trouvées, coeurs restants, temps moyens) sur l'écran de fin.
 //
-// Fichier : code.js, fonctions afficherResultatFin() à
+// Fichier : 4-code.js, fonctions afficherResultatFin() à
 // afficherStatistiquesFin() ; appelées depuis Partie.terminer()
-// (voir partie.js).
+// (voir 4-partie.js).
 // ===================================================================
 
 // Affiche le titre et le message de fin dans la langue actuelle. Appelée à la

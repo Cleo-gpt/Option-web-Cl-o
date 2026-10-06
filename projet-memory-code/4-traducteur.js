@@ -1,7 +1,7 @@
 // ===================================================================
 // 🔴🔴🔴 ÉCART ATELIERS — ce fichier entier (dictionnaire multilingue
 // fr/de/en + classe Traducteur) n'a pas d'équivalent dans les ateliers du
-// cours : aucun n'aborde l'internationalisation (voir MODIF.md, section
+// cours : aucun n'aborde l'internationalisation (voir 2-MODIF.md, section
 // "Impossibles à corriger sans trop s'éloigner du cours"). Conservé car la
 // fonctionnalité (changer de langue) est demandée et n'a pas d'alternative
 // plus simple qui la garderait. 🔴🔴🔴
@@ -17,7 +17,7 @@
 // joueurs...). Le HTML des règles garde ses balises <strong> : on utilise
 // innerHTML pour que "10 coeurs" reste en gras dans les trois langues.
 //
-// Fichier : traducteur.js (classe entière, + TRADUCTIONS et l'instance
+// Fichier : 4-traducteur.js (classe entière, + TRADUCTIONS et l'instance
 // globale "traducteur" juste en dessous).
 // ===================================================================
 class Traducteur {

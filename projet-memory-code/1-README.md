@@ -5,49 +5,52 @@ Un jeu de Memory (paires de cartes à retrouver) jouable en local, seul contre u
 ## Workflow avec l'agent
 
 - À chaque fin de demande, l'agent pousse (push) les changements vers le dépôt distant.
-- Quand [MODIF.md](MODIF.md) reçoit une nouvelle entrée, l'agent le signale à l'utilisateur et lui montre le fichier.
+- Quand [2-MODIF.md](2-MODIF.md) reçoit une nouvelle entrée, l'agent le signale à l'utilisateur et lui montre le fichier.
 
 ## Structure du projet
+
+Les fichiers portent un préfixe numérique pour se grouper dans cet ordre dans l'explorateur de
+fichiers (texte, puis JS, puis HTML/CSS), l'explorateur triant toujours par ordre alphabétique.
 
 ```
 projet-memory-code/
 │
 ├── Documentation
-│   ├── README.md            ce fichier : règles du projet, déroulement du jeu
-│   ├── MODIF.md             suivi des écarts avec les ateliers du cours
-│   └── LEXIQUE.md           vocabulaire JS et CSS utilisé, expliqué simplement
-│
-├── Page et apparence
-│   ├── index.html           structure de la page (menu, règles, plateau de jeu)
-│   └── style.css            apparence (couleurs, cartes, lumières des joueurs, coeurs)
+│   ├── 1-README.md            ce fichier : règles du projet, déroulement du jeu
+│   ├── 2-MODIF.md             suivi des écarts avec les ateliers du cours
+│   └── 3-LEXIQUE.md           vocabulaire JS et CSS utilisé, expliqué simplement
 │
 ├── Classes du jeu (une par fichier)
-│   ├── theme-visuel.js      ThemeVisuel : données par thème (symboles, images)
-│   ├── traducteur.js        Traducteur : dictionnaire FR/DE/EN + langue actuelle
-│   ├── carte.js             Carte
-│   ├── joueur.js            Joueur
-│   ├── menu.js              Menu : configuration choisie, validation
-│   ├── partie.js            Partie : cartes, joueurs, tour actuel, chrono, IA
-│   └── livre-des-regles.js  LivreDesRegles : ouverture, pause, pages
+│   ├── 4-theme-visuel.js      ThemeVisuel : données par thème (symboles, images)
+│   ├── 4-traducteur.js        Traducteur : dictionnaire FR/DE/EN + langue actuelle
+│   ├── 4-carte.js             Carte
+│   ├── 4-joueur.js            Joueur
+│   ├── 4-menu.js              Menu : configuration choisie, validation
+│   ├── 4-partie.js            Partie : cartes, joueurs, tour actuel, chrono, IA
+│   └── 4-livre-des-regles.js  LivreDesRegles : ouverture, pause, pages
 │
-├── code.js                  reste de la logique (constantes, éléments HTML, écrans, fin de partie)
+├── 4-code.js                  reste de la logique (constantes, éléments HTML, écrans, fin de partie)
 │
-└── images/themes/           images de cartes, un dossier par thème visuel
-    ├── anime/                 28 symboles (symbole-01.png à symbole-28.png) + dos.svg
+├── Page et apparence
+│   ├── 5-index.html           structure de la page (menu, règles, plateau de jeu)
+│   └── 6-style.css            apparence (couleurs, cartes, lumières des joueurs, coeurs)
+│
+└── images/themes/             images de cartes, un dossier par thème visuel
+    ├── anime/                   28 symboles (symbole-01.png à symbole-28.png) + dos.svg
     ├── communaute/
     ├── japon/
     ├── mediamatique/
     └── youtube/
 ```
 
-Pas de framework, pas d'outil de build : on ouvre `index.html` dans le navigateur et ça fonctionne. HTML + CSS + JavaScript "vanilla" uniquement.
+Pas de framework, pas d'outil de build : on ouvre `5-index.html` dans le navigateur et ça fonctionne. HTML + CSS + JavaScript "vanilla" uniquement.
 
 ## Règles du code à respecter
 
 Ces règles gardent le projet simple et lisible, même en avançant petit à petit.
 
 1. **Rester simple (KISS).** Pas de framework, pas de build tool, pas de librairie externe.
-2. **Un fichier JS par classe, le reste dans `code.js`.** `ThemeVisuel`, `Traducteur`, `Carte`, `Joueur`, `Partie`, `Menu` et `LivreDesRegles` ont chacune leur fichier ; le reste va dans `code.js`. Pas d'autre découpage au-delà de ces 8 fichiers.
+2. **Un fichier JS par classe, le reste dans `4-code.js`.** `ThemeVisuel`, `Traducteur`, `Carte`, `Joueur`, `Partie`, `Menu` et `LivreDesRegles` ont chacune leur fichier ; le reste va dans `4-code.js`. Pas d'autre découpage au-delà de ces 8 fichiers.
 3. **Noms en français.** Variables, fonctions et commentaires en français (`joueurs`, `melangerCartes()`...).
 4. **Un commentaire par bloc de logique.** Chaque fonction ou condition un peu complexe a un court commentaire au-dessus qui explique **à quoi elle sert**. Voir l'exemple ci-dessous.
 5. **Pas de code mort ni de fonctionnalité inutilisée.** Une règle du jeu non demandée ne s'ajoute pas "au cas où".
@@ -113,4 +116,4 @@ Affiché une fois la configuration validée, avant de démarrer la partie :
 
 ## Écarts avec les ateliers
 
-Le détail des écarts entre le code et les ateliers (règle 8) est suivi dans [MODIF.md](MODIF.md), pas ici.
+Le détail des écarts entre le code et les ateliers (règle 8) est suivi dans [2-MODIF.md](2-MODIF.md), pas ici.

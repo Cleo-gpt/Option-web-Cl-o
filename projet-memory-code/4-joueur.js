@@ -5,7 +5,7 @@
 // statistiques accumulées pendant la partie (paires trouvées, temps de
 // réflexion, erreurs).
 //
-// Fichier : joueur.js (classe entière).
+// Fichier : 4-joueur.js (classe entière).
 // ===================================================================
 class Joueur {
   constructor(numero, classeCouleur, estRobot) {

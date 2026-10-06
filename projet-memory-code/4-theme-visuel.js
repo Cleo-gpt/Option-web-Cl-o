@@ -5,7 +5,7 @@
 // de symboles de cartes il a, et dans quel dossier aller chercher ses
 // images. Toutes les images de tous les thèmes sont en PNG.
 //
-// Fichier : theme-visuel.js (classe entière, + THEMES_VISUELS et
+// Fichier : 4-theme-visuel.js (classe entière, + THEMES_VISUELS et
 // THEME_PAR_DEFAUT juste en dessous).
 // ===================================================================
 class ThemeVisuel {

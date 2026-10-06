@@ -8,8 +8,8 @@
 // "premier accès" dans le code ci-dessous). Une seule instance globale,
 // "livreDesRegles", gère tout le livre.
 //
-// Fichiers : livre-des-regles.js (classe + ses écouteurs de clic) ;
-// l'élément DOM du livre lui-même reste la variable "livre" (voir code.js).
+// Fichiers : 4-livre-des-regles.js (classe + ses écouteurs de clic) ;
+// l'élément DOM du livre lui-même reste la variable "livre" (voir 4-code.js).
 // ===================================================================
 class LivreDesRegles {
   constructor() {

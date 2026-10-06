@@ -5,7 +5,7 @@
 // porte (deux cartes partagent le même numeroSymbole = une paire), et si
 // elle est actuellement retournée ou déjà trouvée.
 //
-// Fichier : carte.js (classe entière).
+// Fichier : 4-carte.js (classe entière).
 // ===================================================================
 class Carte {
   constructor(id, numeroSymbole) {

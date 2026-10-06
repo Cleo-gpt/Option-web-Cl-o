@@ -6,9 +6,9 @@
   <title>Memory Multijoueur</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <!-- Une police par thème visuel (voir bloc "Thème visuel" du menu, et style.css) -->
+  <!-- Une police par thème visuel (voir bloc "Thème visuel" du menu, et 6-style.css) -->
   <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;700&family=Klee+One:wght@400;600&family=Orbitron:wght@400;700&family=Poppins:wght@400;600&family=Roboto:wght@400;700&family=Bangers&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="6-style.css">
 </head>
 <body>
 
@@ -32,8 +32,8 @@
        On choisit le thème visuel, le mode de jeu, le nombre de joueurs, le
        nombre de cartes et la difficulté du mélange avant de jouer.
 
-       Fichiers : index.html (#ecran-menu ci-dessous) ; menu.js (classe
-       Menu, gestion des clics) ; style.css (section "MENU DE
+       Fichiers : 5-index.html (#ecran-menu ci-dessous) ; 4-menu.js (classe
+       Menu, gestion des clics) ; 6-style.css (section "MENU DE
        CONFIGURATION").
        =================================================================== -->
   <section id="ecran-menu" class="ecran">
@@ -102,8 +102,8 @@
        au début, puis reste accessible via sa languette. Trois colonnes :
        joueurs, grille de cartes, paires trouvées.
 
-       Fichiers : index.html (#ecran-jeu ci-dessous) ; partie.js (classe
-       Partie, remplit et met à jour ces 3 colonnes) ; style.css (section
+       Fichiers : 5-index.html (#ecran-jeu ci-dessous) ; 4-partie.js (classe
+       Partie, remplit et met à jour ces 3 colonnes) ; 6-style.css (section
        "ÉCRAN DE JEU").
        =================================================================== -->
   <section id="ecran-jeu" class="ecran" hidden>
@@ -146,9 +146,9 @@
        fermé après le menu, et reste accessible pendant la partie via la
        languette #languette-livre.
 
-       Fichiers : index.html (#livre et ses pages ci-dessous) ;
-       livre-des-regles.js (classe LivreDesRegles, ouverture/fermeture) ;
-       style.css (section "LIVRE DES RÈGLES").
+       Fichiers : 5-index.html (#livre et ses pages ci-dessous) ;
+       4-livre-des-regles.js (classe LivreDesRegles, ouverture/fermeture) ;
+       6-style.css (section "LIVRE DES RÈGLES").
        =================================================================== -->
   <div id="livre" class="livre-ferme" hidden>
 
@@ -199,8 +199,8 @@
        tous les joueurs ont perdu leurs coeurs (défaite) : titre, message,
        statistiques de chaque joueur et bouton "Rejouer".
 
-       Fichiers : index.html (#ecran-fin ci-dessous) ; code.js
-       (afficherResultatFin(), afficherStatistiquesFin()) ; style.css
+       Fichiers : 5-index.html (#ecran-fin ci-dessous) ; 4-code.js
+       (afficherResultatFin(), afficherStatistiquesFin()) ; 6-style.css
        (section "ÉCRAN DE FIN").
        =================================================================== -->
   <section id="ecran-fin" class="ecran" hidden>
@@ -216,13 +216,13 @@
 
   </div> <!-- fin #contenu-app -->
 
-  <script src="theme-visuel.js"></script>
-  <script src="traducteur.js"></script>
-  <script src="carte.js"></script>
-  <script src="joueur.js"></script>
-  <script src="code.js"></script>
-  <script src="partie.js"></script>
-  <script src="menu.js"></script>
-  <script src="livre-des-regles.js"></script>
+  <script src="4-theme-visuel.js"></script>
+  <script src="4-traducteur.js"></script>
+  <script src="4-carte.js"></script>
+  <script src="4-joueur.js"></script>
+  <script src="4-code.js"></script>
+  <script src="4-partie.js"></script>
+  <script src="4-menu.js"></script>
+  <script src="4-livre-des-regles.js"></script>
 </body>
 </html>

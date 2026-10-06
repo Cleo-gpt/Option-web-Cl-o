@@ -6,9 +6,9 @@
 // robot, et la fin de partie. Une seule instance vit à la fois, dans la
 // variable "partieActuelle".
 //
-// Fichier : partie.js (classe entière) ; "partieActuelle" et les éléments
+// Fichier : 4-partie.js (classe entière) ; "partieActuelle" et les éléments
 // HTML qu'elle manipule (chrono, grille de cartes...) sont déclarés dans
-// code.js.
+// 4-code.js.
 // ===================================================================
 class Partie {
   constructor(mode, nbJoueurs, difficulteOrdi, theme, nbCartes, difficulte) {
@@ -60,7 +60,7 @@ class Partie {
   // simplement le nombre de mélanges effectués : plus il y en a, plus l'ordre
   // final est imprévisible. Chaque carte retient le numéro de son symbole :
   // l'image affichée dépend du thème visuel choisi (voir
-  // ThemeVisuel.cheminSymboleCarte() dans theme-visuel.js), mais la
+  // ThemeVisuel.cheminSymboleCarte() dans 4-theme-visuel.js), mais la
   // comparaison de paires se fait sur ce numéro, indépendamment du thème.
   creerEtMelangerCartes(nbCartes, difficulte) {
     const nbPaires = nbCartes / 2;
@@ -101,7 +101,7 @@ class Partie {
   // Dessine la colonne de gauche (lumière + nom + coeurs par joueur) et la
   // tient à jour (coeurs, lumière du joueur actif).
   //
-  // Fichier : partie.js, méthodes afficherJoueurs() à
+  // Fichier : 4-partie.js, méthodes afficherJoueurs() à
   // allumerLumiereJoueurActuel().
   // ===================================================================
 
@@ -149,7 +149,7 @@ class Partie {
   // symbole cachée au départ) et la met à jour quand une carte change
   // d'état (retournée / trouvée).
   //
-  // Fichier : partie.js, méthodes afficherCartes() à afficherPairesTrouvees().
+  // Fichier : 4-partie.js, méthodes afficherCartes() à afficherPairesTrouvees().
   // ===================================================================
 
   afficherCartes() {
@@ -162,7 +162,7 @@ class Partie {
       bouton.addEventListener("click", () => this.choisirCarte(carte.id));
 
       // Le dos (face cachée) est posé en CSS via background-image (voir .carte
-      // dans style.css) : il suit automatiquement le thème choisi. Seule l'image
+      // dans 6-style.css) : il suit automatiquement le thème choisi. Seule l'image
       // du symbole (face visible) est gérée ici, une fois la carte retournée.
       const imageSymbole = document.createElement("img");
       imageSymbole.className = "image-symbole-carte";
@@ -210,7 +210,7 @@ class Partie {
   // minuteur du tour, le clic sur une carte, la vérification de paire, et
   // le passage au joueur suivant.
   //
-  // Fichier : partie.js, méthodes demarrerTour() à passerAuJoueurSuivant().
+  // Fichier : 4-partie.js, méthodes demarrerTour() à passerAuJoueurSuivant().
   // ===================================================================
 
   demarrerTour() {
@@ -373,7 +373,7 @@ class Partie {
   //             trop le joueur, auquel cas il rate volontairement un tour de
   //             temps en temps pour garder la partie intéressante.
   //
-  // Fichier : partie.js, méthodes memoriserCartePourRobot() à
+  // Fichier : 4-partie.js, méthodes memoriserCartePourRobot() à
   // jouerTourRobot().
   // ===================================================================
 
@@ -481,7 +481,7 @@ class Partie {
   // pause (et la reprend) quand le livre des règles est rouvert en cours
   // de jeu.
   //
-  // Fichier : partie.js, méthodes demarrerChrono() à reprendre().
+  // Fichier : 4-partie.js, méthodes demarrerChrono() à reprendre().
   // ===================================================================
 
   demarrerChrono() {
@@ -531,8 +531,8 @@ class Partie {
   // Arrête le chrono et le minuteur, puis affiche l'écran de fin (titre,
   // message et statistiques de chaque joueur).
   //
-  // Fichier : partie.js, méthode terminer() ; les fonctions d'affichage
-  // afficherResultatFin() et afficherStatistiquesFin() sont dans code.js.
+  // Fichier : 4-partie.js, méthode terminer() ; les fonctions d'affichage
+  // afficherResultatFin() et afficherStatistiquesFin() sont dans 4-code.js.
   // ===================================================================
 
   terminer(resultat) {
