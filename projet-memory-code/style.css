@@ -525,9 +525,15 @@ body.theme-communaute .bouton-choix:hover {
    dans les couleurs du thème choisi (--cuir, --dore, --fond-carte sont déjà
    définis par chaque thème, voir le haut de ce fichier). Un double-cadre
    (bordure dorée fine à l'intérieur d'une bordure en cuir épaisse) plus quatre
-   coins décoratifs en dégradé doré, posés avec ::before/::after. */
+   coins décoratifs en dégradé doré, posés avec ::before/::after.
+   max-width + margin: 0 auto : le cadre reste à la taille de son contenu
+   (colonne joueurs + grille de cartes, 900px max, voir #grille-cartes) et se
+   centre, plutôt que de s'étirer sur toute la largeur de la fenêtre avec du
+   vide à droite. */
 .arene {
   position: relative;
+  max-width: 1200px;
+  margin: 0 auto;
   background-color: var(--fond-carte);
   border: 10px solid var(--cuir);
   border-radius: 18px;
