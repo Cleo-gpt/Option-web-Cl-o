@@ -8,6 +8,7 @@ le même écran.
 
 - À chaque fin de demande, l'agent pousse (push) les
   changements vers le dépôt distant.
+
 - Quand [2-MODIF.md](2-MODIF.md) reçoit une nouvelle
   entrée, l'agent le signale et montre le fichier.
 
@@ -47,8 +48,7 @@ projet-memory-code/
     └── youtube/
 ```
 
-Chaque dossier de thème a 28 symboles PNG
-(symbole-01.png à symbole-28.png) + un dos.svg.
+Chaque dossier de thème a 28 symboles PNG + un dos.svg.
 
 Pas de framework, pas d'outil de build : on ouvre
 `5-index.html` dans le navigateur et ça fonctionne.
@@ -56,43 +56,40 @@ HTML + CSS + JavaScript "vanilla" uniquement.
 
 ## Règles du code à respecter
 
-Ces règles gardent le projet simple et lisible, même en
-avançant petit à petit.
+Ces règles gardent le projet simple et lisible.
 
-1. **Rester simple (KISS)** : pas de framework, pas de
-   build tool, pas de librairie externe.
-2. **Un fichier JS par classe, le reste dans `4-code.js`** :
-   `ThemeVisuel`, `Traducteur`, `Carte`, `Joueur`,
-   `Partie`, `Menu` et `LivreDesRegles` ont chacune leur
-   fichier. Pas d'autre découpage au-delà de ces 8.
-3. **Noms en français** : variables, fonctions et
-   commentaires en français (`joueurs`,
-   `melangerCartes()`...).
-4. **Un commentaire par bloc de logique** : chaque
-   fonction ou condition un peu complexe a un court
-   commentaire qui explique **à quoi elle sert**. Voir
-   l'exemple ci-dessous.
-5. **Pas de code mort ni de fonctionnalité inutilisée** :
-   une règle non demandée ne s'ajoute pas "au cas où".
-6. **État du jeu centralisé, dans des classes** : `menu`
-   et `partieActuelle` (ou `null` avant le début d'une
-   partie) sont chacun un seul objet à lire pour savoir
-   "où on en est".
-7. **CSS avec variables** : les couleurs sont définies
-   une fois via des variables CSS (`:root { --bleu:
-   ...; }`) et réutilisées.
-8. **Se baser sur les ateliers du cours** : le code ne
-   doit utiliser que des notions présentes dans les PDF
-   "Atelier" à la racine du dépôt (`01-planetes`,
-   `02-orbit`, `03-donnees-nues`, `06-deux-langages`,
-   `08-json`, `One_button`, `watt`, `02-sas-poo/projets`
-   et ses sous-dossiers).
-9. **Classes ES6 pour un maximum de structures du jeu** :
-   constructeur en `this.xxx = xxx`, méthodes en
-   camelCase français préfixées par `est` pour les
-   prédicats (`estElimine`...), sans héritage,
-   getters/setters, champs privés ni méthode statique —
-   dans le style des ateliers (`Planete`, `Meule`...).
+1. **Rester simple (KISS)**
+   Pas de framework, build tool, ni librairie externe.
+
+2. **Un fichier JS par classe, le reste dans `4-code.js`**
+   8 fichiers au total, pas d'autre découpage.
+
+3. **Noms en français**
+   Variables, fonctions, commentaires en français.
+
+4. **Un commentaire par bloc de logique**
+   Explique **à quoi sert** le code, pas comment
+   JavaScript fonctionne. Voir l'exemple ci-dessous.
+
+5. **Pas de code mort ni de fonctionnalité inutilisée**
+   Une règle non demandée ne s'ajoute pas "au cas où".
+
+6. **État du jeu centralisé, dans des classes**
+   `menu` et `partieActuelle` sont chacun un seul objet
+   à lire pour savoir "où on en est".
+
+7. **CSS avec variables**
+   Les couleurs sont définies une fois (`:root`) et
+   réutilisées partout.
+
+8. **Se baser sur les ateliers du cours**
+   Le code n'utilise que des notions présentes dans
+   les PDF "Atelier" à la racine du dépôt.
+
+9. **Classes ES6 pour un maximum de structures du jeu**
+   Constructeur en `this.xxx = xxx`, prédicats
+   préfixés par `est`, sans héritage, getters/setters,
+   champs privés ni méthode statique.
 
 ### Exemple de commentaire attendu
 
@@ -114,33 +111,37 @@ function verifierPaire(carteA, carteB) {
 
 - **Mode de jeu** : contre un ordinateur, ou en
   multijoueur.
+
 - **Nombre de joueurs** (si multijoueur).
-- **Nombre de cartes** : un multiple de 4 (12, 16, 20...),
-  pour que les paires tombent juste.
-- **Difficulté du mélange** : Facile, Moyen, Difficile —
-  plus c'est difficile, plus le mélange est poussé.
+
+- **Nombre de cartes** : un multiple de 4 (12, 16,
+  20...), pour que les paires tombent juste.
+
+- **Difficulté du mélange** : Facile, Moyen, Difficile.
 
 ### 2. Livre des règles
 
-Affiché une fois la configuration validée, avant de
-démarrer la partie :
+Affiché une fois la configuration validée :
 
 - Chaque joueur commence avec **10 coeurs**.
+
 - Une erreur = **-1 coeur** ; une paire trouvée =
   **+1 coeur**.
-- À **0 coeur**, un joueur est éliminé. Le but : rester
-  en vie jusqu'à la fin de la partie.
-- Chaque joueur a une **couleur** ; une **lumière**
-  indique à qui est le tour.
+
+- À **0 coeur**, un joueur est éliminé.
+
+- Chaque joueur a une **couleur** et une **lumière**
+  qui indique à qui est le tour.
+
 - **45 secondes** par tour pour retourner deux cartes.
 
 ### 3. Partie
 
-- Un **chronomètre** démarre avec la partie et s'arrête
-  à la victoire ou quand il ne reste plus qu'un joueur
-  en vie (ou zéro).
+- Un **chronomètre** démarre avec la partie.
+
 - **Tour par tour** : la lumière du joueur actif
-  s'allume, 45 secondes pour retourner 2 cartes.
+  s'allume, 45 secondes pour jouer.
+
 - Temps écoulé sans action = une erreur, puis joueur
   suivant.
 
@@ -154,13 +155,11 @@ démarrer la partie :
 | Joueur 4   | Jaune   |
 | Ordinateur | Argenté |
 
-(Autres couleurs à définir si plus de 4 joueurs.)
-
 ## Apparence
 
 - Fond du jeu : **anthracite**.
-- Chaque joueur est identifiable par sa couleur (lumière
-  + éventuellement bordure de son tour).
+
+- Chaque joueur est identifiable par sa couleur.
 
 ## Écarts avec les ateliers
 
