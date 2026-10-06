@@ -21,6 +21,9 @@
   `querySelectorAll(...).forEach(...)` répété.
 - **Objet de config à deux niveaux → liste plate** : `EXCEPTIONS_EXTENSION` est remplacé par
   `EXTENSIONS_SYMBOLES_MEDIAMATIQUE`, une liste plate `[{ numeroSymbole, extension }]`.
+  *(Obsolète depuis : toutes les images de tous les thèmes sont maintenant uniformément en
+  `.png`, donc ce système de liste d'exceptions par extension a été entièrement retiré de
+  `theme-visuel.js` — il n'y a plus qu'un seul format à gérer.)*
 
 ## 🔴 Impossibles à corriger sans trop s'éloigner du cours
 

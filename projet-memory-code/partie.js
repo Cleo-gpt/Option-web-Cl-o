@@ -445,19 +445,17 @@ class Partie {
     this.chronoDemarre = true;
     this.secondesEcoulees = 0;
     chronoAffichage.textContent = "00:00";
-
-    this.identifiantChrono = setInterval(() => {
-      this.secondesEcoulees += 1;
-      chronoAffichage.textContent = formaterTemps(this.secondesEcoulees);
-    }, 1000);
+    this.lancerChrono();
   }
 
   arreterChrono() {
     clearInterval(this.identifiantChrono);
   }
 
-  // Reprend le chrono là où il en était, sans le remettre à zéro.
-  reprendreChrono() {
+  // Démarre le décompte du chrono à partir de la valeur actuelle de
+  // "secondesEcoulees" (utilisé au tout premier démarrage, mais aussi pour
+  // reprendre après une pause sans repartir de zéro).
+  lancerChrono() {
     clearInterval(this.identifiantChrono);
     this.identifiantChrono = setInterval(() => {
       this.secondesEcoulees += 1;
@@ -478,7 +476,7 @@ class Partie {
     // Le chrono ne reprend que s'il avait déjà démarré (le joueur a pu ouvrir
     // le livre en pause avant même d'avoir retourné sa première carte).
     if (this.chronoDemarre) {
-      this.reprendreChrono();
+      this.lancerChrono();
     }
     this.lancerMinuteurTour();
   }
