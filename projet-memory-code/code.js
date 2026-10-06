@@ -147,6 +147,13 @@ function formaterTemps(totalSecondes) {
 
 // ===================================================================
 // FIN DE PARTIE (affichage)
+//
+// Affiche le titre, le message de fin et les statistiques de chaque joueur
+// (paires trouvées, coeurs restants, temps moyens) sur l'écran de fin.
+//
+// Fichier : code.js, fonctions afficherResultatFin() à
+// afficherStatistiquesFin() ; appelées depuis Partie.terminer()
+// (voir partie.js).
 // ===================================================================
 
 // Affiche le titre et le message de fin dans la langue actuelle. Appelée à la
