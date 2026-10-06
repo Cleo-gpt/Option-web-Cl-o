@@ -58,35 +58,35 @@ HTML + CSS + JavaScript "vanilla" uniquement.
 
 Ces règles gardent le projet simple et lisible.
 
-1. **Rester simple (KISS)**
+1. Rester simple (KISS)
    Pas de framework, build tool, ni librairie externe.
 
-2. **Un fichier JS par classe, le reste dans `4-code.js`**
+2. Un fichier JS par classe, le reste dans `4-code.js`
    8 fichiers au total, pas d'autre découpage.
 
-3. **Noms en français**
+3. Noms en français
    Variables, fonctions, commentaires en français.
 
-4. **Un commentaire par bloc de logique**
-   Explique **à quoi sert** le code, pas comment
+4. Un commentaire par bloc de logique
+   Explique à quoi sert le code, pas comment
    JavaScript fonctionne. Voir l'exemple ci-dessous.
 
-5. **Pas de code mort ni de fonctionnalité inutilisée**
+5. Pas de code mort ni de fonctionnalité inutilisée
    Une règle non demandée ne s'ajoute pas "au cas où".
 
-6. **État du jeu centralisé, dans des classes**
+6. État du jeu centralisé, dans des classes
    `menu` et `partieActuelle` sont chacun un seul objet
    à lire pour savoir "où on en est".
 
-7. **CSS avec variables**
+7. CSS avec variables
    Les couleurs sont définies une fois (`:root`) et
    réutilisées partout.
 
-8. **Se baser sur les ateliers du cours**
+8. Se baser sur les ateliers du cours
    Le code n'utilise que des notions présentes dans
    les PDF "Atelier" à la racine du dépôt.
 
-9. **Classes ES6 pour un maximum de structures du jeu**
+9. Classes ES6 pour un maximum de structures du jeu
    Constructeur en `this.xxx = xxx`, prédicats
    préfixés par `est`, sans héritage, getters/setters,
    champs privés ni méthode statique.
@@ -109,37 +109,37 @@ function verifierPaire(carteA, carteB) {
 
 ### 1. Menu de configuration
 
-- **Mode de jeu** : contre un ordinateur, ou en
+- Mode de jeu : contre un ordinateur, ou en
   multijoueur.
 
-- **Nombre de joueurs** (si multijoueur).
+- Nombre de joueurs (si multijoueur).
 
-- **Nombre de cartes** : un multiple de 4 (12, 16,
+- Nombre de cartes : un multiple de 4 (12, 16,
   20...), pour que les paires tombent juste.
 
-- **Difficulté du mélange** : Facile, Moyen, Difficile.
+- Difficulté du mélange : Facile, Moyen, Difficile.
 
 ### 2. Livre des règles
 
 Affiché une fois la configuration validée :
 
-- Chaque joueur commence avec **10 coeurs**.
+- Chaque joueur commence avec 10 coeurs.
 
-- Une erreur = **-1 coeur** ; une paire trouvée =
-  **+1 coeur**.
+- Une erreur = -1 coeur ; une paire trouvée =
+  +1 coeur.
 
-- À **0 coeur**, un joueur est éliminé.
+- À 0 coeur, un joueur est éliminé.
 
-- Chaque joueur a une **couleur** et une **lumière**
+- Chaque joueur a une couleur et une lumière
   qui indique à qui est le tour.
 
-- **45 secondes** par tour pour retourner deux cartes.
+- 45 secondes par tour pour retourner deux cartes.
 
 ### 3. Partie
 
-- Un **chronomètre** démarre avec la partie.
+- Un chronomètre démarre avec la partie.
 
-- **Tour par tour** : la lumière du joueur actif
+- Tour par tour : la lumière du joueur actif
   s'allume, 45 secondes pour jouer.
 
 - Temps écoulé sans action = une erreur, puis joueur
@@ -157,7 +157,7 @@ Affiché une fois la configuration validée :
 
 ## Apparence
 
-- Fond du jeu : **anthracite**.
+- Fond du jeu : anthracite.
 
 - Chaque joueur est identifiable par sa couleur.
 
