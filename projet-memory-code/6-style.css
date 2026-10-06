@@ -1,20 +1,24 @@
 /* ===================================================================
    THÈMES VISUELS
 
-   Chaque thème (choisi dans le menu) pose une classe "theme-<id>" sur
-   <body> et redéfinit entièrement ses variables : fond, couleurs, police
-   et image de dos de carte. Le bouton 🌗 ajoute en plus une classe de
-   luminosité ("theme-jour" ou "theme-crepuscule", rien pour la nuit) qui
-   vient éclaircir la palette du thème actif — d'où les sélecteurs combinés
-   "body.theme-<id>.theme-jour" ci-dessous.
+   Chaque thème (choisi dans le menu) pose une classe
+   "theme-<id>" sur <body> et redéfinit entièrement ses
+   variables : fond, couleurs, police et image de dos de
+   carte. Le bouton 🌗 ajoute en plus une classe de
+   luminosité ("theme-jour" ou "theme-crepuscule", rien
+   pour la nuit) qui éclaircit la palette du thème actif
+   — d'où les sélecteurs combinés "body.theme-<id>.theme-
+   jour" ci-dessous.
 
-   Fichiers : 6-style.css (variables de chaque thème, ci-dessous) ;
-   4-menu.js (classe posée sur <body> au choix du thème) ; 4-theme-visuel.js
-   (liste des thèmes disponibles).
+   Fichiers : 6-style.css (variables de chaque thème,
+   ci-dessous) ; 4-menu.js (classe posée sur <body> au
+   choix du thème) ; 4-theme-visuel.js (liste des thèmes
+   disponibles).
    =================================================================== */
 
-/* Couleurs communes à tous les thèmes (lumières des joueurs) : elles doivent
-   rester distinctes de n'importe quel fond, donc pas besoin d'en changer
+/* Couleurs communes à tous les thèmes (lumières des
+   joueurs) : elles doivent rester distinctes de
+   n'importe quel fond, donc pas besoin d'en changer
    thème par thème. */
 :root {
   --joueur-1: #3d8bff; /* bleu */
@@ -23,9 +27,11 @@
   --joueur-4: #ffe14d; /* jaune */
   --robot: #c0c0c0;    /* argenté */
 
-  /* Bordure des boutons sélectionnés : une couleur unie par défaut (--accent
-     du thème actif), remplacée par un vrai dégradé arc-en-ciel uniquement
-     pour le thème "Communauté engagée" (voir plus bas). */
+  /* Bordure des boutons sélectionnés : une couleur
+     unie par défaut (--accent du thème actif),
+     remplacée par un vrai dégradé arc-en-ciel
+     uniquement pour "Communauté engagée" (voir plus
+     bas). */
   --degrade-accent: var(--accent);
 }
 
@@ -36,12 +42,14 @@ body {
   text-align: center;
 }
 
-/* Le fond et le padding vivent sur #contenu-app plutôt que directement sur
-   body, qui ne garde que la barre de réglages et le livre des règles (voir
-   5-index.html) hors de cette zone.
-   "background" (et pas "background-color") : --fond est une simple couleur
-   pour la plupart des thèmes, mais un linear-gradient() pour "Communauté
-   engagée" (voir plus bas) — background-color n'accepterait pas un dégradé. */
+/* Le fond et le padding vivent sur #contenu-app plutôt
+   que directement sur body, qui ne garde que la barre
+   de réglages et le livre des règles (voir 5-index.html)
+   hors de cette zone.
+   "background" (et pas "background-color") : --fond est
+   une simple couleur pour la plupart des thèmes, mais un
+   linear-gradient() pour "Communauté engagée" (voir plus
+   bas) — background-color n'accepterait pas un dégradé. */
 #contenu-app {
   background: var(--fond);
   min-height: 100vh;
@@ -53,19 +61,21 @@ h1, h2 {
   font-family: var(--police-titres);
 }
 
-/* 🔴🔴🔴 ÉCART ATELIERS — linear-gradient() et background-clip: text ne
-   sont couverts par aucun atelier du cours (voir MODIF.md, section
-   "Impossibles à corriger sans trop s'éloigner du cours") ; conservés car
-   demandés explicitement pour l'apparence des thèmes, une couleur unie
-   changerait le rendu voulu. 🔴🔴🔴 */
+/* 🔴🔴🔴 ÉCART ATELIERS — linear-gradient() et
+   background-clip: text ne sont couverts par aucun
+   atelier (voir 2-MODIF.md, section "Impossibles sans
+   trop s'éloigner du cours") ; conservés car demandés
+   explicitement, une couleur unie changerait le rendu
+   voulu. 🔴🔴🔴 */
 
 /* Dégradé du titre principal de l'écran menu.
-   Chaque thème définit --degrade-titre (voir plus bas) : la plupart des
-   thèmes y mettent un dégradé discret de deux tons de --accent ; les
-   thèmes "très colorés" (Animé, Communauté engagée) y mettent un vrai
-   dégradé multicolore.
-   Fichier : 6-style.css (règle ci-dessous, + --degrade-titre dans chaque
-   bloc de thème plus bas). */
+   Chaque thème définit --degrade-titre (voir plus bas) :
+   la plupart y mettent un dégradé discret de deux tons
+   de --accent ; les thèmes "très colorés" (Animé,
+   Communauté engagée) y mettent un vrai dégradé
+   multicolore.
+   Fichier : 6-style.css (règle ci-dessous, +
+   --degrade-titre dans chaque bloc de thème plus bas). */
 h1 {
   background: var(--degrade-titre);
   background-clip: text;
@@ -73,24 +83,28 @@ h1 {
   -webkit-text-fill-color: transparent;
 }
 
-/* Les <button> n'héritent pas automatiquement de la police du body dans les
-   navigateurs : on le force ici pour que tous les boutons suivent le thème. */
+/* Les <button> n'héritent pas automatiquement de la
+   police du body dans les navigateurs : on le force ici
+   pour que tous les boutons suivent le thème. */
 button {
   font-family: var(--police-texte);
 }
 
 /* ----- Thème "Animé / Pop culture" -----
-   Très coloré : plusieurs univers/genres se côtoient. Fond violet-indigo
-   sombre (net différent du rose sakura de Japon), dégradé multicolore néon
-   sur le titre, et --accent tiré au hasard parmi plusieurs teintes vives à
-   chaque chargement de page (voir choisirAccentAnimeAuHasard() dans
-   4-menu.js) : la couleur d'accent change à chaque partie plutôt que de se
-   fixer sur une seule teinte (qui finirait par rappeler un autre thème). */
+   Très coloré : plusieurs univers/genres se côtoient.
+   Fond violet-indigo sombre (différent du rose sakura de
+   Japon), dégradé multicolore néon sur le titre, et
+   --accent tiré au hasard parmi plusieurs teintes vives
+   à chaque chargement de page (voir
+   choisirAccentAnimeAuHasard() dans 4-menu.js) : la
+   couleur d'accent change à chaque partie plutôt que de
+   se fixer sur une seule teinte (qui finirait par
+   rappeler un autre thème). */
 body.theme-anime {
   --fond: #170f2e;
   --fond-carte: #241a42;
   --texte: #eee6ff;
-  --accent: #4fd3ff; /* teinte par défaut, remplacée par une classe accent-anime-N (voir plus bas) */
+  --accent: #4fd3ff; /* par défaut, remplacée par une classe accent-anime-N (voir plus bas) */
   --accent-texte: #071824;
   --police-texte: "Baloo 2", sans-serif;
   --police-titres: "Baloo 2", sans-serif;
@@ -115,8 +129,9 @@ body.theme-anime.theme-jour {
   --texte: #170f2e;
 }
 
-/* Une classe par teinte possible : posée/retirée par choisirAccentAnimeAuHasard()
-   dans 4-menu.js (via classList), à chaque sélection du thème "Animé". */
+/* Une classe par teinte possible : posée/retirée par
+   choisirAccentAnimeAuHasard() dans 4-menu.js (via
+   classList), à chaque sélection du thème "Animé". */
 body.theme-anime.accent-anime-1 { --accent: #4fd3ff; }
 body.theme-anime.accent-anime-2 { --accent: #6bffb0; }
 body.theme-anime.accent-anime-3 { --accent: #ffe14d; }
@@ -125,7 +140,8 @@ body.theme-anime.accent-anime-5 { --accent: #b06bff; }
 body.theme-anime.accent-anime-6 { --accent: #ff4f9a; }
 
 /* ----- Thème "Japon" -----
-   Teintes sakura : rose cerisier, gris ardoise doux, blanc papier washi. */
+   Teintes sakura : rose cerisier, gris ardoise doux,
+   blanc papier washi. */
 body.theme-japon {
   --fond: #241a1e;
   --fond-carte: #382530;
@@ -156,9 +172,11 @@ body.theme-japon.theme-jour {
 }
 
 /* ----- Thème "Médiamatique" -----
-   Couleurs reprises des symboles fournis (images/themes/mediamatique/) :
-   cyan clair #56bfdc (symbole "general") en accent vif, bleu marine #203d91
-   (symbole "informatique") pour les tons plus structurels (cuir/cadre). */
+   Couleurs reprises des symboles fournis
+   (images/themes/mediamatique/) : cyan clair #56bfdc
+   (symbole "general") en accent vif, bleu marine
+   #203d91 (symbole "informatique") pour les tons plus
+   structurels (cuir/cadre). */
 body.theme-mediamatique {
   --fond: #0b1620;
   --fond-carte: #12283a;
@@ -189,12 +207,14 @@ body.theme-mediamatique.theme-jour {
 }
 
 /* ----- Thème "Communauté engagée" -----
-   Représente les mouvements LGBTQIA+, féministe et Black Lives Matter : le
-   drapeau Pride (arc-en-ciel) est le fond de la PAGE elle-même (--fond est un
-   linear-gradient, voir body { background: var(--fond); } plus haut), mais les
-   cartes/boutons/panneaux (--fond-carte) restent sur une couleur sombre/claire
-   unie pour rester lisibles — l'arc-en-ciel encadre le contenu, ne passe
-   jamais derrière le texte. */
+   Représente les mouvements LGBTQIA+, féministe et Black
+   Lives Matter : le drapeau Pride (arc-en-ciel) est le
+   fond de la PAGE elle-même (--fond est un
+   linear-gradient, voir body { background: var(--fond);
+   } plus haut), mais les cartes/boutons/panneaux
+   (--fond-carte) restent sur une couleur sombre/claire
+   unie pour rester lisibles — l'arc-en-ciel encadre le
+   contenu, ne passe jamais derrière le texte. */
 body.theme-communaute {
   --fond: linear-gradient(160deg, #e50000, #ff8d00, #ffee00, #028121, #004cff, #760089);
   --fond-carte: #1c1c20;
@@ -226,10 +246,12 @@ body.theme-communaute.theme-jour {
 }
 
 /* ----- Thème "Youtube" -----
-   Dark mode Youtube par défaut (fond très sombre neutre), variante "jour" en
-   fond blanc (light mode Youtube) : noir/blanc pour le texte et les cartes,
-   rouge Youtube seulement en accent (boutons, titre, bordures) — plus proche
-   de la vraie charte, moins agressif qu'un fond rouge plein écran. */
+   Dark mode Youtube par défaut (fond très sombre
+   neutre), variante "jour" en fond blanc (light mode
+   Youtube) : noir/blanc pour le texte et les cartes,
+   rouge Youtube seulement en accent (boutons, titre,
+   bordures) — plus proche de la vraie charte, moins
+   agressif qu'un fond rouge plein écran. */
 body.theme-youtube {
   --fond: #0f0f0f;
   --fond-carte: #212121;
@@ -259,22 +281,25 @@ body.theme-youtube.theme-jour {
   --texte: #0f0f0f;
 }
 
-/* Règle de sécurité : l'attribut HTML "hidden" doit toujours cacher l'élément,
-   même si une autre règle plus bas lui donne un "display" (flex, grid...). */
+/* Règle de sécurité : l'attribut HTML "hidden" doit
+   toujours cacher l'élément, même si une autre règle
+   plus bas lui donne un "display" (flex, grid...). */
 [hidden] {
   display: none !important;
 }
 
-/* Un seul écran visible à la fois : les autres ont l'attribut "hidden" en HTML. */
+/* Un seul écran visible à la fois : les autres ont
+   l'attribut "hidden" en HTML. */
 .ecran {
   max-width: 700px;
   margin: 0 auto;
 }
 
-/* L'écran de jeu occupe toute la largeur disponible (pas de max-width ni de
-   centrage comme les autres écrans) : la colonne des joueurs reste collée au
-   bord gauche, et la grille de cartes (voir #grille-cartes plus bas) profite
-   du maximum d'espace pour agrandir ses cartes. */
+/* L'écran de jeu occupe toute la largeur disponible (pas
+   de max-width ni de centrage comme les autres écrans) :
+   la colonne des joueurs reste collée au bord gauche, et
+   la grille de cartes (voir #grille-cartes plus bas)
+   profite du maximum d'espace pour agrandir ses cartes. */
 #ecran-jeu {
   max-width: none;
   margin: 0;
@@ -283,12 +308,14 @@ body.theme-youtube.theme-jour {
 /* ===================================================================
    MENU DE CONFIGURATION
 
-   Apparence des blocs de choix (thème, mode, joueurs, cartes, difficulté)
-   et de leurs boutons sur l'écran de menu : sélection, désactivation,
-   couleurs d'accent par thème.
+   Apparence des blocs de choix (thème, mode, joueurs,
+   cartes, difficulté) et de leurs boutons sur l'écran de
+   menu : sélection, désactivation, couleurs d'accent par
+   thème.
 
-   Fichier : 6-style.css (règles ci-dessous) ; 5-index.html (#ecran-menu) ;
-   4-menu.js (classe "selectionne" posée/retirée au clic).
+   Fichier : 6-style.css (règles ci-dessous) ;
+   5-index.html (#ecran-menu) ; 4-menu.js (classe
+   "selectionne" posée/retirée au clic).
    =================================================================== */
 
 .bloc-choix {
@@ -317,16 +344,19 @@ body.theme-youtube.theme-jour {
   border-color: var(--accent);
 }
 
-/* Thème "Communauté engagée" : la bordure du bouton sélectionné (et celle
-   survolée) devient un vrai dégradé arc-en-ciel (border-image), plutôt qu'une
-   couleur unie — border-color ne peut pas afficher de dégradé. */
+/* Thème "Communauté engagée" : la bordure du bouton
+   sélectionné (et celle survolée) devient un vrai
+   dégradé arc-en-ciel (border-image), plutôt qu'une
+   couleur unie — border-color ne peut pas afficher de
+   dégradé. */
 body.theme-communaute .bouton-choix.selectionne,
 body.theme-communaute .bouton-choix:hover {
   border-image: var(--degrade-accent) 1;
 }
 
-/* Bouton indisponible (ex: nombre de cartes au-delà de ce que le thème visuel
-   choisi propose comme symboles, voir mettreAJourLimiteCartes() dans 4-menu.js) */
+/* Bouton indisponible (ex: nombre de cartes au-delà de
+   ce que le thème visuel choisi propose comme symboles,
+   voir mettreAJourLimiteCartes() dans 4-menu.js) */
 .bouton-choix:disabled {
   opacity: 0.35;
   cursor: not-allowed;
@@ -358,15 +388,18 @@ body.theme-communaute .bouton-choix:hover {
 /* ===================================================================
    LIVRE DES RÈGLES
 
-   Apparence du livre fermé (couverture cliquable) et ouvert (pages,
-   tournage de page), affiché au premier accès à la partie et en pause.
+   Apparence du livre fermé (couverture cliquable) et
+   ouvert (pages, tournage de page), affiché au premier
+   accès à la partie et en pause.
 
-   Fichier : 6-style.css (règles ci-dessous) ; 5-index.html (#livre et ses
-   pages) ; 4-livre-des-regles.js (classes "livre-ferme"/"livre-ouvert"
-   posées/retirées, page affichée).
+   Fichier : 6-style.css (règles ci-dessous) ;
+   5-index.html (#livre et ses pages) ;
+   4-livre-des-regles.js (classes "livre-ferme"/
+   "livre-ouvert" posées/retirées, page affichée).
    =================================================================== */
 
-/* Fond semi-transparent derrière le livre pour le mettre en avant */
+/* Fond semi-transparent derrière le livre pour le mettre
+   en avant */
 #livre {
   position: fixed;
   inset: 0;
@@ -377,7 +410,8 @@ body.theme-communaute .bouton-choix:hover {
   z-index: 10;
 }
 
-/* La couverture fermée : un simple rectangle en cuir doré, cliquable pour ouvrir. */
+/* La couverture fermée : un simple rectangle en cuir
+   doré, cliquable pour ouvrir. */
 #couverture-livre {
   width: 260px;
   height: 340px;
@@ -392,7 +426,8 @@ body.theme-communaute .bouton-choix:hover {
   cursor: pointer;
 }
 
-/* Le livre fermé ne montre que sa couverture ; une fois ouvert, on montre les pages à la place. */
+/* Le livre fermé ne montre que sa couverture ; une fois
+   ouvert, on montre les pages à la place. */
 .livre-ferme #pages-livre { display: none; }
 .livre-ouvert #couverture-livre { display: none; }
 
@@ -404,7 +439,8 @@ body.theme-communaute .bouton-choix:hover {
   text-shadow: 0 0 8px rgba(216, 180, 99, 0.6);
 }
 
-/* Les pages ouvertes : fond parchemin, texte à l'ancienne, doré pour les titres. */
+/* Les pages ouvertes : fond parchemin, texte à
+   l'ancienne, doré pour les titres. */
 #pages-livre {
   width: 420px;
   min-height: 340px;
@@ -466,12 +502,14 @@ body.theme-communaute .bouton-choix:hover {
 /* ===================================================================
    BARRE DE RÉGLAGES (THÈME, LANGUE, LIVRE)
 
-   Fixée en haut à droite, tous les boutons ronds regroupés au même
-   endroit, visible sur tous les écrans : changer de luminosité, de
-   langue, ou rouvrir le livre des règles en cours de partie.
+   Fixée en haut à droite, tous les boutons ronds
+   regroupés au même endroit, visible sur tous les
+   écrans : changer de luminosité, de langue, ou rouvrir
+   le livre des règles en cours de partie.
 
-   Fichier : 6-style.css (règles ci-dessous) ; 5-index.html (#barre-reglages) ;
-   4-code.js (bouton thème) et 4-traducteur.js (bouton langue).
+   Fichier : 6-style.css (règles ci-dessous) ;
+   5-index.html (#barre-reglages) ; 4-code.js (bouton
+   thème) et 4-traducteur.js (bouton langue).
    =================================================================== */
 #barre-reglages {
   position: fixed;
@@ -517,14 +555,16 @@ body.theme-communaute .bouton-choix:hover {
 /* ===================================================================
    ÉCRAN DE JEU
 
-   Trois colonnes côte à côte : joueurs (gauche), grille de cartes
-   (centre), paires trouvées (droite), dans le cadre "arène" du thème
-   actif. Pas de flex-wrap : sur un écran étroit, l'arène déborde plutôt
-   que de faire retomber la colonne de droite sous les joueurs (voir
+   Trois colonnes côte à côte : joueurs (gauche), grille
+   de cartes (centre), paires trouvées (droite), dans le
+   cadre "arène" du thème actif. Pas de flex-wrap : sur
+   un écran étroit, l'arène déborde plutôt que de faire
+   retomber la colonne de droite sous les joueurs (voir
    .arene plus bas, qui gère le débordement).
 
-   Fichier : 6-style.css (règles ci-dessous) ; 5-index.html (#zone-jeu et ses
-   3 colonnes) ; 4-partie.js (contenu des colonnes, rempli en JS).
+   Fichier : 6-style.css (règles ci-dessous) ;
+   5-index.html (#zone-jeu et ses 3 colonnes) ;
+   4-partie.js (contenu des colonnes, rempli en JS).
    =================================================================== */
 #zone-jeu {
   display: flex;
@@ -532,16 +572,20 @@ body.theme-communaute .bouton-choix:hover {
   align-items: flex-start;
 }
 
-/* L'"arène" : le plateau de jeu prend l'aspect d'une table de jeu encadrée,
-   dans les couleurs du thème choisi (--cuir, --dore, --fond-carte sont déjà
-   définis par chaque thème, voir le haut de ce fichier). Un double-cadre
-   (bordure dorée fine à l'intérieur d'une bordure en cuir épaisse) plus quatre
-   coins décoratifs en dégradé doré, posés avec ::before/::after.
-   max-width + margin: 0 auto : le cadre reste à la taille de son contenu (les
-   3 colonnes : joueurs, grille de cartes 900px max, paires trouvées) et se
-   centre, plutôt que de s'étirer sur toute la largeur de la fenêtre. Si les 3
-   colonnes dépassent quand même (petit écran), overflow-x fait défiler
-   l'intérieur du cadre plutôt que de casser la mise en page. */
+/* L'"arène" : le plateau de jeu prend l'aspect d'une
+   table de jeu encadrée, dans les couleurs du thème
+   choisi (--cuir, --dore, --fond-carte sont déjà définis
+   par chaque thème, voir le haut de ce fichier). Un
+   double-cadre (bordure dorée fine à l'intérieur d'une
+   bordure en cuir épaisse) plus quatre coins décoratifs
+   en dégradé doré, posés avec ::before/::after.
+   max-width + margin: 0 auto : le cadre reste à la
+   taille de son contenu (les 3 colonnes : joueurs,
+   grille de cartes 900px max, paires trouvées) et se
+   centre, plutôt que de s'étirer sur toute la largeur de
+   la fenêtre. Si les 3 colonnes dépassent quand même
+   (petit écran), overflow-x fait défiler l'intérieur du
+   cadre plutôt que de casser la mise en page. */
 .arene {
   position: relative;
   max-width: 1500px;
@@ -554,8 +598,9 @@ body.theme-communaute .bouton-choix:hover {
   padding: 2rem;
 }
 
-/* Coins décoratifs : un petit angle doré dans 2 coins opposés (haut-gauche,
-   bas-droit), via les deux pseudo-éléments disponibles par élément. */
+/* Coins décoratifs : un petit angle doré dans 2 coins
+   opposés (haut-gauche, bas-droit), via les deux
+   pseudo-éléments disponibles par élément. */
 .arene::before,
 .arene::after {
   content: "";
@@ -587,8 +632,10 @@ body.theme-communaute .bouton-choix:hover {
   gap: 1.5rem;
   text-align: left;
   flex-shrink: 0;
-  width: 260px; /* largeur fixe : évite que la grille de cartes tremble quand
-                   le texte du minuteur change de longueur ("45s" -> "9s") */
+  /* largeur fixe : évite que la grille de cartes tremble
+     quand le texte du minuteur change de longueur
+     ("45s" -> "9s") */
+  width: 260px;
 }
 
 #barre-info {
@@ -599,9 +646,10 @@ body.theme-communaute .bouton-choix:hover {
   font-weight: bold;
 }
 
-/* Chiffres à largeur fixe (tabular-nums) : "45s" et "9s" occupent la même
-   largeur de caractère par caractère, pour ne jamais faire trembler la
-   colonne (et donc la grille de cartes juste à côté) à chaque seconde. */
+/* Chiffres à largeur fixe (tabular-nums) : "45s" et "9s"
+   occupent la même largeur de caractère par caractère,
+   pour ne jamais faire trembler la colonne (et donc la
+   grille de cartes juste à côté) à chaque seconde. */
 #chrono,
 #temps-tour {
   font-variant-numeric: tabular-nums;
@@ -613,8 +661,9 @@ body.theme-communaute .bouton-choix:hover {
   gap: 0.4rem;
 }
 
-/* Étiquette avant chaque timer ("Temps de jeu :", "Joueur temps restant :") :
-   un peu moins marquée que la valeur elle-même, qui reste en gras. */
+/* Étiquette avant chaque timer ("Temps de jeu :",
+   "Joueur temps restant :") : un peu moins marquée que
+   la valeur elle-même, qui reste en gras. */
 .etiquette-info {
   font-size: 0.85rem;
   font-weight: normal;
@@ -668,17 +717,21 @@ body.theme-communaute .bouton-choix:hover {
   font-size: 0.9rem;
 }
 
-/* Paires déjà trouvées : une colonne à droite de la grille de cartes, une
-   petite vignette par paire trouvée empilée verticalement dans l'ordre de
-   découverte (voir Partie.afficherPairesTrouvees() dans 4-partie.js). Occupe
-   l'espace restant à droite de la grille plutôt que de le laisser vide. */
+/* Paires déjà trouvées : une colonne à droite de la
+   grille de cartes, une petite vignette par paire
+   trouvée empilée verticalement dans l'ordre de
+   découverte (voir Partie.afficherPairesTrouvees() dans
+   4-partie.js). Occupe l'espace restant à droite de la
+   grille plutôt que de le laisser vide. */
 #paires-trouvees {
   display: flex;
   flex-direction: column;
   flex-wrap: wrap;
   flex-grow: 1;
   gap: 0.4rem;
-  max-height: 560px; /* hauteur approximative de la grille : au-delà, une 2e colonne de vignettes démarre */
+  /* hauteur approximative de la grille : au-delà, une
+     2e colonne de vignettes démarre */
+  max-height: 560px;
 }
 
 .vignette-paire-trouvee {
@@ -693,11 +746,13 @@ body.theme-communaute .bouton-choix:hover {
 /* ===================================================================
    STATISTIQUES DE FIN DE PARTIE
 
-   Une ligne par joueur sur l'écran de fin : paires trouvées, coeurs
-   restants, temps moyen par paire et temps de réflexion moyen.
+   Une ligne par joueur sur l'écran de fin : paires
+   trouvées, coeurs restants, temps moyen par paire et
+   temps de réflexion moyen.
 
-   Fichier : 6-style.css (règles ci-dessous) ; 5-index.html (#statistiques-fin,
-   vide au départ) ; 4-code.js (afficherStatistiquesFin(), qui remplit ces
+   Fichier : 6-style.css (règles ci-dessous) ;
+   5-index.html (#statistiques-fin, vide au départ) ;
+   4-code.js (afficherStatistiquesFin(), qui remplit ces
    lignes en JS).
    =================================================================== */
 
@@ -724,8 +779,9 @@ body.theme-communaute .bouton-choix:hover {
   min-width: 6rem;
 }
 
-/* Sur l'écran de fin, la lumière de chaque joueur reste allumée dans sa couleur
-   en permanence : il n'y a plus de notion de "tour" une fois la partie finie. */
+/* Sur l'écran de fin, la lumière de chaque joueur reste
+   allumée dans sa couleur en permanence : il n'y a plus
+   de notion de "tour" une fois la partie finie. */
 .ligne-stat-fin .lumiere {
   box-shadow: 0 0 6px 2px currentColor;
 }
@@ -736,20 +792,24 @@ body.theme-communaute .bouton-choix:hover {
 .ligne-stat-fin.joueur-4 .lumiere { background-color: var(--joueur-4); color: var(--joueur-4); }
 .ligne-stat-fin.joueur-robot .lumiere { background-color: var(--robot); color: var(--robot); }
 
-/* Grille de cartes : les cartes s'enchaînent et reviennent à la ligne toutes
-   seules dès que la largeur disponible est dépassée. */
+/* Grille de cartes : les cartes s'enchaînent et
+   reviennent à la ligne toutes seules dès que la largeur
+   disponible est dépassée. */
 #grille-cartes {
   display: flex;
   flex-wrap: wrap;
   gap: 0.6rem;
-  max-width: 900px; /* revient à la ligne toute seule, pas de calcul de colonnes */
+  /* revient à la ligne toute seule, pas de calcul de
+     colonnes */
+  max-width: 900px;
 }
 
 .carte {
   position: relative;
-  box-sizing: border-box; /* la bordure de 2px doit être comprise dans les 95px,
-                             sinon la carte déborde de sa colonne de grille et
-                             désaligne toute la grille au fil des colonnes */
+  /* la bordure de 2px doit être comprise dans les 95px,
+     sinon la carte déborde de sa colonne de grille et
+     désaligne toute la grille au fil des colonnes */
+  box-sizing: border-box;
   width: 95px;
   height: 122px;
   background-color: var(--fond-carte);
@@ -765,9 +825,11 @@ body.theme-communaute .bouton-choix:hover {
   user-select: none;
 }
 
-/* Carte retournée : le dos disparaît, la carte elle-même prend l'aspect d'un
-   polaroid (cadre blanc épais en bas, coins arrondis, légère rotation) plutôt
-   que d'être un simple cadre brun autour d'une petite photo. */
+/* Carte retournée : le dos disparaît, la carte elle-même
+   prend l'aspect d'un polaroid (cadre blanc épais en
+   bas, coins arrondis, légère rotation) plutôt que
+   d'être un simple cadre brun autour d'une petite
+   photo. */
 .carte.retournee {
   background-image: none;
   background-color: #f4f1ea;
@@ -781,7 +843,8 @@ body.theme-communaute .bouton-choix:hover {
   transform: rotate(3deg);
 }
 
-/* Carte déjà associée en paire : elle reste visible mais désactivée */
+/* Carte déjà associée en paire : elle reste visible mais
+   désactivée */
 .carte.trouvee {
   background-image: none;
   border-color: var(--joueur-2);
@@ -800,11 +863,14 @@ body.theme-communaute .bouton-choix:hover {
 /* ===================================================================
    ÉCRAN DE FIN
 
-   Apparence de l'écran affiché à la fin de la partie (victoire ou
-   défaite) : titre, message, statistiques et bouton "Rejouer".
+   Apparence de l'écran affiché à la fin de la partie
+   (victoire ou défaite) : titre, message, statistiques
+   et bouton "Rejouer".
 
-   Fichier : 6-style.css (règles ci-dessous) ; 5-index.html (#ecran-fin) ;
-   4-code.js (afficherResultatFin(), qui remplit le titre et le message).
+   Fichier : 6-style.css (règles ci-dessous) ;
+   5-index.html (#ecran-fin) ; 4-code.js
+   (afficherResultatFin(), qui remplit le titre et le
+   message).
    =================================================================== */
 
 #ecran-fin {
