@@ -1,29 +1,39 @@
 // ===================================================================
-// MEMORY MULTIJOUEUR — LOGIQUE DU JEU
-//
 // 🔴🔴🔴 ÉCART ATELIERS — séparer chaque classe dans son propre fichier
 // n'a pas d'équivalent dans les ateliers du cours : leurs classes (Meule,
 // Billet...) vivent toujours dans le même fichier que le reste de l'atelier
 // (voir MODIF.md, section "À partir de maintenant"). Écart assumé, demandé
 // explicitement par l'utilisateur. 🔴🔴🔴
+// ===================================================================
+
+
+// ===================================================================
+// MEMORY MULTIJOUEUR — LOGIQUE DU JEU
 //
-// Les classes vivent chacune dans leur propre fichier, chargés juste avant
-// celui-ci : theme-visuel.js, traducteur.js, carte.js, joueur.js, partie.js,
-// menu.js, livre-des-regles.js. Ce fichier contient tout le reste :
-//   1. Constantes du jeu partagées entre les classes
-//   2. Éléments HTML (récupérés une fois pour toutes)
-//   3. Barre de réglages (luminosité jour/nuit)
-//   4. Gestion des écrans
-//   5. Fin de partie et statistiques
+// Contient tout ce qui n'est pas une classe : les constantes partagées, les
+// éléments HTML récupérés une fois pour toutes, la barre de réglages
+// (luminosité jour/nuit), la gestion des écrans, et l'affichage de fin de
+// partie. Les classes vivent chacune dans leur propre fichier, chargés
+// juste avant celui-ci : theme-visuel.js, traducteur.js, carte.js,
+// joueur.js, partie.js, menu.js, livre-des-regles.js.
+//
+// Fichier : code.js (fichier entier).
 // ===================================================================
 
 
 // ===================================================================
 // CONSTANTES DU JEU
-// "scene" et "partieActuelle" existent en dehors de toute classe : "scene"
-// pilote l'écran affiché (menu/jeu/fin) et "partieActuelle" pointe vers la
-// partie en cours, ou null avant qu'une partie n'ait commencé (voir la classe
-// Partie dans partie.js et menu.js).
+//
+// "scene" pilote l'écran affiché (menu/jeu/fin) et "partieActuelle" pointe
+// vers la partie en cours (ou null avant qu'une partie n'ait commencé) : ces
+// deux variables existent en dehors de toute classe, car partagées par tout
+// le code. Les autres constantes (couleurs des joueurs, coeurs de départ,
+// durée d'un tour) sont des valeurs fixes du jeu, utilisées par plusieurs
+// classes.
+//
+// Fichier : code.js (ci-dessous) ; "partieActuelle" est une instance de la
+// classe Partie (voir partie.js), "scene" et ces constantes sont lues depuis
+// partie.js et menu.js.
 // ===================================================================
 let scene = "menu"; // "menu" | "jeu" | "fin"
 let partieActuelle = null;
@@ -38,8 +48,12 @@ const TEMPS_TOUR = 45; // secondes laissées à chaque joueur pour retourner 2 c
 
 // ===================================================================
 // RÉCUPÉRATION DES ÉLÉMENTS HTML
-// On récupère une fois pour toutes les éléments qu'on va devoir modifier,
+//
+// Récupère une fois pour toutes les éléments qu'on va devoir modifier,
 // plutôt que de refaire document.getElementById() à chaque fois.
+//
+// Fichier : code.js (ci-dessous) ; les éléments correspondent aux ids
+// déclarés dans index.html.
 // ===================================================================
 const ecranMenu = document.getElementById("ecran-menu");
 const ecranJeu = document.getElementById("ecran-jeu");

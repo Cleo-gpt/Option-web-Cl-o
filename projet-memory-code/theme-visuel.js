@@ -1,9 +1,12 @@
 // ===================================================================
 // CLASSE THEME VISUEL
-// Un thème visuel du jeu (ex: "mediamatique", "japon") : combien de symboles
-// de cartes il a, et dans quel dossier aller chercher ses images. Toutes les
-// images de tous les thèmes sont désormais en PNG (converties depuis leur
-// format d'origine jpg/jpeg/webp/svg).
+//
+// Représente un thème visuel du jeu (ex: "mediamatique", "japon") : combien
+// de symboles de cartes il a, et dans quel dossier aller chercher ses
+// images. Toutes les images de tous les thèmes sont en PNG.
+//
+// Fichier : theme-visuel.js (classe entière, + THEMES_VISUELS et
+// THEME_PAR_DEFAUT juste en dessous).
 // ===================================================================
 class ThemeVisuel {
   constructor(nom, nbSymboles) {

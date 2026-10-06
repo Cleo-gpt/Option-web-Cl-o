@@ -1,9 +1,12 @@
 // ===================================================================
 // CLASSE MENU
-// L'écran de configuration : la configuration choisie (thème, mode, nombre de
-// joueurs, difficulté de l'ordinateur, nombre de cartes, difficulté du
-// mélange) et la validation qui active ou non le bouton "Valider". Une seule
-// instance globale, "menu" (voir plus bas), gère tout l'écran de menu.
+//
+// Représente l'écran de configuration : la configuration choisie (thème,
+// mode, nombre de joueurs, difficulté de l'ordinateur, nombre de cartes,
+// difficulté du mélange) et la validation qui active ou non le bouton
+// "Valider". Une seule instance globale, "menu", gère tout l'écran de menu.
+//
+// Fichier : menu.js (classe + instance globale "menu" juste en dessous).
 // ===================================================================
 class Menu {
   constructor() {
@@ -80,9 +83,12 @@ appliquerClassesBody(); // thème par défaut dès le chargement de la page
 
 // ===================================================================
 // ÉCRAN 1 : MENU DE CONFIGURATION
-// Chaque groupe de boutons (thème, mode, joueurs, cartes, difficulté)
-// fonctionne pareil : un clic sélectionne le bouton, désélectionne les autres
-// du même groupe, et enregistre le choix dans "menu".
+//
+// Branche chaque groupe de boutons du menu (thème, mode, joueurs, cartes,
+// difficulté) sur l'instance "menu" : un clic sélectionne le bouton,
+// désélectionne les autres du même groupe, et enregistre le choix.
+//
+// Fichier : menu.js (tout le reste du fichier, jusqu'à la fin).
 // ===================================================================
 
 // Le thème "Animé / Pop culture" représente plusieurs univers à la fois : sa

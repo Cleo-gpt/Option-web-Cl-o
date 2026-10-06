@@ -1,11 +1,15 @@
 // ===================================================================
 // CLASSE LIVRE DES RÈGLES
-// Un livre fermé qu'il faut cliquer pour ouvrir. Il sert deux fois :
-// - au premier accès à la partie (avant que les cartes ne soient jouables),
-// - en pause pendant la partie, rouvert via la languette #languette-livre.
-// Le comportement change selon le contexte (voir "premier accès" ci-dessous).
-// Une seule instance globale, "livreDesRegles" (voir plus bas), gère tout le
-// livre ; l'élément DOM lui-même reste la variable "livre" (voir code.js).
+//
+// Représente le livre fermé qu'il faut cliquer pour ouvrir. Il sert deux
+// fois : au premier accès à la partie (avant que les cartes ne soient
+// jouables), et en pause pendant la partie (rouvert via la languette
+// #languette-livre) — le comportement change selon le contexte (voir
+// "premier accès" dans le code ci-dessous). Une seule instance globale,
+// "livreDesRegles", gère tout le livre.
+//
+// Fichiers : livre-des-regles.js (classe + ses écouteurs de clic) ;
+// l'élément DOM du livre lui-même reste la variable "livre" (voir code.js).
 // ===================================================================
 class LivreDesRegles {
   constructor() {

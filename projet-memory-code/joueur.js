@@ -1,7 +1,11 @@
 // ===================================================================
 // CLASSE JOUEUR
-// Un joueur humain ou le robot : ses coeurs, sa couleur, et les statistiques
-// accumulées pendant la partie (paires trouvées, temps de réflexion, erreurs).
+//
+// Représente un joueur humain ou le robot : ses coeurs, sa couleur, et les
+// statistiques accumulées pendant la partie (paires trouvées, temps de
+// réflexion, erreurs).
+//
+// Fichier : joueur.js (classe entière).
 // ===================================================================
 class Joueur {
   constructor(numero, classeCouleur, estRobot) {

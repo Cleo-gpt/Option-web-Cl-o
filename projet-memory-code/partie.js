@@ -1,8 +1,14 @@
 // ===================================================================
 // CLASSE PARTIE
-// Regroupe tout ce qu'il faut savoir sur la partie en cours : les cartes, les
-// joueurs, le tour actuel, le chrono et le minuteur de tour. Une seule
-// instance vit à la fois, dans la variable "partieActuelle" (voir code.js).
+//
+// Regroupe tout ce qu'il faut savoir sur la partie en cours : les cartes,
+// les joueurs, le tour actuel, le chrono et le minuteur de tour, l'IA du
+// robot, et la fin de partie. Une seule instance vit à la fois, dans la
+// variable "partieActuelle".
+//
+// Fichier : partie.js (classe entière) ; "partieActuelle" et les éléments
+// HTML qu'elle manipule (chrono, grille de cartes...) sont déclarés dans
+// code.js.
 // ===================================================================
 class Partie {
   constructor(mode, nbJoueurs, difficulteOrdi, theme, nbCartes, difficulte) {
@@ -89,7 +95,15 @@ class Partie {
   }
 
 
-  // ===== AFFICHAGE DES JOUEURS (colonne de gauche : lumière + nom + coeurs) =====
+  // ===================================================================
+  // AFFICHAGE DES JOUEURS
+  //
+  // Dessine la colonne de gauche (lumière + nom + coeurs par joueur) et la
+  // tient à jour (coeurs, lumière du joueur actif).
+  //
+  // Fichier : partie.js, méthodes afficherJoueurs() à
+  // allumerLumiereJoueurActuel().
+  // ===================================================================
 
   afficherJoueurs() {
     listeJoueurs.innerHTML = "";
@@ -128,7 +142,15 @@ class Partie {
   }
 
 
-  // ===== AFFICHAGE DES CARTES =====
+  // ===================================================================
+  // AFFICHAGE DES CARTES
+  //
+  // Dessine la grille de cartes (un bouton par carte, avec son image de
+  // symbole cachée au départ) et la met à jour quand une carte change
+  // d'état (retournée / trouvée).
+  //
+  // Fichier : partie.js, méthodes afficherCartes() à afficherPairesTrouvees().
+  // ===================================================================
 
   afficherCartes() {
     grilleCartes.innerHTML = "";
@@ -181,8 +203,15 @@ class Partie {
   }
 
 
-  // ===== TOUR DE JEU =====
-  // Un tour = un joueur retourne 2 cartes (ou le temps s'écoule).
+  // ===================================================================
+  // TOUR DE JEU
+  //
+  // Un tour = un joueur retourne 2 cartes (ou le temps s'écoule). Gère le
+  // minuteur du tour, le clic sur une carte, la vérification de paire, et
+  // le passage au joueur suivant.
+  //
+  // Fichier : partie.js, méthodes demarrerTour() à passerAuJoueurSuivant().
+  // ===================================================================
 
   demarrerTour() {
     this.cartesRetournees = [];
@@ -333,7 +362,9 @@ class Partie {
   }
 
 
-  // ===== IA DU ROBOT (mode "contre l'ordinateur") =====
+  // ===================================================================
+  // IA DU ROBOT (mode "contre l'ordinateur")
+  //
   // Le robot a une mémoire des cartes déjà vues (les siennes et celles du
   // joueur humain) et l'utilise plus ou moins selon la difficulté choisie :
   // - "naze"  : mémorise mais évite volontairement de jouer une paire connue.
@@ -341,6 +372,10 @@ class Partie {
   // - "fort"  : joue la paire connue dès que possible, sauf s'il écrase déjà
   //             trop le joueur, auquel cas il rate volontairement un tour de
   //             temps en temps pour garder la partie intéressante.
+  //
+  // Fichier : partie.js, méthodes memoriserCartePourRobot() à
+  // jouerTourRobot().
+  // ===================================================================
 
   // Appelée à chaque carte retournée (par le joueur humain ou le robot
   // lui-même) : le robot "voit" toujours les cartes retournées, comme un
@@ -439,7 +474,15 @@ class Partie {
   }
 
 
-  // ===== CHRONOMÈTRE ET PAUSE =====
+  // ===================================================================
+  // CHRONOMÈTRE ET PAUSE
+  //
+  // Démarre, arrête et reprend le chrono de la partie ; met la partie en
+  // pause (et la reprend) quand le livre des règles est rouvert en cours
+  // de jeu.
+  //
+  // Fichier : partie.js, méthodes demarrerChrono() à reprendre().
+  // ===================================================================
 
   demarrerChrono() {
     this.chronoDemarre = true;
@@ -482,7 +525,15 @@ class Partie {
   }
 
 
-  // ===== FIN DE PARTIE =====
+  // ===================================================================
+  // FIN DE PARTIE
+  //
+  // Arrête le chrono et le minuteur, puis affiche l'écran de fin (titre,
+  // message et statistiques de chaque joueur).
+  //
+  // Fichier : partie.js, méthode terminer() ; les fonctions d'affichage
+  // afficherResultatFin() et afficherStatistiquesFin() sont dans code.js.
+  // ===================================================================
 
   terminer(resultat) {
     this.arreterChrono();
