@@ -280,7 +280,16 @@ body.theme-youtube.theme-jour {
   margin: 0;
 }
 
-/* ===== Menu de configuration ===== */
+/* ===================================================================
+   MENU DE CONFIGURATION
+
+   Apparence des blocs de choix (thème, mode, joueurs, cartes, difficulté)
+   et de leurs boutons sur l'écran de menu : sélection, désactivation,
+   couleurs d'accent par thème.
+
+   Fichier : style.css (règles ci-dessous) ; index.html (#ecran-menu) ;
+   menu.js (classe "selectionne" posée/retirée au clic).
+   =================================================================== */
 
 .bloc-choix {
   margin-bottom: 1.5rem;
@@ -346,7 +355,16 @@ body.theme-communaute .bouton-choix:hover {
   cursor: not-allowed;
 }
 
-/* ===== Livre des règles ===== */
+/* ===================================================================
+   LIVRE DES RÈGLES
+
+   Apparence du livre fermé (couverture cliquable) et ouvert (pages,
+   tournage de page), affiché au premier accès à la partie et en pause.
+
+   Fichier : style.css (règles ci-dessous) ; index.html (#livre et ses
+   pages) ; livre-des-regles.js (classes "livre-ferme"/"livre-ouvert"
+   posées/retirées, page affichée).
+   =================================================================== */
 
 /* Fond semi-transparent derrière le livre pour le mettre en avant */
 #livre {
@@ -445,9 +463,16 @@ body.theme-communaute .bouton-choix:hover {
   background-color: var(--cuir-clair);
 }
 
-/* ===== Barre de réglages (thème, langue, livre) ===== */
-/* Fixée en haut à droite, tous les boutons ronds regroupés au même endroit,
-   visible sur tous les écrans. */
+/* ===================================================================
+   BARRE DE RÉGLAGES (THÈME, LANGUE, LIVRE)
+
+   Fixée en haut à droite, tous les boutons ronds regroupés au même
+   endroit, visible sur tous les écrans : changer de luminosité, de
+   langue, ou rouvrir le livre des règles en cours de partie.
+
+   Fichier : style.css (règles ci-dessous) ; index.html (#barre-reglages) ;
+   code.js (bouton thème) et traducteur.js (bouton langue).
+   =================================================================== */
 #barre-reglages {
   position: fixed;
   top: 1rem;
@@ -489,12 +514,18 @@ body.theme-communaute .bouton-choix:hover {
   font-size: 1.5rem;
 }
 
-/* ===== Écran de jeu ===== */
+/* ===================================================================
+   ÉCRAN DE JEU
 
-/* Trois colonnes côte à côte : joueurs (gauche), grille de cartes (centre),
-   paires trouvées (droite). Pas de flex-wrap : sur un écran étroit, l'arène
-   déborde plutôt que de faire retomber la colonne de droite sous les
-   joueurs (voir .arene plus bas, qui gère le débordement). */
+   Trois colonnes côte à côte : joueurs (gauche), grille de cartes
+   (centre), paires trouvées (droite), dans le cadre "arène" du thème
+   actif. Pas de flex-wrap : sur un écran étroit, l'arène déborde plutôt
+   que de faire retomber la colonne de droite sous les joueurs (voir
+   .arene plus bas, qui gère le débordement).
+
+   Fichier : style.css (règles ci-dessous) ; index.html (#zone-jeu et ses
+   3 colonnes) ; partie.js (contenu des colonnes, rempli en JS).
+   =================================================================== */
 #zone-jeu {
   display: flex;
   gap: 2rem;
@@ -659,7 +690,16 @@ body.theme-communaute .bouton-choix:hover {
   background-color: var(--fond-carte);
 }
 
-/* ===== Statistiques de fin de partie ===== */
+/* ===================================================================
+   STATISTIQUES DE FIN DE PARTIE
+
+   Une ligne par joueur sur l'écran de fin : paires trouvées, coeurs
+   restants, temps moyen par paire et temps de réflexion moyen.
+
+   Fichier : style.css (règles ci-dessous) ; index.html (#statistiques-fin,
+   vide au départ) ; code.js (afficherStatistiquesFin(), qui remplit ces
+   lignes en JS).
+   =================================================================== */
 
 #statistiques-fin {
   display: flex;
@@ -757,7 +797,15 @@ body.theme-communaute .bouton-choix:hover {
   border-radius: 4px;
 }
 
-/* ===== Écran de fin ===== */
+/* ===================================================================
+   ÉCRAN DE FIN
+
+   Apparence de l'écran affiché à la fin de la partie (victoire ou
+   défaite) : titre, message, statistiques et bouton "Rejouer".
+
+   Fichier : style.css (règles ci-dessous) ; index.html (#ecran-fin) ;
+   code.js (afficherResultatFin(), qui remplit le titre et le message).
+   =================================================================== */
 
 #ecran-fin {
   background-color: var(--fond-carte);

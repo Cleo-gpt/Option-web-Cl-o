@@ -26,8 +26,16 @@
        position: fixed. -->
   <div id="contenu-app">
 
-  <!-- ===== ÉCRAN 1 : MENU DE CONFIGURATION ===== -->
-  <!-- On choisit le mode, le nombre de joueurs, le nombre de cartes et la difficulté avant de jouer. -->
+  <!-- ===================================================================
+       ÉCRAN 1 : MENU DE CONFIGURATION
+
+       On choisit le thème visuel, le mode de jeu, le nombre de joueurs, le
+       nombre de cartes et la difficulté du mélange avant de jouer.
+
+       Fichiers : index.html (#ecran-menu ci-dessous) ; menu.js (classe
+       Menu, gestion des clics) ; style.css (section "MENU DE
+       CONFIGURATION").
+       =================================================================== -->
   <section id="ecran-menu" class="ecran">
     <h1 data-traduire="titre-jeu">Memory Multijoueur</h1>
 
@@ -87,8 +95,17 @@
     <button id="bouton-valider-menu" disabled data-traduire="valider">Valider</button>
   </section>
 
-  <!-- ===== ÉCRAN 2 : PLATEAU DE JEU ===== -->
-  <!-- Affiché en dessous du livre : le livre s'ouvre par-dessus au début, puis reste accessible via sa languette. -->
+  <!-- ===================================================================
+       ÉCRAN 2 : PLATEAU DE JEU
+
+       Affiché en dessous du livre des règles : le livre s'ouvre par-dessus
+       au début, puis reste accessible via sa languette. Trois colonnes :
+       joueurs, grille de cartes, paires trouvées.
+
+       Fichiers : index.html (#ecran-jeu ci-dessous) ; partie.js (classe
+       Partie, remplit et met à jour ces 3 colonnes) ; style.css (section
+       "ÉCRAN DE JEU").
+       =================================================================== -->
   <section id="ecran-jeu" class="ecran" hidden>
 
     <div id="zone-jeu" class="arene">
@@ -122,9 +139,17 @@
     </div>
   </section>
 
-  <!-- ===== LIVRE DES RÈGLES ===== -->
-  <!-- Un livre ancien qu'on doit ouvrir pour lire les règles. Il apparaît fermé après le
-       menu, et reste accessible pendant la partie via la languette #languette-livre. -->
+  <!-- ===================================================================
+       LIVRE DES RÈGLES
+
+       Un livre ancien qu'on doit ouvrir pour lire les règles. Il apparaît
+       fermé après le menu, et reste accessible pendant la partie via la
+       languette #languette-livre.
+
+       Fichiers : index.html (#livre et ses pages ci-dessous) ;
+       livre-des-regles.js (classe LivreDesRegles, ouverture/fermeture) ;
+       style.css (section "LIVRE DES RÈGLES").
+       =================================================================== -->
   <div id="livre" class="livre-ferme" hidden>
 
     <!-- Couverture fermée : cliquer dessus ouvre le livre -->
@@ -167,7 +192,17 @@
     </div>
   </div>
 
-  <!-- ===== ÉCRAN 4 : FIN DE PARTIE ===== -->
+  <!-- ===================================================================
+       ÉCRAN 4 : FIN DE PARTIE
+
+       Affiché quand toutes les paires sont trouvées (victoire) ou que
+       tous les joueurs ont perdu leurs coeurs (défaite) : titre, message,
+       statistiques de chaque joueur et bouton "Rejouer".
+
+       Fichiers : index.html (#ecran-fin ci-dessous) ; code.js
+       (afficherResultatFin(), afficherStatistiquesFin()) ; style.css
+       (section "ÉCRAN DE FIN").
+       =================================================================== -->
   <section id="ecran-fin" class="ecran" hidden>
     <h2 id="titre-fin"></h2>
     <p id="message-fin"></p>
