@@ -102,8 +102,8 @@ function choisirAccentAnimeAuHasard() {
 
 // Choix du thème visuel : change immédiatement l'apparence de toute la page
 // (fond, couleurs, police, dos de carte) pour un aperçu en direct, même avant
-// de valider le reste de la configuration. "Médiéval" est présélectionné par
-// défaut (voir index.html et THEME_PAR_DEFAUT dans theme-visuel.js).
+// de valider le reste de la configuration. "Médiamatique" est présélectionné
+// par défaut (voir index.html et THEME_PAR_DEFAUT dans theme-visuel.js).
 const boutonsTheme = document.querySelectorAll("[data-theme]");
 boutonsTheme.forEach((bouton) => {
   bouton.addEventListener("click", () => {

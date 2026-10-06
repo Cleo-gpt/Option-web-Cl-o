@@ -1,6 +1,6 @@
 // ===================================================================
 // CLASSE THEME VISUEL
-// Un thème visuel du jeu (ex: "medieval", "japon") : combien de symboles de
+// Un thème visuel du jeu (ex: "mediamatique", "japon") : combien de symboles de
 // cartes il a, dans quel format de fichier, et les quelques exceptions à ce
 // format (des vraies images fournies au fur et à mesure, dans le format où
 // elles ont été trouvées, plutôt que les placeholders ".svg" d'origine).
@@ -51,7 +51,6 @@ const THEMES_VISUELS = {
   anime: new ThemeVisuel("anime", 28, "svg"),
   japon: new ThemeVisuel("japon", 28, "jpeg"),
   mediamatique: new ThemeVisuel("mediamatique", 28, "svg"),
-  medieval: new ThemeVisuel("medieval", 28, "svg"),
   communaute: new ThemeVisuel("communaute", 28, "svg"),
   youtube: new ThemeVisuel("youtube", 28, "svg"),
 };
@@ -170,4 +169,4 @@ THEMES_VISUELS.youtube.ajouterException(26, "png");
 THEMES_VISUELS.youtube.ajouterException(27, "png");
 THEMES_VISUELS.youtube.ajouterException(28, "webp");
 
-const THEME_PAR_DEFAUT = "medieval";
+const THEME_PAR_DEFAUT = "mediamatique";

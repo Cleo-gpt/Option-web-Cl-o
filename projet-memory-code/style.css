@@ -65,39 +65,6 @@ button {
   font-family: var(--police-texte);
 }
 
-/* ----- Thème "Médiéval" (par défaut) -----
-   Palette "château de pierre à la tombée de la nuit" : fond gris-bleu sombre
-   avec une pointe brune, dorures et cuir en accent. */
-body.theme-medieval {
-  --fond: #262220;
-  --fond-carte: #3a332c;
-  --texte: #e8dfc8;
-  --accent: #c89b3c;
-  --accent-texte: #241c0e;
-  --police-texte: "Almendra", serif;
-  --police-titres: "MedievalSharp", serif;
-  --image-dos-carte: url("images/themes/medieval/dos.svg");
-  --degrade-titre: linear-gradient(90deg, var(--accent), var(--dore));
-
-  /* Couleurs "ancien livre" : cuir marron, dorures, parchemin */
-  --cuir: #3b2415;
-  --cuir-clair: #5a3a22;
-  --dore: #d8b463;
-  --papier: #efe3c4;
-}
-
-body.theme-medieval.theme-crepuscule {
-  --fond: #4a4038;
-  --fond-carte: #5c5045;
-  --texte: #f2ead9;
-}
-
-body.theme-medieval.theme-jour {
-  --fond: #ede3cf;
-  --fond-carte: #ddcfb0;
-  --texte: #2a1c0e;
-}
-
 /* ----- Thème "Animé / Pop culture" -----
    Très coloré : plusieurs univers/genres se côtoient. Fond violet-indigo
    sombre (net différent du rose sakura de Japon), dégradé multicolore néon

@@ -55,7 +55,6 @@ const TRADUCTIONS = {
   "theme-anime": { fr: "Animé / Pop culture", de: "Anime / Popkultur", en: "Anime / Pop culture" },
   "theme-japon": { fr: "Japon", de: "Japan", en: "Japan" },
   "theme-mediamatique": { fr: "Médiamatique", de: "Medieninformatik", en: "Media technology" },
-  "theme-medieval": { fr: "Médiéval", de: "Mittelalterlich", en: "Medieval" },
   "theme-communaute": { fr: "Communauté engagée", de: "Engagierte Gemeinschaft", en: "Engaged community" },
   "theme-youtube": { fr: "Youtube", de: "Youtube", en: "Youtube" },
   "mode-de-jeu": { fr: "Mode de jeu", de: "Spielmodus", en: "Game mode" },
