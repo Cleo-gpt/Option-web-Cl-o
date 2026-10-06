@@ -30,51 +30,15 @@ Pas de framework, pas d'outil de build : on ouvre `index.html` dans le navigateu
 
 Ces règles gardent le projet simple et lisible, même en avançant petit à petit.
 
-1. **Rester simple (KISS).**
-   Pas de framework, pas de build tool, pas de librairie externe.
-
-2. **Un fichier JS par classe, le reste dans `code.js`.**
-   `ThemeVisuel`, `Traducteur`, `Carte`, `Joueur`, `Partie`, `Menu` et `LivreDesRegles` vivent
-   chacune dans leur propre fichier. Le reste (constantes, éléments HTML, écrans, fin de partie)
-   va dans `code.js`. Pas d'autre découpage au-delà de ces 8 fichiers.
-
-3. **Noms en français.**
-   Variables, fonctions et commentaires en français (`joueurs`, `cartesRetournees`,
-   `melangerCartes()`...).
-
-4. **Un commentaire par bloc de logique.**
-   Chaque fonction ou condition un peu complexe a un court commentaire au-dessus qui explique
-   **à quoi elle sert**, pas comment JavaScript fonctionne. Voir l'exemple ci-dessous.
-
-5. **Pas de code mort ni de fonctionnalité inutilisée.**
-   Une règle du jeu non demandée (sauvegarde en ligne, comptes utilisateurs...) ne s'ajoute pas
-   "au cas où".
-
-6. **État du jeu centralisé, dans des classes.**
-   `menu` (instance de `Menu`) et `partieActuelle` (instance de `Partie`, ou `null` avant le
-   début d'une partie) sont chacun un seul objet à lire pour savoir "où on en est" — pas de
-   duplication ailleurs dans le code.
-
-7. **CSS avec variables.**
-   Les couleurs (joueurs, fond anthracite...) sont définies une fois via des variables CSS
-   (`:root { --bleu: ...; }`) et réutilisées, pas recopiées partout.
-
-8. **Se baser sur les ateliers du cours.**
-   Avant toute modification, parcourir les PDF "Atelier" des dossiers suivants, à la racine du
-   dépôt : `01-planetes`, `02-orbit`, `03-donnees-nues`, `06-deux-langages`, `08-json`,
-   `One_button`, `watt`, et `02-sas-poo/projets` avec tous ses sous-dossiers (`02-orbites`,
-   `05-commande`, `06-deux-langages`, `07-catalogue`, `08-json`, `02-sas-poo/support`).
-   Le code ne doit utiliser que des notions, techniques et façons de faire présentes dans ces
-   ateliers — même si une autre approche serait plus simple ou plus idiomatique.
-
-9. **Classes ES6 pour un maximum de structures du jeu.**
-   Toute structure avec un état propre et un comportement devient une classe, dans le style des
-   ateliers (`Planete`, `Meule`, `Billet`, `Materiel`) : constructeur en `this.xxx = xxx`,
-   méthodes en camelCase français préfixées par `est` pour les prédicats (`estElimine`,
-   `estVisible`, `estComplet`), sans héritage, getters/setters, champs privés ni méthode
-   statique. Restent hors classe : les constantes pures (`TRADUCTIONS`,
-   `CLASSES_COULEUR_JOUEURS`...) et les fonctions d'un seul écran simple (gestion des écrans,
-   affichage de fin de partie).
+1. **Rester simple (KISS).** Pas de framework, pas de build tool, pas de librairie externe.
+2. **Un fichier JS par classe, le reste dans `code.js`.** `ThemeVisuel`, `Traducteur`, `Carte`, `Joueur`, `Partie`, `Menu` et `LivreDesRegles` ont chacune leur fichier ; le reste va dans `code.js`. Pas d'autre découpage au-delà de ces 8 fichiers.
+3. **Noms en français.** Variables, fonctions et commentaires en français (`joueurs`, `melangerCartes()`...).
+4. **Un commentaire par bloc de logique.** Chaque fonction ou condition un peu complexe a un court commentaire au-dessus qui explique **à quoi elle sert**. Voir l'exemple ci-dessous.
+5. **Pas de code mort ni de fonctionnalité inutilisée.** Une règle du jeu non demandée ne s'ajoute pas "au cas où".
+6. **État du jeu centralisé, dans des classes.** `menu` et `partieActuelle` (ou `null` avant le début d'une partie) sont chacun un seul objet à lire pour savoir "où on en est".
+7. **CSS avec variables.** Les couleurs sont définies une fois via des variables CSS (`:root { --bleu: ...; }`) et réutilisées.
+8. **Se baser sur les ateliers du cours.** Le code ne doit utiliser que des notions présentes dans les PDF "Atelier" à la racine du dépôt (`01-planetes`, `02-orbit`, `03-donnees-nues`, `06-deux-langages`, `08-json`, `One_button`, `watt`, `02-sas-poo/projets` et ses sous-dossiers) — même si une autre approche serait plus simple.
+9. **Classes ES6 pour un maximum de structures du jeu.** Constructeur en `this.xxx = xxx`, méthodes en camelCase français préfixées par `est` pour les prédicats (`estElimine`...), sans héritage, getters/setters, champs privés ni méthode statique — dans le style des ateliers (`Planete`, `Meule`...).
 
 ### Exemple de commentaire attendu
 
@@ -97,8 +61,7 @@ function verifierPaire(carteA, carteB) {
 - **Mode de jeu** : contre un ordinateur, ou en multijoueur.
 - **Nombre de joueurs** (si multijoueur).
 - **Nombre de cartes** : un multiple de 4 (12, 16, 20...), pour que les paires tombent juste.
-- **Difficulté du mélange** : Facile, Moyen, Difficile — plus c'est difficile, plus le mélange
-  est poussé.
+- **Difficulté du mélange** : Facile, Moyen, Difficile — plus c'est difficile, plus le mélange est poussé.
 
 ### 2. Livre des règles
 
@@ -112,8 +75,7 @@ Affiché une fois la configuration validée, avant de démarrer la partie :
 
 ### 3. Partie
 
-- Un **chronomètre** démarre avec la partie et s'arrête à la victoire ou quand il ne reste plus
-  qu'un joueur en vie (ou zéro).
+- Un **chronomètre** démarre avec la partie et s'arrête à la victoire ou quand il ne reste plus qu'un joueur en vie (ou zéro).
 - **Tour par tour** : la lumière du joueur actif s'allume, 45 secondes pour retourner 2 cartes.
 - Temps écoulé sans action = une erreur (perte d'un coeur), puis joueur suivant.
 
@@ -135,5 +97,4 @@ Affiché une fois la configuration validée, avant de démarrer la partie :
 
 ## Écarts avec les ateliers
 
-Le détail des écarts entre le code et les ateliers (règle 8) est suivi dans
-[MODIF.md](MODIF.md), pas ici.
+Le détail des écarts entre le code et les ateliers (règle 8) est suivi dans [MODIF.md](MODIF.md), pas ici.
