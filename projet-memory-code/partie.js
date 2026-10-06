@@ -151,6 +151,8 @@ class Partie {
 
       grilleCartes.appendChild(bouton);
     });
+
+    this.afficherPairesTrouvees();
   }
 
   // Met à jour l'apparence d'une carte en fonction de son état (cachée / retournée / trouvée).
@@ -159,6 +161,23 @@ class Partie {
     bouton.classList.toggle("retournee", carte.retournee);
     bouton.classList.toggle("trouvee", carte.trouvee);
     bouton.querySelector(".image-symbole-carte").hidden = !carte.estVisible();
+  }
+
+  // Affiche, sous la liste des joueurs, une petite vignette par paire déjà
+  // trouvée (une carte sur deux suffit, les deux cartes d'une paire montrent
+  // le même symbole), dans l'ordre où les paires ont été trouvées.
+  afficherPairesTrouvees() {
+    const cartesTrouvees = this.cartes.filter((carte) => carte.trouvee);
+
+    pairesTrouvees.innerHTML = "";
+    for (let i = 0; i < cartesTrouvees.length; i += 2) {
+      const carte = cartesTrouvees[i];
+      const vignette = document.createElement("img");
+      vignette.className = "vignette-paire-trouvee";
+      vignette.src = THEMES_VISUELS[this.theme].cheminSymboleCarte(carte.numeroSymbole);
+      vignette.alt = "";
+      pairesTrouvees.appendChild(vignette);
+    }
   }
 
 
@@ -249,6 +268,7 @@ class Partie {
         carteA.marquerTrouvee();
         carteB.marquerTrouvee();
         this.gagnerCoeurJoueurActuel();
+        this.afficherPairesTrouvees();
       } else {
         carteA.cacher();
         carteB.cacher();

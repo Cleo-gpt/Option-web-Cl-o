@@ -46,6 +46,7 @@ const boutonValiderMenu = document.getElementById("bouton-valider-menu");
 const chronoAffichage = document.getElementById("chrono");
 const tempsTourAffichage = document.getElementById("temps-tour");
 const listeJoueurs = document.getElementById("liste-joueurs");
+const pairesTrouvees = document.getElementById("paires-trouvees");
 const grilleCartes = document.getElementById("grille-cartes");
 
 const titreFin = document.getElementById("titre-fin");
