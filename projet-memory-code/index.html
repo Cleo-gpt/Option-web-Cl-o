@@ -92,7 +92,7 @@
   <!-- Affiché en dessous du livre : le livre s'ouvre par-dessus au début, puis reste accessible via sa languette. -->
   <section id="ecran-jeu" class="ecran" hidden>
 
-    <div id="zone-jeu">
+    <div id="zone-jeu" class="arene">
 
       <!-- Colonne de gauche, collée au bord : chronomètre, temps du tour, et
            une ligne par joueur avec sa lumière et ses coeurs. -->
@@ -109,6 +109,10 @@
         </div>
 
         <div id="liste-joueurs"></div>
+
+        <!-- Paires déjà trouvées par les joueurs : une petite vignette par
+             paire, dans l'ordre où elle a été trouvée (voir Partie.afficherPairesTrouvees()). -->
+        <div id="paires-trouvees"></div>
       </div>
 
       <!-- Grille de cartes, remplie par JavaScript -->
