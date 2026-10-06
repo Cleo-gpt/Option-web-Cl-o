@@ -86,11 +86,15 @@ const languetteLivre = document.getElementById("languette-livre");
 
 // ===================================================================
 // BARRE DE RÉGLAGES : LUMINOSITÉ JOUR / NUIT / ENTRE-DEUX
-// Cycle entre 3 niveaux de luminosité, combinés au thème visuel choisi dans le
-// menu : <body> porte donc 2 classes en même temps, par exemple
-// "theme-japon theme-jour". Les couleurs de chaque combinaison sont définies
-// en CSS (voir style.css, body.theme-<visuel>.theme-<luminosite>).
-// "nuit" est la luminosité par défaut (pas de classe de luminosité).
+//
+// Cycle entre 3 niveaux de luminosité, combinés au thème visuel choisi dans
+// le menu : <body> porte donc 2 classes en même temps, par exemple
+// "theme-japon theme-jour" ("nuit" est la luminosité par défaut, sans
+// classe).
+//
+// Fichier : code.js (ci-dessous) ; les couleurs de chaque combinaison sont
+// définies en CSS dans style.css
+// (body.theme-<visuel>.theme-<luminosite>).
 // ===================================================================
 const LUMINOSITES = ["nuit", "crepuscule", "jour"];
 let luminositeActuelleIndex = 0;
@@ -118,7 +122,12 @@ boutonTheme.addEventListener("click", () => {
 
 // ===================================================================
 // GESTION DES ÉCRANS
-// Affiche l'écran demandé et cache tous les autres, pour n'en montrer qu'un à la fois.
+//
+// Affiche l'écran demandé (menu / jeu / fin) et cache tous les autres, pour
+// n'en montrer qu'un à la fois.
+//
+// Fichier : code.js, fonction changerEcran() ; appelée depuis menu.js et
+// partie.js à chaque changement d'écran.
 // ===================================================================
 function changerEcran(nom) {
   scene = nom;
