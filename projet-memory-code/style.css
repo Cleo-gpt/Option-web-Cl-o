@@ -510,14 +510,13 @@ body.theme-communaute .bouton-choix:hover {
 
 /* ===== Écran de jeu ===== */
 
-/* La colonne de gauche (chrono + joueurs) est collée au bord gauche de
-   l'écran plutôt que centrée à côté de la grille : le texte reste aligné,
-   compact, et laisse le maximum de place à la grille de cartes. */
+/* Trois colonnes côte à côte : joueurs (gauche), grille de cartes (centre),
+   paires trouvées (droite). Pas de flex-wrap : sur un écran étroit, l'arène
+   déborde plutôt que de faire retomber la colonne de droite sous les
+   joueurs (voir .arene plus bas, qui gère le débordement). */
 #zone-jeu {
   display: flex;
-  flex-wrap: wrap;
   gap: 2rem;
-  justify-content: flex-start;
   align-items: flex-start;
 }
 
@@ -526,14 +525,16 @@ body.theme-communaute .bouton-choix:hover {
    définis par chaque thème, voir le haut de ce fichier). Un double-cadre
    (bordure dorée fine à l'intérieur d'une bordure en cuir épaisse) plus quatre
    coins décoratifs en dégradé doré, posés avec ::before/::after.
-   max-width + margin: 0 auto : le cadre reste à la taille de son contenu
-   (colonne joueurs + grille de cartes, 900px max, voir #grille-cartes) et se
-   centre, plutôt que de s'étirer sur toute la largeur de la fenêtre avec du
-   vide à droite. */
+   max-width + margin: 0 auto : le cadre reste à la taille de son contenu (les
+   3 colonnes : joueurs, grille de cartes 900px max, paires trouvées) et se
+   centre, plutôt que de s'étirer sur toute la largeur de la fenêtre. Si les 3
+   colonnes dépassent quand même (petit écran), overflow-x fait défiler
+   l'intérieur du cadre plutôt que de casser la mise en page. */
 .arene {
   position: relative;
-  max-width: 1200px;
+  max-width: 1500px;
   margin: 0 auto;
+  overflow-x: auto;
   background-color: var(--fond-carte);
   border: 10px solid var(--cuir);
   border-radius: 18px;
@@ -655,13 +656,17 @@ body.theme-communaute .bouton-choix:hover {
   font-size: 0.9rem;
 }
 
-/* Paires déjà trouvées, sous la liste des joueurs : une petite vignette par
-   paire trouvée, dans l'ordre de découverte (voir
-   Partie.afficherPairesTrouvees() dans partie.js). */
+/* Paires déjà trouvées : une colonne à droite de la grille de cartes, une
+   petite vignette par paire trouvée empilée verticalement dans l'ordre de
+   découverte (voir Partie.afficherPairesTrouvees() dans partie.js). Occupe
+   l'espace restant à droite de la grille plutôt que de le laisser vide. */
 #paires-trouvees {
   display: flex;
+  flex-direction: column;
   flex-wrap: wrap;
+  flex-grow: 1;
   gap: 0.4rem;
+  max-height: 560px; /* hauteur approximative de la grille : au-delà, une 2e colonne de vignettes démarre */
 }
 
 .vignette-paire-trouvee {
