@@ -185,20 +185,26 @@ class Partie {
     bouton.querySelector(".image-symbole-carte").hidden = !carte.estVisible();
   }
 
-  // Affiche, sous la liste des joueurs, une petite vignette par paire déjà
-  // trouvée (une carte sur deux suffit, les deux cartes d'une paire montrent
-  // le même symbole), dans l'ordre où les paires ont été trouvées.
+  // Affiche, sous la liste des joueurs, une petite carte miniature par paire
+  // déjà trouvée (une carte sur deux suffit, les deux cartes d'une paire
+  // montrent le même symbole), dans l'ordre où les paires ont été trouvées.
+  // Même structure que les cartes du plateau (un conteneur + une image à
+  // l'intérieur), juste en plus petit via la classe "mini-carte-trouvee".
   afficherPairesTrouvees() {
     const cartesTrouvees = this.cartes.filter((carte) => carte.trouvee);
 
     pairesTrouvees.innerHTML = "";
     for (let i = 0; i < cartesTrouvees.length; i += 2) {
       const carte = cartesTrouvees[i];
-      const vignette = document.createElement("img");
-      vignette.className = "vignette-paire-trouvee";
-      vignette.src = THEMES_VISUELS[this.theme].cheminSymboleCarte(carte.numeroSymbole);
-      vignette.alt = "";
-      pairesTrouvees.appendChild(vignette);
+      const miniCarte = document.createElement("div");
+      miniCarte.className = "mini-carte-trouvee";
+
+      const imageSymbole = document.createElement("img");
+      imageSymbole.src = THEMES_VISUELS[this.theme].cheminSymboleCarte(carte.numeroSymbole);
+      imageSymbole.alt = "";
+      miniCarte.appendChild(imageSymbole);
+
+      pairesTrouvees.appendChild(miniCarte);
     }
   }
 

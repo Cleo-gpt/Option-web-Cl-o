@@ -718,8 +718,8 @@ body.theme-communaute .bouton-choix:hover {
 }
 
 /* Paires déjà trouvées : une colonne à droite de la
-   grille de cartes, une petite vignette par paire
-   trouvée empilée verticalement dans l'ordre de
+   grille de cartes, une petite carte miniature par
+   paire trouvée empilée verticalement dans l'ordre de
    découverte (voir Partie.afficherPairesTrouvees() dans
    4-partie.js). Occupe l'espace restant à droite de la
    grille plutôt que de le laisser vide. */
@@ -730,17 +730,34 @@ body.theme-communaute .bouton-choix:hover {
   flex-grow: 1;
   gap: 0.4rem;
   /* hauteur approximative de la grille : au-delà, une
-     2e colonne de vignettes démarre */
+     2e colonne de mini cartes démarre */
   max-height: 560px;
 }
 
-.vignette-paire-trouvee {
-  width: 36px;
-  height: 36px;
+/* Mini carte polaroid : même look que .carte.retournee
+   (fond crème, cadre épais en bas, légère rotation),
+   juste à une échelle réduite (environ 40%). */
+.mini-carte-trouvee {
+  width: 38px;
+  height: 49px;
+  box-sizing: border-box;
+  background-color: #f4f1ea;
+  border: 1px solid #f4f1ea;
+  border-radius: 3px;
+  padding: 2px 2px 6px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
+  transform: rotate(-3deg);
+}
+
+.mini-carte-trouvee:nth-child(even) {
+  transform: rotate(3deg);
+}
+
+.mini-carte-trouvee img {
+  width: 100%;
+  height: 100%;
   object-fit: cover;
-  border-radius: 6px;
-  border: 2px solid var(--dore);
-  background-color: var(--fond-carte);
+  border-radius: 2px;
 }
 
 /* ===================================================================
