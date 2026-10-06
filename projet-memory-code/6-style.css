@@ -736,16 +736,16 @@ body.theme-communaute .bouton-choix:hover {
 
 /* Mini carte polaroid : même look que .carte.retournee
    (fond crème, cadre épais en bas, légère rotation),
-   juste à une échelle réduite (environ 40%). */
+   juste à une échelle réduite (environ 60%). */
 .mini-carte-trouvee {
-  width: 38px;
-  height: 49px;
+  width: 57px;
+  height: 73px;
   box-sizing: border-box;
   background-color: #f4f1ea;
   border: 1px solid #f4f1ea;
-  border-radius: 3px;
-  padding: 2px 2px 6px;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
+  border-radius: 5px;
+  padding: 3px 3px 9px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
   transform: rotate(-3deg);
 }
 
