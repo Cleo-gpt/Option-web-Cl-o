@@ -5,55 +5,70 @@
 
 ## ✅ Corrigés (2026-09-29)
 
-- **12 fichiers JS → un seul `code.js`**, chargé par une seule balise `<script>`, dans le même
-  ordre de dépendance qu'avant. Le dossier `js/` a été supprimé.
-- **CSS Grid → `flex-wrap`** : `#grille-cartes` revient à `display: flex; flex-wrap: wrap;` (déjà
-  utilisé ailleurs dans le CSS), les cartes reviennent à la ligne toutes seules.
-- **`Math.ceil(Math.sqrt(...))` → retiré** : plus de calcul de colonnes du tout, `flex-wrap` s'en
-  charge naturellement.
-- **`Array.from({length}, callback)` → boucle `for`** : `creerEtMelangerCartes()` construit
-  maintenant le tableau de cartes avec deux boucles `for` imbriquées et `push()`.
-- **Variables CSS pilotées en JS → classes CSS** : le thème "Animé" utilise 6 classes
-  `accent-anime-1` à `accent-anime-6` (définies dans `style.css`), posées/retirées en `classList`
-  plutôt que `style.setProperty("--accent", ...)`.
-- **Fonction générique `gererGroupeBoutons` → handlers dupliqués** : chaque groupe de boutons
-  (thème, mode, joueurs, difficulté ordi, cartes, difficulté) a maintenant son propre bloc
-  `querySelectorAll(...).forEach(...)` répété.
-- **Objet de config à deux niveaux → liste plate** : `EXCEPTIONS_EXTENSION` est remplacé par
-  `EXTENSIONS_SYMBOLES_MEDIAMATIQUE`, une liste plate `[{ numeroSymbole, extension }]`.
+- **12 fichiers JS → un seul `code.js`**
+  Chargé par une seule balise `<script>`, dans le même ordre de dépendance qu'avant. Le dossier
+  `js/` a été supprimé.
+
+- **CSS Grid → `flex-wrap`**
+  `#grille-cartes` revient à `display: flex; flex-wrap: wrap;` (déjà utilisé ailleurs dans le
+  CSS), les cartes reviennent à la ligne toutes seules.
+
+- **`Math.ceil(Math.sqrt(...))` → retiré**
+  Plus de calcul de colonnes du tout, `flex-wrap` s'en charge naturellement.
+
+- **`Array.from({length}, callback)` → boucle `for`**
+  `creerEtMelangerCartes()` construit maintenant le tableau de cartes avec deux boucles `for`
+  imbriquées et `push()`.
+
+- **Variables CSS pilotées en JS → classes CSS**
+  Le thème "Animé" utilise 6 classes `accent-anime-1` à `accent-anime-6` (définies dans
+  `style.css`), posées/retirées en `classList` plutôt que `style.setProperty("--accent", ...)`.
+
+- **Fonction générique `gererGroupeBoutons` → handlers dupliqués**
+  Chaque groupe de boutons (thème, mode, joueurs, difficulté ordi, cartes, difficulté) a
+  maintenant son propre bloc `querySelectorAll(...).forEach(...)` répété.
+
+- **Objet de config à deux niveaux → liste plate**
+  `EXCEPTIONS_EXTENSION` est remplacé par `EXTENSIONS_SYMBOLES_MEDIAMATIQUE`, une liste plate
+  `[{ numeroSymbole, extension }]`.
   *(Obsolète depuis : toutes les images de tous les thèmes sont maintenant uniformément en
   `.png`, donc ce système de liste d'exceptions par extension a été entièrement retiré de
   `theme-visuel.js` — il n'y a plus qu'un seul format à gérer.)*
 
 ## 🔴 Impossibles à corriger sans trop s'éloigner du cours
 
-- **Dictionnaire de traduction multilingue** (`traductions.js`, ~50 clés fr/de/en) — aucun atelier
-  ne couvre l'internationalisation ; pas d'alternative plus simple qui garderait la fonctionnalité.
-- **Dégradés CSS** (`linear-gradient`, `background-clip: text`) — demandés explicitement pour les
-  thèmes visuels (Communauté engagée, titres colorés) ; aucun atelier ne les couvre, mais les
-  remplacer par des couleurs unies changerait le rendu voulu.
+- **Dictionnaire de traduction multilingue** (`traducteur.js`, ~50 clés fr/de/en)
+  Aucun atelier ne couvre l'internationalisation ; pas d'alternative plus simple qui garderait
+  la fonctionnalité.
+
+- **Dégradés CSS** (`linear-gradient`, `background-clip: text`)
+  Demandés explicitement pour les thèmes visuels (Communauté engagée, titres colorés). Aucun
+  atelier ne les couvre, mais les remplacer par des couleurs unies changerait le rendu voulu.
 
 ## ⚪ Autres
 
-- **Note obsolète dans le README** : l'ancienne section "Écarts assumés" mentionnait un curseur
-  `<input type="range">` qui n'existe plus dans le code (remplacé par des boutons fixes) — déjà
-  corrigée en pointant vers ce fichier à la place.
-- **Classes ES6 ajoutées et étendues (2026-09-29, 2026-09-30)** : à la demande du professeur, le
-  jeu utilise au maximum des classes avec `constructor` (`Carte`, `Joueur`, `Partie`,
-  `ThemeVisuel`, `Traducteur`, `Menu`, `LivreDesRegles`), dans le style des ateliers (`Meule`,
-  `Materiel`...). C'est l'inverse d'un écart : ça rapproche le code du cours plutôt que de l'en
-  éloigner, donc ça ne va pas dans les sections ci-dessus. L'ancien objet global `etat` puis
-  `config` a été remplacé par une instance de `Menu` (config du menu) et une instance de `Partie`
-  (créée au clic sur "Valider").
+- **Note obsolète dans le README**
+  L'ancienne section "Écarts assumés" mentionnait un curseur `<input type="range">` qui n'existe
+  plus dans le code (remplacé par des boutons fixes) — déjà corrigée en pointant vers ce fichier
+  à la place.
+
+- **Classes ES6 ajoutées et étendues (2026-09-29, 2026-09-30)**
+  À la demande du professeur, le jeu utilise au maximum des classes avec `constructor` (`Carte`,
+  `Joueur`, `Partie`, `ThemeVisuel`, `Traducteur`, `Menu`, `LivreDesRegles`), dans le style des
+  ateliers (`Meule`, `Materiel`...). C'est l'inverse d'un écart : ça rapproche le code du cours
+  plutôt que de l'en éloigner, donc ça ne va pas dans les sections ci-dessus. L'ancien objet
+  global `etat` puis `config` a été remplacé par une instance de `Menu` (config du menu) et une
+  instance de `Partie` (créée au clic sur "Valider").
 
 ## À partir de maintenant
 
 *(Se remplit à chaque demande ou idée qui va à contre-sens des ateliers ; chaque entrée est
 notifiée à l'utilisateur au moment où elle est ajoutée.)*
 
-- **Classes séparées dans leurs propres fichiers (2026-09-30)** : chaque classe vit dans son
-  propre fichier (`carte.js`, `joueur.js`, `partie.js`, puis `theme-visuel.js`, `traducteur.js`,
-  `menu.js`, `livre-des-regles.js`), demande explicite malgré la fusion en un seul fichier faite
-  peu avant pour coller aux ateliers. Aucun atelier ne sépare ses classes dans des fichiers
-  distincts (`Meule`, `Billet`, etc. sont toujours dans le même fichier que le reste de leur
-  atelier) — écart assumé, la règle 2 du README a été mise à jour en conséquence.
+- **Classes séparées dans leurs propres fichiers (2026-09-30)**
+  Chaque classe vit dans son propre fichier (`carte.js`, `joueur.js`, `partie.js`, puis
+  `theme-visuel.js`, `traducteur.js`, `menu.js`, `livre-des-regles.js`), demande explicite malgré
+  la fusion en un seul fichier faite peu avant pour coller aux ateliers. Aucun atelier ne sépare
+  ses classes dans des fichiers distincts (`Meule`, `Billet`, etc. sont toujours dans le même
+  fichier que le reste de leur atelier) — écart assumé, la règle 2 du README a été mise à jour
+  en conséquence.
