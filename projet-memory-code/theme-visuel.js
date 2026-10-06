@@ -66,7 +66,7 @@ THEMES_VISUELS.mediamatique.ajouterException(7, "png");
 THEMES_VISUELS.mediamatique.ajouterException(8, "png");
 THEMES_VISUELS.mediamatique.ajouterException(9, "png");
 THEMES_VISUELS.mediamatique.ajouterException(10, "png");
-THEMES_VISUELS.mediamatique.ajouterException(13, "jpg");
+THEMES_VISUELS.mediamatique.ajouterException(13, "webp");
 THEMES_VISUELS.mediamatique.ajouterException(14, "webp");
 THEMES_VISUELS.mediamatique.ajouterException(15, "webp");
 THEMES_VISUELS.mediamatique.ajouterException(16, "webp");
@@ -80,6 +80,8 @@ THEMES_VISUELS.mediamatique.ajouterException(23, "png");
 THEMES_VISUELS.mediamatique.ajouterException(24, "png");
 THEMES_VISUELS.mediamatique.ajouterException(25, "png");
 THEMES_VISUELS.mediamatique.ajouterException(26, "png");
+THEMES_VISUELS.mediamatique.ajouterException(27, "webp");
+THEMES_VISUELS.mediamatique.ajouterException(28, "jpg");
 
 THEMES_VISUELS.anime.ajouterException(1, "png");
 THEMES_VISUELS.anime.ajouterException(2, "jpg");
