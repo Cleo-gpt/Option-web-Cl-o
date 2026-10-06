@@ -145,5 +145,9 @@ THEMES_VISUELS.youtube.ajouterException(16, "jpg");
 THEMES_VISUELS.youtube.ajouterException(17, "png");
 THEMES_VISUELS.youtube.ajouterException(18, "jpg");
 THEMES_VISUELS.youtube.ajouterException(19, "png");
+THEMES_VISUELS.youtube.ajouterException(20, "jpg");
+THEMES_VISUELS.youtube.ajouterException(21, "png");
+THEMES_VISUELS.youtube.ajouterException(22, "jpg");
+THEMES_VISUELS.youtube.ajouterException(23, "jpg");
 
 const THEME_PAR_DEFAUT = "medieval";
