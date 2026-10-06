@@ -198,30 +198,42 @@ class Partie {
     this.afficherPairesTrouvees();
   }
 
-  // Affiche, sous la liste des joueurs, une petite carte miniature par paire
-  // déjà trouvée (une carte sur deux suffit, les deux cartes d'une paire
-  // montrent le même symbole), dans l'ordre où les paires ont été trouvées.
-  // Même structure que les cartes du plateau (un conteneur + une image à
-  // l'intérieur), juste en plus petit via la classe "mini-carte-trouvee" ;
-  // une paire trouvée par un autre joueur que celui dont c'est le tour est
-  // en plus estompée, comme sur le plateau (voir rafraichirCarte()).
+  // Affiche, sous la liste des joueurs, une colonne par joueur avec une
+  // petite carte miniature par paire qu'il a trouvée (une carte sur deux
+  // suffit, les deux cartes d'une paire montrent le même symbole), dans
+  // l'ordre où les paires ont été trouvées. Même structure que les cartes
+  // du plateau (un conteneur + une image à l'intérieur), juste en plus
+  // petit via la classe "mini-carte-trouvee" ; la colonne du joueur qui ne
+  // joue pas son tour est en plus estompée, comme les cartes sur le
+  // plateau (voir rafraichirCarte()).
   afficherPairesTrouvees() {
-    const cartesTrouvees = this.cartes.filter((carte) => carte.trouvee);
-
     pairesTrouvees.innerHTML = "";
-    for (let i = 0; i < cartesTrouvees.length; i += 2) {
-      const carte = cartesTrouvees[i];
-      const miniCarte = document.createElement("div");
-      miniCarte.className = "mini-carte-trouvee";
-      miniCarte.classList.toggle("estompee", carte.joueurTrouveurIndex !== this.joueurActuelIndex);
 
-      const imageSymbole = document.createElement("img");
-      imageSymbole.src = THEMES_VISUELS[this.theme].cheminSymboleCarte(carte.numeroSymbole);
-      imageSymbole.alt = "";
-      miniCarte.appendChild(imageSymbole);
+    this.joueurs.forEach((joueur, index) => {
+      const cartesDuJoueur = this.cartes.filter(
+        (carte) => carte.trouvee && carte.joueurTrouveurIndex === index
+      );
+      if (cartesDuJoueur.length === 0) return; // pas encore de paire trouvée par ce joueur
 
-      pairesTrouvees.appendChild(miniCarte);
-    }
+      const colonne = document.createElement("div");
+      colonne.className = `colonne-paires-trouvees ${joueur.classeCouleur}`;
+      colonne.classList.toggle("estompee", index !== this.joueurActuelIndex);
+
+      for (let i = 0; i < cartesDuJoueur.length; i += 2) {
+        const carte = cartesDuJoueur[i];
+        const miniCarte = document.createElement("div");
+        miniCarte.className = "mini-carte-trouvee";
+
+        const imageSymbole = document.createElement("img");
+        imageSymbole.src = THEMES_VISUELS[this.theme].cheminSymboleCarte(carte.numeroSymbole);
+        imageSymbole.alt = "";
+        miniCarte.appendChild(imageSymbole);
+
+        colonne.appendChild(miniCarte);
+      }
+
+      pairesTrouvees.appendChild(colonne);
+    });
   }
 
 

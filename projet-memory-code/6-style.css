@@ -717,22 +717,47 @@ body.theme-communaute .bouton-choix:hover {
   font-size: 0.9rem;
 }
 
-/* Paires déjà trouvées : une colonne à droite de la
-   grille de cartes, une petite carte miniature par
-   paire trouvée empilée verticalement dans l'ordre de
-   découverte (voir Partie.afficherPairesTrouvees() dans
-   4-partie.js). Occupe l'espace restant à droite de la
-   grille plutôt que de le laisser vide. */
+/* Paires déjà trouvées : à droite de la grille de cartes,
+   une colonne par joueur (voir .colonne-paires-trouvees
+   plus bas), côte à côte dans l'ordre des joueurs. Occupe
+   l'espace restant à droite de la grille plutôt que de le
+   laisser vide. */
 #paires-trouvees {
+  display: flex;
+  flex-direction: row;
+  flex-grow: 1;
+  gap: 0.8rem;
+}
+
+/* Une colonne par joueur : ses paires trouvées empilées
+   verticalement dans l'ordre de découverte (voir
+   Partie.afficherPairesTrouvees() dans 4-partie.js), avec
+   un liseré dans la couleur du joueur pour les distinguer
+   d'un coup d'œil. Estompée (même effet que .carte.estompee
+   sur le plateau) quand ce n'est pas le tour de ce joueur. */
+.colonne-paires-trouvees {
   display: flex;
   flex-direction: column;
   flex-wrap: wrap;
-  flex-grow: 1;
   gap: 0.4rem;
-  /* hauteur approximative de la grille : au-delà, une
-     2e colonne de mini cartes démarre */
+  padding: 0.4rem;
+  border-radius: 8px;
+  border: 2px solid transparent;
+  /* hauteur approximative de la grille : au-delà, une 2e
+     rangée de mini cartes démarre dans la même colonne */
   max-height: 560px;
 }
+
+.colonne-paires-trouvees.estompee {
+  opacity: 0.3;
+  filter: grayscale(60%);
+}
+
+.colonne-paires-trouvees.joueur-1 { border-color: var(--joueur-1); }
+.colonne-paires-trouvees.joueur-2 { border-color: var(--joueur-2); }
+.colonne-paires-trouvees.joueur-3 { border-color: var(--joueur-3); }
+.colonne-paires-trouvees.joueur-4 { border-color: var(--joueur-4); }
+.colonne-paires-trouvees.joueur-robot { border-color: var(--robot); }
 
 /* Mini carte polaroid : même look que .carte.retournee
    (fond crème, cadre épais en bas, légère rotation),
@@ -758,14 +783,6 @@ body.theme-communaute .bouton-choix:hover {
   height: 100%;
   object-fit: cover;
   border-radius: 2px;
-}
-
-/* Mini carte trouvée par un autre joueur que celui dont c'est le tour :
-   même estompage que .carte.estompee sur le plateau (voir plus haut),
-   pour mettre en valeur les paires du joueur actif. */
-.mini-carte-trouvee.estompee {
-  opacity: 0.3;
-  filter: grayscale(60%);
 }
 
 /* ===================================================================
