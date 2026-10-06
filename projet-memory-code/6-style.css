@@ -719,14 +719,18 @@ body.theme-communaute .bouton-choix:hover {
 
 /* Paires déjà trouvées : à droite de la grille de cartes,
    une colonne par joueur (voir .colonne-paires-trouvees
-   plus bas), côte à côte dans l'ordre des joueurs. Occupe
-   l'espace restant à droite de la grille plutôt que de le
-   laisser vide. */
+   plus bas), côte à côte dans l'ordre des joueurs. Largeur
+   fixe (au lieu de flex-grow) : avec une colonne qui
+   n'apparaît qu'une fois son premier joueur trouve une
+   paire, flex-grow aurait fait varier la largeur de toute
+   l'arène (et donc bouger la grille de cartes) à chaque
+   nouvelle colonne. 5 x 50px = la place pour au maximum 4
+   joueurs humains + le robot, toujours réservée d'avance. */
 #paires-trouvees {
   display: flex;
   flex-direction: row;
-  flex-grow: 1;
-  gap: 0.8rem;
+  gap: 0.6rem;
+  width: calc(5 * 50px + 4 * 0.6rem);
 }
 
 /* Une colonne par joueur : ses paires trouvées empilées
@@ -761,16 +765,17 @@ body.theme-communaute .bouton-choix:hover {
 
 /* Mini carte polaroid : même look que .carte.retournee
    (fond crème, cadre épais en bas, légère rotation),
-   juste à une échelle réduite (environ 80%). */
+   juste à une échelle réduite (environ 50%, pour que
+   plusieurs colonnes tiennent sans faire bouger l'arène). */
 .mini-carte-trouvee {
-  width: 75px;
-  height: 96px;
+  width: 46px;
+  height: 59px;
   box-sizing: border-box;
   background-color: #f4f1ea;
-  border: 2px solid #f4f1ea;
-  border-radius: 6px;
-  padding: 4px 4px 12px;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.4);
+  border: 1px solid #f4f1ea;
+  border-radius: 4px;
+  padding: 3px 3px 8px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
   transform: rotate(-3deg);
 }
 
