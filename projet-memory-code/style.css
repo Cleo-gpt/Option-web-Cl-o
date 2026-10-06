@@ -48,7 +48,12 @@ h1, h2 {
   font-family: var(--police-titres);
 }
 
-/* Chaque thème définit --degrade-titre (voir plus bas) : un dégradé pour le
+/* 🔴🔴🔴 ÉCART ATELIERS — linear-gradient() et background-clip: text ne sont
+   couverts par aucun atelier du cours (voir MODIF.md, section "Impossibles à
+   corriger sans trop s'éloigner du cours") ; conservés car demandés
+   explicitement pour l'apparence des thèmes, une couleur unie changerait le
+   rendu voulu. 🔴🔴🔴
+   Chaque thème définit --degrade-titre (voir plus bas) : un dégradé pour le
    titre principal de l'écran menu. La plupart des thèmes y mettent un dégradé
    discret de deux tons de --accent ; les thèmes "très colorés" (Animé,
    Communauté engagée) y mettent un vrai dégradé multicolore. */

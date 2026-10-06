@@ -1,5 +1,12 @@
 // ===================================================================
 // MEMORY MULTIJOUEUR — LOGIQUE DU JEU
+//
+// 🔴🔴🔴 ÉCART ATELIERS — séparer chaque classe dans son propre fichier
+// n'a pas d'équivalent dans les ateliers du cours : leurs classes (Meule,
+// Billet...) vivent toujours dans le même fichier que le reste de l'atelier
+// (voir MODIF.md, section "À partir de maintenant"). Écart assumé, demandé
+// explicitement par l'utilisateur. 🔴🔴🔴
+//
 // Les classes vivent chacune dans leur propre fichier, chargés juste avant
 // celui-ci : theme-visuel.js, traducteur.js, carte.js, joueur.js, partie.js,
 // menu.js, livre-des-regles.js. Ce fichier contient tout le reste :
