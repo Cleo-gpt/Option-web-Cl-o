@@ -189,18 +189,22 @@ class Partie {
     bouton.querySelector(".image-symbole-carte").hidden = !carte.estVisible();
   }
 
-  // Rafraîchit l'estompage de toutes les cartes déjà trouvées : appelée à
-  // chaque changement de joueur actif, pour que les paires du nouveau
-  // joueur redeviennent nettes et celles des autres s'estompent.
+  // Rafraîchit l'estompage de toutes les cartes déjà trouvées (plateau et
+  // colonne des paires trouvées) : appelée à chaque changement de joueur
+  // actif, pour que les paires du nouveau joueur redeviennent nettes et
+  // celles des autres s'estompent.
   rafraichirEstompageCartesTrouvees() {
     this.cartes.filter((carte) => carte.trouvee).forEach((carte) => this.rafraichirCarte(carte));
+    this.afficherPairesTrouvees();
   }
 
   // Affiche, sous la liste des joueurs, une petite carte miniature par paire
   // déjà trouvée (une carte sur deux suffit, les deux cartes d'une paire
   // montrent le même symbole), dans l'ordre où les paires ont été trouvées.
   // Même structure que les cartes du plateau (un conteneur + une image à
-  // l'intérieur), juste en plus petit via la classe "mini-carte-trouvee".
+  // l'intérieur), juste en plus petit via la classe "mini-carte-trouvee" ;
+  // une paire trouvée par un autre joueur que celui dont c'est le tour est
+  // en plus estompée, comme sur le plateau (voir rafraichirCarte()).
   afficherPairesTrouvees() {
     const cartesTrouvees = this.cartes.filter((carte) => carte.trouvee);
 
@@ -209,6 +213,7 @@ class Partie {
       const carte = cartesTrouvees[i];
       const miniCarte = document.createElement("div");
       miniCarte.className = "mini-carte-trouvee";
+      miniCarte.classList.toggle("estompee", carte.joueurTrouveurIndex !== this.joueurActuelIndex);
 
       const imageSymbole = document.createElement("img");
       imageSymbole.src = THEMES_VISUELS[this.theme].cheminSymboleCarte(carte.numeroSymbole);

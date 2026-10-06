@@ -760,6 +760,14 @@ body.theme-communaute .bouton-choix:hover {
   border-radius: 2px;
 }
 
+/* Mini carte trouvée par un autre joueur que celui dont c'est le tour :
+   même estompage que .carte.estompee sur le plateau (voir plus haut),
+   pour mettre en valeur les paires du joueur actif. */
+.mini-carte-trouvee.estompee {
+  opacity: 0.3;
+  filter: grayscale(60%);
+}
+
 /* ===================================================================
    STATISTIQUES DE FIN DE PARTIE
 
