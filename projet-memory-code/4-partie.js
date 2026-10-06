@@ -177,12 +177,23 @@ class Partie {
     this.afficherPairesTrouvees();
   }
 
-  // Met à jour l'apparence d'une carte en fonction de son état (cachée / retournée / trouvée).
+  // Met à jour l'apparence d'une carte en fonction de son état (cachée /
+  // retournée / trouvée). Une carte trouvée par un autre joueur que celui
+  // dont c'est le tour est en plus estompée (voir .carte.estompee dans
+  // 6-style.css), pour mettre en valeur les paires du joueur actif.
   rafraichirCarte(carte) {
     const bouton = document.getElementById(`carte-${carte.id}`);
     bouton.classList.toggle("retournee", carte.retournee);
     bouton.classList.toggle("trouvee", carte.trouvee);
+    bouton.classList.toggle("estompee", carte.trouvee && carte.joueurTrouveurIndex !== this.joueurActuelIndex);
     bouton.querySelector(".image-symbole-carte").hidden = !carte.estVisible();
+  }
+
+  // Rafraîchit l'estompage de toutes les cartes déjà trouvées : appelée à
+  // chaque changement de joueur actif, pour que les paires du nouveau
+  // joueur redeviennent nettes et celles des autres s'estompent.
+  rafraichirEstompageCartesTrouvees() {
+    this.cartes.filter((carte) => carte.trouvee).forEach((carte) => this.rafraichirCarte(carte));
   }
 
   // Affiche, sous la liste des joueurs, une petite carte miniature par paire
@@ -222,6 +233,7 @@ class Partie {
   demarrerTour() {
     this.cartesRetournees = [];
     this.allumerLumiereJoueurActuel();
+    this.rafraichirEstompageCartesTrouvees();
 
     this.secondesRestantesTour = TEMPS_TOUR;
     tempsTourAffichage.textContent = `${this.secondesRestantesTour}s`;
@@ -300,8 +312,8 @@ class Partie {
 
     setTimeout(() => {
       if (estUnePaire) {
-        carteA.marquerTrouvee();
-        carteB.marquerTrouvee();
+        carteA.marquerTrouvee(this.joueurActuelIndex);
+        carteB.marquerTrouvee(this.joueurActuelIndex);
         this.gagnerCoeurJoueurActuel();
         this.afficherPairesTrouvees();
       } else {

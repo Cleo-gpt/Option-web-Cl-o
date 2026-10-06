@@ -13,6 +13,7 @@ class Carte {
     this.numeroSymbole = numeroSymbole;
     this.retournee = false;
     this.trouvee = false;
+    this.joueurTrouveurIndex = null; // index du joueur qui a formé cette paire (voir marquerTrouvee)
   }
 
   // Deux cartes forment une paire si elles portent le même symbole.
@@ -28,8 +29,11 @@ class Carte {
     this.retournee = false;
   }
 
-  marquerTrouvee() {
+  // Marque la carte comme trouvée, et retient quel joueur l'a trouvée (pour
+  // l'estomper en CSS quand ce n'est plus son tour, voir Partie.rafraichirCarte()).
+  marquerTrouvee(joueurTrouveurIndex) {
     this.trouvee = true;
+    this.joueurTrouveurIndex = joueurTrouveurIndex;
   }
 
   // Une carte est visible (son symbole se voit) si elle est retournée ou déjà trouvée.

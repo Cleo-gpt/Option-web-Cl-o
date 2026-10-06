@@ -870,6 +870,16 @@ body.theme-communaute .bouton-choix:hover {
   transform: none;
 }
 
+/* Carte trouvée par un autre joueur que celui dont c'est le tour : encore
+   plus sombre et en retrait (filtre + opacité réduite), pour mettre en
+   valeur les paires du joueur actif pendant son tour. Redevient comme une
+   carte trouvée normale dès que son tour revient (voir
+   Partie.rafraichirEstompageCartesTrouvees() dans 4-partie.js). */
+.carte.estompee {
+  opacity: 0.3;
+  filter: grayscale(60%);
+}
+
 .image-symbole-carte {
   width: 100%;
   height: 100%;
