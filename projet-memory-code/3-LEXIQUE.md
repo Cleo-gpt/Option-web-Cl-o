@@ -1,169 +1,312 @@
 # Lexique du code
 
-Chaque mot de vocabulaire technique utilisé dans les fichiers du projet, expliqué en une phrase simple. Pas les noms propres au jeu (`partieActuelle`, `.arene`...), juste le vocabulaire JavaScript et CSS en lui-même.
+Vocabulaire technique utilisé dans le projet,
+expliqué en une phrase simple. Pas les noms
+propres au jeu (`partieActuelle`...), juste le
+vocabulaire JS et CSS en lui-même.
 
 ## JavaScript
 
 ### Déclarer et structurer
 
-- **class** : modèle pour créer des objets qui partagent les mêmes propriétés et méthodes.
-- **constructor** : la méthode spéciale d'une classe, exécutée à chaque création d'un objet avec `new`.
-- **new** : crée un nouvel objet à partir d'une classe.
-- **this** : à l'intérieur d'une classe, désigne l'objet actuel (celui sur lequel la méthode a été appelée).
-- **const** : déclare une variable dont la valeur ne peut plus changer après sa création.
-- **let** : déclare une variable dont la valeur peut changer ensuite.
-- **function** : déclare une fonction, un bloc de code réutilisable.
+- **class**
+  Modèle pour créer des objets qui partagent les
+  mêmes propriétés et méthodes.
+- **constructor**
+  Méthode spéciale exécutée à chaque création
+  d'un objet avec `new`.
+- **new**
+  Crée un nouvel objet à partir d'une classe.
+- **this**
+  Dans une classe, désigne l'objet actuel.
+- **const**
+  Déclare une variable qui ne change plus après
+  sa création.
+- **let**
+  Déclare une variable dont la valeur peut
+  changer ensuite.
+- **function**
+  Déclare une fonction, un bloc de code
+  réutilisable.
 
 ### Contrôler le déroulement
 
-- **if / else** : exécute un bloc de code seulement si une condition est vraie, sinon un autre bloc.
-- **for** : répète un bloc de code un nombre de fois défini, avec un compteur.
-- **while** : répète un bloc de code tant qu'une condition reste vraie.
-- **do...while** : comme `while`, mais exécute le bloc au moins une fois avant de vérifier la condition.
-- **return** : termine une fonction et lui fait renvoyer une valeur.
-- **true / false** : les deux seules valeurs possibles d'un booléen (vrai / faux).
-- **null** : valeur qui signifie "rien", volontairement vide.
-- **typeof** : donne le type d'une valeur (texte, nombre, booléen...).
-- **in** : parcourt les clés d'un objet dans une boucle `for`.
-- **of** : parcourt les valeurs d'un tableau dans une boucle `for`.
+- **if / else**
+  Exécute un bloc si une condition est vraie,
+  sinon un autre bloc.
+- **for**
+  Répète un bloc un nombre de fois défini, avec
+  un compteur.
+- **while**
+  Répète un bloc tant qu'une condition reste
+  vraie.
+- **do...while**
+  Comme `while`, mais exécute le bloc au moins
+  une fois avant de vérifier la condition.
+- **return**
+  Termine une fonction et lui fait renvoyer une
+  valeur.
+- **true / false**
+  Les deux seules valeurs d'un booléen.
+- **null**
+  Valeur qui signifie "rien", volontairement
+  vide.
+- **typeof**
+  Donne le type d'une valeur.
+- **in**
+  Parcourt les clés d'un objet dans un `for`.
+- **of**
+  Parcourt les valeurs d'un tableau dans un `for`.
 
 ### Tableaux
 
-- **.forEach()** : exécute une action sur chaque élément d'un tableau, sans rien renvoyer.
-- **.map()** : crée un nouveau tableau en transformant chaque élément d'un tableau existant.
-- **.filter()** : crée un nouveau tableau ne gardant que les éléments qui remplissent une condition.
-- **.find()** : renvoie le premier élément d'un tableau qui remplit une condition.
-- **.every()** : vérifie si tous les éléments d'un tableau remplissent une condition.
-- **.includes()** : vérifie si une valeur précise se trouve dans un tableau.
-- **.indexOf()** : donne la position d'une valeur dans un tableau (ou -1 si absente).
-- **.push()** : ajoute un élément à la fin d'un tableau.
-- **.slice()** : copie une partie (ou la totalité) d'un tableau dans un nouveau tableau.
+- **.forEach()**
+  Exécute une action sur chaque élément d'un
+  tableau.
+- **.map()**
+  Crée un nouveau tableau en transformant
+  chaque élément.
+- **.filter()**
+  Garde seulement les éléments qui remplissent
+  une condition.
+- **.find()**
+  Renvoie le premier élément qui remplit une
+  condition.
+- **.every()**
+  Vérifie si tous les éléments remplissent une
+  condition.
+- **.includes()**
+  Vérifie si une valeur se trouve dans un
+  tableau.
+- **.indexOf()**
+  Donne la position d'une valeur (-1 si absente).
+- **.push()**
+  Ajoute un élément à la fin d'un tableau.
+- **.slice()**
+  Copie une partie d'un tableau dans un nouveau.
 
 ### Texte et nombres
 
-- **.padStart()** : complète un texte avec des caractères au début jusqu'à une longueur donnée (ex: "7" → "07").
-- **.toFixed()** : arrondit un nombre à un nombre de décimales choisi, sous forme de texte.
-- **.toString()** : transforme une valeur en texte.
-- **.toLowerCase()** : transforme un texte en minuscules.
+- **.padStart()**
+  Complète un texte au début jusqu'à une
+  longueur donnée (ex: "7" → "07").
+- **.toFixed()**
+  Arrondit un nombre à N décimales, en texte.
+- **.toString()**
+  Transforme une valeur en texte.
+- **.toLowerCase()**
+  Transforme un texte en minuscules.
 
 ### Objets
 
-- **Object.keys()** : donne la liste des clés (noms de propriétés) d'un objet.
+- **Object.keys()**
+  Donne la liste des clés d'un objet.
 
 ### Nombres aléatoires et calculs
 
-- **Math.random()** : donne un nombre décimal aléatoire entre 0 (inclus) et 1 (exclu).
-- **Math.floor()** : arrondit un nombre à l'entier inférieur.
-- **Math.round()** : arrondit un nombre à l'entier le plus proche.
-- **Math.max()** : renvoie la plus grande valeur parmi celles données.
+- **Math.random()**
+  Nombre décimal aléatoire entre 0 et 1.
+- **Math.floor()**
+  Arrondit à l'entier inférieur.
+- **Math.round()**
+  Arrondit à l'entier le plus proche.
+- **Math.max()**
+  Renvoie la plus grande valeur donnée.
 
 ### Temps
 
-- **Date.now()** : donne l'instant actuel, en millisecondes.
-- **setTimeout()** : exécute une action une seule fois, après un délai donné.
-- **setInterval()** : exécute une action en boucle, à intervalle de temps régulier.
-- **clearInterval()** : arrête une boucle démarrée par `setInterval()`.
+- **Date.now()**
+  Donne l'instant actuel, en millisecondes.
+- **setTimeout()**
+  Exécute une action une fois, après un délai.
+- **setInterval()**
+  Exécute une action en boucle, à intervalle
+  régulier.
+- **clearInterval()**
+  Arrête une boucle démarrée par `setInterval()`.
 
 ### Page web (DOM)
 
-- **document** : l'objet qui représente toute la page web, point de départ pour y accéder.
-- **document.getElementById()** : récupère un élément précis de la page grâce à son `id`.
-- **document.querySelector()** : récupère le premier élément de la page qui correspond à un sélecteur CSS.
-- **document.querySelectorAll()** : récupère tous les éléments de la page qui correspondent à un sélecteur CSS.
-- **document.createElement()** : crée un nouvel élément HTML, pas encore affiché sur la page.
-- **.appendChild()** : ajoute un élément comme enfant d'un autre, dans la page.
-- **.addEventListener()** : déclenche une fonction quand un événement précis se produit (clic, etc.).
-- **.classList** : l'ensemble des classes CSS d'un élément, modifiable en JavaScript.
-- **.classList.toggle()** : ajoute une classe CSS si elle est absente, la retire si elle est présente.
+- **document**
+  L'objet qui représente toute la page web.
+- **document.getElementById()**
+  Récupère un élément via son `id`.
+- **document.querySelector()**
+  Récupère le premier élément correspondant à
+  un sélecteur CSS.
+- **document.querySelectorAll()**
+  Récupère tous les éléments correspondant à
+  un sélecteur CSS.
+- **document.createElement()**
+  Crée un élément HTML, pas encore affiché.
+- **.appendChild()**
+  Ajoute un élément comme enfant d'un autre.
+- **.addEventListener()**
+  Déclenche une fonction à un événement (clic...).
+- **.classList**
+  Les classes CSS d'un élément, modifiables en JS.
+- **.classList.toggle()**
+  Ajoute une classe si absente, la retire si
+  présente.
 
 ## CSS
 
 ### Mise en page (Flexbox)
 
-- **display: flex** : transforme un élément en conteneur flexible, qui range ses enfants en ligne ou en colonne.
-- **flex-direction** : choisit le sens de rangement des enfants d'un conteneur flex (ligne ou colonne).
-- **flex-wrap** : autorise les enfants d'un conteneur flex à passer à la ligne suivante si la place manque.
-- **flex-grow** : indique à quel point un élément peut s'agrandir pour occuper l'espace restant.
-- **flex-shrink** : indique à quel point un élément peut rétrécir si la place manque.
-- **justify-content** : aligne les enfants d'un conteneur flex sur son axe principal (ex: centré, espacés).
-- **align-items** : aligne les enfants d'un conteneur flex sur son axe secondaire.
-- **gap** : définit l'espace entre les enfants d'un conteneur flex.
+- **display: flex**
+  Transforme un élément en conteneur flexible.
+- **flex-direction**
+  Sens de rangement des enfants (ligne/colonne).
+- **flex-wrap**
+  Autorise les enfants à passer à la ligne
+  suivante si besoin.
+- **flex-grow**
+  À quel point un élément peut s'agrandir.
+- **flex-shrink**
+  À quel point un élément peut rétrécir.
+- **justify-content**
+  Aligne les enfants sur l'axe principal.
+- **align-items**
+  Aligne les enfants sur l'axe secondaire.
+- **gap**
+  Espace entre les enfants d'un conteneur flex.
 
 ### Positionnement
 
-- **position** : choisit comment un élément est positionné (normal, fixe, relatif...).
-- **top / right / bottom / left** : décalent un élément positionné par rapport à un bord de référence.
-- **inset** : raccourci pour fixer en une fois `top`, `right`, `bottom` et `left`.
-- **z-index** : décide quel élément s'affiche par-dessus les autres quand ils se chevauchent.
+- **position**
+  Comment un élément est positionné.
+- **top / right / bottom / left**
+  Décalage par rapport à un bord de référence.
+- **inset**
+  Raccourci pour `top`/`right`/`bottom`/`left`.
+- **z-index**
+  Quel élément s'affiche par-dessus les autres.
 
 ### Dimensions et espacement
 
-- **width / height** : largeur et hauteur d'un élément.
-- **min-width / min-height** : largeur et hauteur minimales qu'un élément ne peut pas franchir vers le bas.
-- **max-width / max-height** : largeur et hauteur maximales qu'un élément ne peut pas dépasser.
-- **margin** : espace extérieur autour d'un élément, entre lui et ses voisins.
-- **padding** : espace intérieur entre le bord d'un élément et son contenu.
-- **box-sizing** : décide si `width`/`height` incluent ou non les bordures et le padding.
+- **width / height**
+  Largeur et hauteur d'un élément.
+- **min-width / min-height**
+  Largeur et hauteur minimales.
+- **max-width / max-height**
+  Largeur et hauteur maximales.
+- **margin**
+  Espace extérieur, entre un élément et ses
+  voisins.
+- **padding**
+  Espace intérieur, entre le bord et le contenu.
+- **box-sizing**
+  Si `width`/`height` incluent bordures et
+  padding.
 
 ### Couleurs et fonds
 
-- **color** : couleur du texte.
-- **background / background-color** : couleur de fond d'un élément.
-- **background-image** : image de fond d'un élément.
-- **background-position** : position de l'image de fond à l'intérieur de l'élément.
-- **background-size** : taille de l'image de fond à l'intérieur de l'élément.
-- **background-clip** : décide jusqu'où s'étend le fond (jusqu'au texte, au padding, etc.).
-- **linear-gradient()** : dégradé progressif entre plusieurs couleurs, en ligne droite.
-- **opacity** : transparence globale d'un élément (0 = invisible, 1 = normal).
+- **color**
+  Couleur du texte.
+- **background / background-color**
+  Couleur de fond d'un élément.
+- **background-image**
+  Image de fond d'un élément.
+- **background-position**
+  Position de l'image de fond dans l'élément.
+- **background-size**
+  Taille de l'image de fond dans l'élément.
+- **background-clip**
+  Jusqu'où s'étend le fond (texte, padding...).
+- **linear-gradient()**
+  Dégradé progressif entre plusieurs couleurs.
+- **opacity**
+  Transparence globale (0 = invisible).
 
 ### Bordures et formes
 
-- **border** : bordure d'un élément (épaisseur, style, couleur).
-- **border-top / border-right / border-bottom / border-left** : bordure d'un seul côté d'un élément.
-- **border-color** : couleur d'une bordure.
-- **border-radius** : arrondit les coins d'un élément.
-- **border-image** : remplace une bordure classique par une image.
-- **box-shadow** : ombre portée autour d'un élément.
-- **text-shadow** : ombre portée derrière du texte.
+- **border**
+  Bordure d'un élément (épaisseur, style,
+  couleur).
+- **border-top / -right / -bottom / -left**
+  Bordure d'un seul côté d'un élément.
+- **border-color**
+  Couleur d'une bordure.
+- **border-radius**
+  Arrondit les coins d'un élément.
+- **border-image**
+  Remplace une bordure par une image.
+- **box-shadow**
+  Ombre portée autour d'un élément.
+- **text-shadow**
+  Ombre portée derrière du texte.
 
 ### Texte
 
-- **font-family** : la ou les polices de caractères utilisées.
-- **font-size** : taille du texte.
-- **font-weight** : graisse du texte (normal, gras...).
-- **font-variant-numeric** : ajuste l'affichage des chiffres (ex: largeur identique pour chaque chiffre).
-- **text-align** : alignement horizontal du texte (gauche, centré, droite).
+- **font-family**
+  La ou les polices de caractères utilisées.
+- **font-size**
+  Taille du texte.
+- **font-weight**
+  Graisse du texte (normal, gras...).
+- **font-variant-numeric**
+  Ajuste l'affichage des chiffres.
+- **text-align**
+  Alignement horizontal du texte.
 
 ### Variables CSS
 
-- **:root** : sélecteur qui cible la racine du document, utilisé pour déclarer des variables globales.
-- **variable CSS (`--nom`)** : une valeur nommée, déclarée une fois et réutilisable partout avec `var(--nom)`.
-- **var()** : récupère la valeur d'une variable CSS déclarée ailleurs.
+- **:root**
+  Cible la racine du document, pour déclarer
+  des variables globales.
+- **variable CSS (`--nom`)**
+  Valeur nommée, réutilisable avec `var(--nom)`.
+- **var()**
+  Récupère la valeur d'une variable CSS.
 
 ### Sélecteurs et pseudo-classes
 
-- **:hover** : cible un élément quand la souris passe dessus.
-- **:disabled** : cible un élément désactivé (ex: un bouton `disabled`).
-- **:nth-child()** : cible un élément selon sa position parmi ses frères et sœurs.
-- **::before / ::after** : insèrent un contenu généré juste avant ou juste après le contenu réel d'un élément.
-- **[attribut]** : cible un élément qui possède un attribut HTML précis (ex: `[hidden]`).
+- **:hover**
+  Cible un élément au survol de la souris.
+- **:disabled**
+  Cible un élément désactivé.
+- **:nth-child()**
+  Cible un élément selon sa position parmi ses
+  frères et sœurs.
+- **::before / ::after**
+  Insèrent un contenu généré avant/après un
+  élément.
+- **[attribut]**
+  Cible un élément qui possède un attribut HTML
+  précis.
 
 ### Autres propriétés
 
-- **cursor** : apparence du curseur de la souris au survol (ex: une main pour un bouton).
-- **pointer-events** : décide si un élément peut réagir aux clics et au survol de la souris.
-- **overflow-x** : décide quoi faire si le contenu dépasse horizontalement (scroll, caché...).
-- **object-fit** : décide comment une image remplit son cadre (ex: recadrée pour le couvrir entièrement).
-- **transform** : applique une transformation visuelle à un élément (rotation, déplacement...).
-- **transition** : anime en douceur le changement d'une propriété CSS, plutôt qu'un changement brutal.
-- **user-select** : décide si le texte d'un élément peut être sélectionné à la souris.
-- **content** : définit le contenu généré par `::before` ou `::after`.
+- **cursor**
+  Apparence du curseur au survol.
+- **pointer-events**
+  Si un élément réagit aux clics et au survol.
+- **overflow-x**
+  Quoi faire si le contenu dépasse
+  horizontalement.
+- **object-fit**
+  Comment une image remplit son cadre.
+- **transform**
+  Transformation visuelle (rotation,
+  déplacement...).
+- **transition**
+  Anime en douceur un changement de propriété.
+- **user-select**
+  Si le texte peut être sélectionné à la souris.
+- **content**
+  Contenu généré par `::before` ou `::after`.
 
 ### Unités
 
-- **px** : pixel, une unité fixe à l'écran.
-- **rem** : unité relative à la taille de police de base de la page.
-- **vh** : unité relative à la hauteur totale de la fenêtre (1vh = 1% de la hauteur visible).
-- **%** : pourcentage, relatif à la taille du conteneur parent.
-- **deg** : degré, unité d'angle pour les dégradés ou rotations.
-- **s** : seconde, unité de durée pour les transitions.
+- **px**
+  Pixel, une unité fixe à l'écran.
+- **rem**
+  Relative à la taille de police de base.
+- **vh**
+  Relative à la hauteur de la fenêtre (1% par vh).
+- **%**
+  Pourcentage, relatif au conteneur parent.
+- **deg**
+  Degré, unité d'angle.
+- **s**
+  Seconde, unité de durée.
