@@ -66,7 +66,11 @@ THEMES_VISUELS.mediamatique.ajouterException(7, "png");
 THEMES_VISUELS.mediamatique.ajouterException(8, "png");
 THEMES_VISUELS.mediamatique.ajouterException(9, "png");
 THEMES_VISUELS.mediamatique.ajouterException(10, "png");
-THEMES_VISUELS.mediamatique.ajouterException(12, "png");
+THEMES_VISUELS.mediamatique.ajouterException(13, "jpg");
+THEMES_VISUELS.mediamatique.ajouterException(14, "webp");
+THEMES_VISUELS.mediamatique.ajouterException(15, "webp");
+THEMES_VISUELS.mediamatique.ajouterException(16, "webp");
+THEMES_VISUELS.mediamatique.ajouterException(17, "webp");
 
 THEMES_VISUELS.anime.ajouterException(1, "png");
 THEMES_VISUELS.anime.ajouterException(2, "jpg");
