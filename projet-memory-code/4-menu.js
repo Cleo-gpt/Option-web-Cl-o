@@ -12,7 +12,7 @@
 // ===================================================================
 class Menu {
   constructor() {
-    this.theme = THEME_PAR_DEFAUT;
+    this.theme = catalogueThemes.themeParDefaut;
     this.mode = null;           // "solo" | "ordinateur" | "multi"
     this.nbJoueurs = 1;          // nombre de joueurs humains (1 si solo ou contre l'ordinateur)
     this.difficulteOrdi = null;  // "naze" | "moyen" | "fort" (uniquement en mode "ordinateur")
@@ -39,7 +39,7 @@ class Menu {
   // quand tout ce qui est obligatoire a été choisi.
   mettreAJourRecapMenu() {
     const pret = this.estComplet();
-    boutonValiderMenu.disabled = !pret;
+    elementsHTML.boutonValiderMenu.disabled = !pret;
 
     if (pret) {
       let texteMode;
@@ -50,9 +50,9 @@ class Menu {
       } else {
         texteMode = t("mode-solo");
       }
-      recapMenu.textContent = `${t("theme-" + this.theme)} · ${texteMode} · ${this.nbCartes} ${t("cartes-mot")} · ${t("difficulte-mot")} ${t(this.difficulte).toLowerCase()}`;
+      elementsHTML.recapMenu.textContent = `${t("theme-" + this.theme)} · ${texteMode} · ${this.nbCartes} ${t("cartes-mot")} · ${t("difficulte-mot")} ${t(this.difficulte).toLowerCase()}`;
     } else {
-      recapMenu.textContent = "";
+      elementsHTML.recapMenu.textContent = "";
     }
   }
 
@@ -65,7 +65,7 @@ class Menu {
   // en choisir un autre valide).
   mettreAJourLimiteCartes() {
     const nbCartesMaxSolo = 32;
-    const nbCartesMaxTheme = THEMES_VISUELS[this.theme].nbCartesMax();
+    const nbCartesMaxTheme = catalogueThemes.themes[this.theme].nbCartesMax();
     const nbCartesMax = this.mode === "solo" ? Math.min(nbCartesMaxSolo, nbCartesMaxTheme) : nbCartesMaxTheme;
 
     document.querySelectorAll("[data-cartes]").forEach((bouton) => {
@@ -102,7 +102,7 @@ class Menu {
     // page (fond, couleurs, police, dos de carte) pour un aperçu en direct,
     // même avant de valider le reste de la configuration. "Médiamatique"
     // est présélectionné par défaut (voir 5-index.html et
-    // THEME_PAR_DEFAUT dans 4-theme-visuel.js).
+    // catalogueThemes.themeParDefaut dans 4-theme-visuel.js).
     const boutonsTheme = document.querySelectorAll("[data-theme]");
     boutonsTheme.forEach((bouton) => {
       bouton.addEventListener("click", () => {
@@ -131,8 +131,8 @@ class Menu {
         bouton.classList.add("selectionne");
 
         this.mode = bouton.dataset.mode;
-        blocNbJoueurs.hidden = this.mode !== "multi";
-        blocDifficulteOrdi.hidden = this.mode !== "ordinateur";
+        elementsHTML.blocNbJoueurs.hidden = this.mode !== "multi";
+        elementsHTML.blocDifficulteOrdi.hidden = this.mode !== "ordinateur";
 
         if (this.mode !== "multi") {
           this.nbJoueurs = 1; // solo ou contre l'ordinateur : un seul joueur humain
@@ -195,10 +195,10 @@ class Menu {
     // garde, avant que le plateau ne soit révélé. La vérification est
     // refaite ici (en plus du bouton désactivé) : une sécurité pour ne
     // jamais démarrer une partie si un paramètre n'a pas été choisi.
-    boutonValiderMenu.addEventListener("click", () => {
+    elementsHTML.boutonValiderMenu.addEventListener("click", () => {
       if (!this.estComplet()) return;
 
-      partieActuelle = new Partie(this.mode, this.nbJoueurs, this.difficulteOrdi, this.theme, this.nbCartes, this.difficulte);
+      etatPartie.partieActuelle = new Partie(this.mode, this.nbJoueurs, this.difficulteOrdi, this.theme, this.nbCartes, this.difficulte);
       gestionnaireEcrans.changer("jeu");
       livreDesRegles.ouvrirPremierAcces();
     });

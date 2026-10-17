@@ -9,7 +9,7 @@
 // "livreDesRegles", gère tout le livre.
 //
 // Fichiers : 4-livre-des-regles.js (classe + ses écouteurs de clic) ;
-// l'élément DOM du livre lui-même reste la variable "livre" (voir 4-code.js).
+// l'élément DOM du livre lui-même reste elementsHTML.livre (voir 4-code.js).
 // ===================================================================
 class LivreDesRegles {
   constructor() {
@@ -19,34 +19,34 @@ class LivreDesRegles {
   // Ouvre le livre fermé pour la toute première fois, avant que le plateau ne soit révélé.
   ouvrirPremierAcces() {
     this.premierAcces = true;
-    languetteLivre.hidden = true; // pas encore de partie en cours : pas de pause possible
+    elementsHTML.languetteLivre.hidden = true; // pas encore de partie en cours : pas de pause possible
     this.afficherFerme();
-    livre.hidden = false;
+    elementsHTML.livre.hidden = false;
   }
 
   // Rouvre le livre en pleine partie : on saute directement à la page des règles,
   // pas besoin de reposer la question "voulez-vous lire les règles ?".
   ouvrirEnPause() {
     this.premierAcces = false;
-    partieActuelle.mettreEnPause();
-    this.afficherPage(pageRegles);
-    boutonLancerPartie.textContent = t("relancer-partie");
-    livre.classList.remove("livre-ferme");
-    livre.classList.add("livre-ouvert");
-    livre.hidden = false;
+    etatPartie.partieActuelle.mettreEnPause();
+    this.afficherPage(elementsHTML.pageRegles);
+    elementsHTML.boutonLancerPartie.textContent = t("relancer-partie");
+    elementsHTML.livre.classList.remove("livre-ferme");
+    elementsHTML.livre.classList.add("livre-ouvert");
+    elementsHTML.livre.hidden = false;
   }
 
   // Remet le livre sur sa couverture fermée (page de garde) et affiche la question.
   afficherFerme() {
-    livre.classList.add("livre-ferme");
-    livre.classList.remove("livre-ouvert");
-    this.afficherPage(pageQuestion);
-    boutonLancerPartie.textContent = t("lancer-partie");
+    elementsHTML.livre.classList.add("livre-ferme");
+    elementsHTML.livre.classList.remove("livre-ouvert");
+    this.afficherPage(elementsHTML.pageQuestion);
+    elementsHTML.boutonLancerPartie.textContent = t("lancer-partie");
   }
 
   // N'affiche qu'une seule page du livre à la fois.
   afficherPage(pageAMontrer) {
-    [pageQuestion, pageBonneChance, pageRegles].forEach((page) => {
+    [elementsHTML.pageQuestion, elementsHTML.pageBonneChance, elementsHTML.pageRegles].forEach((page) => {
       page.hidden = page !== pageAMontrer;
     });
   }
@@ -54,14 +54,14 @@ class LivreDesRegles {
   // Referme le livre et démarre ou reprend le jeu, selon qu'on en est au tout
   // premier accès ou à une pause en cours de partie.
   fermerEtLancerPartie() {
-    livre.hidden = true;
-    languetteLivre.hidden = false;
+    elementsHTML.livre.hidden = true;
+    elementsHTML.languetteLivre.hidden = false;
 
     if (this.premierAcces) {
-      partieActuelle.demarrerTour();
+      etatPartie.partieActuelle.demarrerTour();
       this.premierAcces = false;
     } else {
-      partieActuelle.reprendre();
+      etatPartie.partieActuelle.reprendre();
     }
   }
 
@@ -70,20 +70,20 @@ class LivreDesRegles {
   // globale "livreDesRegles".
   initialiserEcouteurs() {
     // Cliquer sur la couverture fermée ouvre le livre sur sa première page.
-    couvertureLivre.addEventListener("click", () => {
-      livre.classList.remove("livre-ferme");
-      livre.classList.add("livre-ouvert");
+    elementsHTML.couvertureLivre.addEventListener("click", () => {
+      elementsHTML.livre.classList.remove("livre-ferme");
+      elementsHTML.livre.classList.add("livre-ouvert");
     });
 
     // "Oui, je souhaite lire les règles" : la page se tourne sur les règles.
     document.getElementById("bouton-lire-regles").addEventListener("click", () => {
-      this.afficherPage(pageRegles);
+      this.afficherPage(elementsHTML.pageRegles);
     });
 
     // "Non, je ne souhaite pas lire les règles" : phrase affichée 10 secondes
     // puis la partie démarre automatiquement (seulement au tout premier accès).
     document.getElementById("bouton-refuser-regles").addEventListener("click", () => {
-      this.afficherPage(pageBonneChance);
+      this.afficherPage(elementsHTML.pageBonneChance);
       setTimeout(() => {
         this.fermerEtLancerPartie();
       }, 500);
@@ -91,13 +91,13 @@ class LivreDesRegles {
 
     // "Lancer la partie" / "Relancer la partie" : referme le livre et
     // démarre ou reprend le jeu.
-    boutonLancerPartie.addEventListener("click", () => {
+    elementsHTML.boutonLancerPartie.addEventListener("click", () => {
       this.fermerEtLancerPartie();
     });
 
     // La languette reste visible pendant toute la partie pour rouvrir le
     // livre (= pause).
-    languetteLivre.addEventListener("click", () => {
+    elementsHTML.languetteLivre.addEventListener("click", () => {
       this.ouvrirEnPause();
     });
   }

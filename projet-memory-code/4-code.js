@@ -22,65 +22,97 @@
 
 
 // ===================================================================
-// CONSTANTES DU JEU
+// CLASSE ÉTAT PARTIE
 //
-// "partieActuelle" pointe vers la partie en cours (ou null avant qu'une
-// partie n'ait commencé) : existe en dehors de toute classe, car partagée
-// par tout le code (l'écran actuellement affiché, lui, est la propriété
-// gestionnaireEcrans.actuel, voir plus bas). Les autres constantes
-// (couleurs des joueurs, coeurs de départ, durée d'un tour) sont des
-// valeurs fixes du jeu, utilisées par plusieurs classes.
+// Porte la seule vraie variable globale du jeu : "partieActuelle" (ou
+// null avant qu'une partie n'ait commencé). Une classe à une seule
+// propriété, sans méthode : elle existe quand même pour que même cette
+// donnée partagée soit portée par une instance plutôt qu'une variable
+// libre (l'écran actuellement affiché, lui, est gestionnaireEcrans.actuel,
+// voir plus bas).
 //
-// Fichier : 4-code.js (ci-dessous) ; "partieActuelle" est une instance de la
-// classe Partie (voir 4-partie.js), ces constantes sont lues depuis
-// 4-partie.js et 4-menu.js.
+// Fichier : 4-code.js (classe + instance globale "etatPartie" ci-dessous) ;
+// etatPartie.partieActuelle est une instance de la classe Partie (voir
+// 4-partie.js), lue et écrite depuis 4-partie.js et 4-menu.js.
 // ===================================================================
-let partieActuelle = null;
+class EtatPartie {
+  constructor() {
+    this.partieActuelle = null;
+  }
+}
 
-// Couleurs des lumières, dans l'ordre des joueurs (voir 6-style.css)
-const CLASSES_COULEUR_JOUEURS = ["joueur-1", "joueur-2", "joueur-3", "joueur-4"];
-const CLES_TRADUCTION_COULEURS = ["couleur-bleu", "couleur-vert", "couleur-rose", "couleur-jaune"];
-
-const COEURS_DEPART = 10;
-const TEMPS_TOUR = 45; // secondes laissées à chaque joueur pour retourner 2 cartes
+const etatPartie = new EtatPartie();
 
 
 // ===================================================================
-// RÉCUPÉRATION DES ÉLÉMENTS HTML
+// CLASSE CONSTANTES JEU
+//
+// Porte les valeurs fixes du jeu, utilisées par plusieurs classes :
+// couleurs des lumières des joueurs, coeurs de départ, durée d'un tour.
+// Une seule instance globale, "constantesJeu".
+//
+// Fichier : 4-code.js (classe + instance ci-dessous) ; lue depuis
+// 4-partie.js, 4-menu.js et 4-joueur.js.
+// ===================================================================
+class ConstantesJeu {
+  constructor() {
+    // Couleurs des lumières, dans l'ordre des joueurs (voir 6-style.css)
+    this.classesCouleurJoueurs = ["joueur-1", "joueur-2", "joueur-3", "joueur-4"];
+    this.clesTraductionCouleurs = ["couleur-bleu", "couleur-vert", "couleur-rose", "couleur-jaune"];
+
+    this.coeursDepart = 10;
+    this.tempsTour = 45; // secondes laissées à chaque joueur pour retourner 2 cartes
+  }
+}
+
+const constantesJeu = new ConstantesJeu();
+
+
+// ===================================================================
+// CLASSE ÉLÉMENTS HTML
 //
 // Récupère une fois pour toutes les éléments qu'on va devoir modifier,
-// plutôt que de refaire document.getElementById() à chaque fois.
+// plutôt que de refaire document.getElementById() à chaque fois. Une seule
+// instance globale, "elementsHTML", porte toutes ces références.
 //
-// Fichier : 4-code.js (ci-dessous) ; les éléments correspondent aux ids
-// déclarés dans 5-index.html.
+// Fichier : 4-code.js (classe + instance ci-dessous) ; les éléments
+// correspondent aux ids déclarés dans 5-index.html.
 // ===================================================================
-const ecranMenu = document.getElementById("ecran-menu");
-const ecranJeu = document.getElementById("ecran-jeu");
-const ecranFin = document.getElementById("ecran-fin");
+class ElementsHTML {
+  constructor() {
+    this.boutonLangue = document.getElementById("bouton-langue");
 
-const blocNbJoueurs = document.getElementById("bloc-nb-joueurs");
-const blocDifficulteOrdi = document.getElementById("bloc-difficulte-ordi");
-const recapMenu = document.getElementById("recap-menu");
-const boutonValiderMenu = document.getElementById("bouton-valider-menu");
+    this.ecranMenu = document.getElementById("ecran-menu");
+    this.ecranJeu = document.getElementById("ecran-jeu");
+    this.ecranFin = document.getElementById("ecran-fin");
 
-const chronoAffichage = document.getElementById("chrono");
-const tempsTourAffichage = document.getElementById("temps-tour");
-const listeJoueurs = document.getElementById("liste-joueurs");
-const pairesTrouvees = document.getElementById("paires-trouvees");
-const grilleCartes = document.getElementById("grille-cartes");
+    this.blocNbJoueurs = document.getElementById("bloc-nb-joueurs");
+    this.blocDifficulteOrdi = document.getElementById("bloc-difficulte-ordi");
+    this.recapMenu = document.getElementById("recap-menu");
+    this.boutonValiderMenu = document.getElementById("bouton-valider-menu");
 
-const titreFin = document.getElementById("titre-fin");
-const messageFin = document.getElementById("message-fin");
-const statistiquesFin = document.getElementById("statistiques-fin");
+    this.chronoAffichage = document.getElementById("chrono");
+    this.tempsTourAffichage = document.getElementById("temps-tour");
+    this.listeJoueurs = document.getElementById("liste-joueurs");
+    this.pairesTrouvees = document.getElementById("paires-trouvees");
+    this.grilleCartes = document.getElementById("grille-cartes");
 
-// Éléments du livre des règles
-const livre = document.getElementById("livre");
-const couvertureLivre = document.getElementById("couverture-livre");
-const pageQuestion = document.getElementById("page-question");
-const pageBonneChance = document.getElementById("page-bonne-chance");
-const pageRegles = document.getElementById("page-regles");
-const boutonLancerPartie = document.getElementById("bouton-lancer-partie");
-const languetteLivre = document.getElementById("languette-livre");
+    this.titreFin = document.getElementById("titre-fin");
+    this.messageFin = document.getElementById("message-fin");
+    this.statistiquesFin = document.getElementById("statistiques-fin");
+
+    // Éléments du livre des règles
+    this.livre = document.getElementById("livre");
+    this.couvertureLivre = document.getElementById("couverture-livre");
+    this.pageQuestion = document.getElementById("page-question");
+    this.pageBonneChance = document.getElementById("page-bonne-chance");
+    this.pageRegles = document.getElementById("page-regles");
+    this.boutonLancerPartie = document.getElementById("bouton-lancer-partie");
+    this.languetteLivre = document.getElementById("languette-livre");
+  }
+}
+
+const elementsHTML = new ElementsHTML();
 
 
 // ===================================================================
@@ -112,7 +144,7 @@ class BarreReglages {
   // une simple affectation de body.className).
   appliquerClassesBody() {
     this.luminosites.forEach((luminosite) => document.body.classList.remove(`theme-${luminosite}`));
-    Object.keys(THEMES_VISUELS).forEach((theme) => document.body.classList.remove(`theme-${theme}`));
+    Object.keys(catalogueThemes.themes).forEach((theme) => document.body.classList.remove(`theme-${theme}`));
 
     document.body.classList.add(`theme-${menu.theme}`);
     const luminosite = this.luminosites[this.luminositeActuelleIndex];
@@ -120,12 +152,16 @@ class BarreReglages {
       document.body.classList.add(`theme-${luminosite}`);
     }
   }
+
+  // Écoute le clic sur le bouton 🌗 : cycle la luminosité. Appelée une
+  // seule fois, à la création de l'instance globale "barreReglages".
+  initialiserEcouteur() {
+    document.getElementById("bouton-theme").addEventListener("click", () => this.cyclerLuminosite());
+  }
 }
 
 const barreReglages = new BarreReglages(["nuit", "crepuscule", "jour"]);
-
-const boutonTheme = document.getElementById("bouton-theme");
-boutonTheme.addEventListener("click", () => barreReglages.cyclerLuminosite());
+barreReglages.initialiserEcouteur();
 
 
 // ===================================================================
@@ -146,21 +182,13 @@ class GestionnaireEcrans {
 
   changer(nom) {
     this.actuel = nom;
-    ecranMenu.hidden = nom !== "menu";
-    ecranJeu.hidden = nom !== "jeu";
-    ecranFin.hidden = nom !== "fin";
+    elementsHTML.ecranMenu.hidden = nom !== "menu";
+    elementsHTML.ecranJeu.hidden = nom !== "jeu";
+    elementsHTML.ecranFin.hidden = nom !== "fin";
   }
 }
 
 const gestionnaireEcrans = new GestionnaireEcrans();
-
-
-// Transforme un nombre de secondes en texte "MM:SS".
-function formaterTemps(totalSecondes) {
-  const minutes = Math.floor(totalSecondes / 60).toString().padStart(2, "0");
-  const secondes = (totalSecondes % 60).toString().padStart(2, "0");
-  return `${minutes}:${secondes}`;
-}
 
 
 // ===================================================================
@@ -174,16 +202,25 @@ function formaterTemps(totalSecondes) {
 // ci-dessous) ; appelée depuis Partie.terminer() (voir 4-partie.js).
 // ===================================================================
 class AffichageFin {
+  // Transforme un nombre de secondes en texte "MM:SS". Utilisée ici et
+  // depuis Partie (voir 4-partie.js) pour l'affichage du chronomètre.
+  formaterTemps(totalSecondes) {
+    const minutes = Math.floor(totalSecondes / 60).toString().padStart(2, "0");
+    const secondes = (totalSecondes % 60).toString().padStart(2, "0");
+    return `${minutes}:${secondes}`;
+  }
+
   // Affiche le titre et le message de fin dans la langue actuelle. Appelée
   // à la fin de la partie, et de nouveau si la langue change pendant
   // l'écran de fin.
   afficherResultat() {
+    const partieActuelle = etatPartie.partieActuelle;
     if (partieActuelle.dernierResultat === "victoire") {
-      titreFin.textContent = t("victoire-titre");
-      messageFin.textContent = `${t("victoire-message")} ${formaterTemps(partieActuelle.secondesEcoulees)}.`;
+      elementsHTML.titreFin.textContent = t("victoire-titre");
+      elementsHTML.messageFin.textContent = `${t("victoire-message")} ${this.formaterTemps(partieActuelle.secondesEcoulees)}.`;
     } else {
-      titreFin.textContent = t("defaite-titre");
-      messageFin.textContent = t("defaite-message");
+      elementsHTML.titreFin.textContent = t("defaite-titre");
+      elementsHTML.messageFin.textContent = t("defaite-message");
     }
   }
 
@@ -191,9 +228,9 @@ class AffichageFin {
   // temps moyen mis pour trouver une paire, et le temps de réflexion moyen
   // réel entre le 1er et le 2e clic de chaque tour.
   afficherStatistiques() {
-    statistiquesFin.innerHTML = "";
+    elementsHTML.statistiquesFin.innerHTML = "";
 
-    partieActuelle.joueurs.forEach((joueur) => {
+    etatPartie.partieActuelle.joueurs.forEach((joueur) => {
       const tempsMoyen = joueur.pairesTrouvees > 0
         ? Math.round(joueur.sommeTempsPaires / joueur.pairesTrouvees)
         : null;
@@ -216,14 +253,19 @@ class AffichageFin {
         <span>${texteTempsMoyen}</span>
         <span>${texteTempsReflexion}</span>
       `;
-      statistiquesFin.appendChild(ligne);
+      elementsHTML.statistiquesFin.appendChild(ligne);
+    });
+  }
+
+  // Écoute le clic sur le bouton "Rejouer" : ramène directement au menu
+  // pour choisir une nouvelle configuration. Appelée une seule fois, à la
+  // création de l'instance globale "affichageFin".
+  initialiserEcouteur() {
+    document.getElementById("bouton-rejouer").addEventListener("click", () => {
+      gestionnaireEcrans.changer("menu");
     });
   }
 }
 
 const affichageFin = new AffichageFin();
-
-// Le bouton "Rejouer" ramène directement au menu pour choisir une nouvelle configuration.
-document.getElementById("bouton-rejouer").addEventListener("click", () => {
-  gestionnaireEcrans.changer("menu");
-});
+affichageFin.initialiserEcouteur();

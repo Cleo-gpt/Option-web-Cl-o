@@ -3,11 +3,11 @@
 //
 // Regroupe tout ce qu'il faut savoir sur la partie en cours : les cartes,
 // les joueurs, le tour actuel, le chrono et le minuteur de tour, l'IA du
-// robot, et la fin de partie. Une seule instance vit à la fois, dans la
-// variable "partieActuelle".
+// robot, et la fin de partie. Une seule instance vit à la fois, dans
+// etatPartie.partieActuelle.
 //
-// Fichier : 4-partie.js (classe entière) ; "partieActuelle" et les éléments
-// HTML qu'elle manipule (chrono, grille de cartes...) sont déclarés dans
+// Fichier : 4-partie.js (classe entière) ; etatPartie et les éléments HTML
+// qu'elle manipule (chrono, grille de cartes...) sont déclarés dans
 // 4-code.js.
 // ===================================================================
 class Partie {
@@ -30,7 +30,7 @@ class Partie {
 
     // Minuteur du tour en cours
     this.identifiantMinuteurTour = null;
-    this.secondesRestantesTour = TEMPS_TOUR;
+    this.secondesRestantesTour = constantesJeu.tempsTour;
     this.secondesDebutTourJoueur = 0;   // valeur du chrono au début du tour, pour mesurer le temps mis à trouver une paire
     this.instantPremierClicTour = 0;    // Date.now() au premier clic du tour, pour le temps de réflexion réel
 
@@ -46,7 +46,7 @@ class Partie {
     const joueurs = [];
 
     for (let i = 0; i < nbJoueurs; i++) {
-      joueurs.push(new Joueur(i + 1, CLASSES_COULEUR_JOUEURS[i], false));
+      joueurs.push(new Joueur(i + 1, constantesJeu.classesCouleurJoueurs[i], false));
     }
 
     if (this.mode === "ordinateur") {
@@ -106,7 +106,7 @@ class Partie {
   // ===================================================================
 
   afficherJoueurs() {
-    listeJoueurs.innerHTML = "";
+    elementsHTML.listeJoueurs.innerHTML = "";
 
     this.joueurs.forEach((joueur, index) => {
       const ligne = document.createElement("div");
@@ -114,13 +114,13 @@ class Partie {
       ligne.classList.toggle("elimine", joueur.estElimine()); // reste correct si on retraduit en cours de partie
       ligne.id = `ligne-joueur-${index}`;
 
-      const nomCouleur = joueur.estRobot ? t("couleur-argente") : t(CLES_TRADUCTION_COULEURS[index]);
+      const nomCouleur = joueur.estRobot ? t("couleur-argente") : t(constantesJeu.clesTraductionCouleurs[index]);
       ligne.innerHTML = `
         <span class="lumiere"></span>
         <span>${joueur.nomAffiche()} (${nomCouleur})</span>
         <span class="coeurs" id="coeurs-${index}">❤️ ${joueur.coeurs}</span>
       `;
-      listeJoueurs.appendChild(ligne);
+      elementsHTML.listeJoueurs.appendChild(ligne);
     });
   }
 
@@ -153,7 +153,7 @@ class Partie {
   // ===================================================================
 
   afficherCartes() {
-    grilleCartes.innerHTML = "";
+    elementsHTML.grilleCartes.innerHTML = "";
 
     this.cartes.forEach((carte) => {
       const bouton = document.createElement("button");
@@ -166,12 +166,12 @@ class Partie {
       // du symbole (face visible) est gérée ici, une fois la carte retournée.
       const imageSymbole = document.createElement("img");
       imageSymbole.className = "image-symbole-carte";
-      imageSymbole.src = THEMES_VISUELS[this.theme].cheminSymboleCarte(carte.numeroSymbole);
+      imageSymbole.src = catalogueThemes.themes[this.theme].cheminSymboleCarte(carte.numeroSymbole);
       imageSymbole.alt = "";
       imageSymbole.hidden = true;
       bouton.appendChild(imageSymbole);
 
-      grilleCartes.appendChild(bouton);
+      elementsHTML.grilleCartes.appendChild(bouton);
     });
 
     this.afficherPairesTrouvees();
@@ -207,7 +207,7 @@ class Partie {
   // joue pas son tour est en plus estompée, comme les cartes sur le
   // plateau (voir rafraichirCarte()).
   afficherPairesTrouvees() {
-    pairesTrouvees.innerHTML = "";
+    elementsHTML.pairesTrouvees.innerHTML = "";
 
     this.joueurs.forEach((joueur, index) => {
       const cartesDuJoueur = this.cartes.filter(
@@ -225,14 +225,14 @@ class Partie {
         miniCarte.className = "mini-carte-trouvee";
 
         const imageSymbole = document.createElement("img");
-        imageSymbole.src = THEMES_VISUELS[this.theme].cheminSymboleCarte(carte.numeroSymbole);
+        imageSymbole.src = catalogueThemes.themes[this.theme].cheminSymboleCarte(carte.numeroSymbole);
         imageSymbole.alt = "";
         miniCarte.appendChild(imageSymbole);
 
         colonne.appendChild(miniCarte);
       }
 
-      pairesTrouvees.appendChild(colonne);
+      elementsHTML.pairesTrouvees.appendChild(colonne);
     });
   }
 
@@ -252,8 +252,8 @@ class Partie {
     this.allumerLumiereJoueurActuel();
     this.rafraichirEstompageCartesTrouvees();
 
-    this.secondesRestantesTour = TEMPS_TOUR;
-    tempsTourAffichage.textContent = `${this.secondesRestantesTour}s`;
+    this.secondesRestantesTour = constantesJeu.tempsTour;
+    elementsHTML.tempsTourAffichage.textContent = `${this.secondesRestantesTour}s`;
     this.secondesDebutTourJoueur = this.secondesEcoulees;
 
     this.lancerMinuteurTour();
@@ -274,7 +274,7 @@ class Partie {
     clearInterval(this.identifiantMinuteurTour);
     this.identifiantMinuteurTour = setInterval(() => {
       this.secondesRestantesTour -= 1;
-      tempsTourAffichage.textContent = `${this.secondesRestantesTour}s`;
+      elementsHTML.tempsTourAffichage.textContent = `${this.secondesRestantesTour}s`;
 
       if (this.secondesRestantesTour <= 0) {
         // Le temps est écoulé : le joueur n'a pas terminé son tour, il perd un coeur.
@@ -522,7 +522,7 @@ class Partie {
   demarrerChrono() {
     this.chronoDemarre = true;
     this.secondesEcoulees = 0;
-    chronoAffichage.textContent = "00:00";
+    elementsHTML.chronoAffichage.textContent = "00:00";
     this.lancerChrono();
   }
 
@@ -537,7 +537,7 @@ class Partie {
     clearInterval(this.identifiantChrono);
     this.identifiantChrono = setInterval(() => {
       this.secondesEcoulees += 1;
-      chronoAffichage.textContent = formaterTemps(this.secondesEcoulees);
+      elementsHTML.chronoAffichage.textContent = affichageFin.formaterTemps(this.secondesEcoulees);
     }, 1000);
   }
 
@@ -573,7 +573,7 @@ class Partie {
   terminer(resultat) {
     this.arreterChrono();
     clearInterval(this.identifiantMinuteurTour);
-    languetteLivre.hidden = true;
+    elementsHTML.languetteLivre.hidden = true;
 
     this.dernierResultat = resultat;
     affichageFin.afficherResultat();

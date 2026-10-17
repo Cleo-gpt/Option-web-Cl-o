@@ -12,7 +12,7 @@ class Joueur {
     this.numero = numero;             // le nom affiché ("Joueur 1"...) est composé avec nomAffiche()
     this.classeCouleur = classeCouleur;
     this.estRobot = estRobot;
-    this.coeurs = COEURS_DEPART;
+    this.coeurs = constantesJeu.coeursDepart;
     this.pairesTrouvees = 0;          // pour les statistiques affichées à la fin de la partie
     this.sommeTempsPaires = 0;        // somme des secondes mises à trouver chaque paire (pour la moyenne)
     this.sommeTempsReflexion = 0;     // somme des secondes entre le 1er et le 2e clic de chaque tour joué
