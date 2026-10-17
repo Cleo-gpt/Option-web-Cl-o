@@ -71,6 +71,15 @@
       <button class="bouton-choix" data-difficulte-ordi="fort" data-traduire="ordi-fort">Très fort</button>
     </div>
 
+    <!-- Ce bloc n'apparaît que si le mode "multi" ou "ordinateur" est choisi
+         (pas en solo : une seule partie contre soi-même n'a pas de sens à répéter). -->
+    <div class="bloc-choix" id="bloc-nb-parties" hidden>
+      <h2 data-traduire="nombre-parties">Nombre de parties</h2>
+      <button class="bouton-choix" data-nb-parties="2">2</button>
+      <button class="bouton-choix" data-nb-parties="3">3</button>
+      <button class="bouton-choix" data-nb-parties="4">4</button>
+    </div>
+
     <div class="bloc-choix">
       <h2 data-traduire="nombre-cartes">Nombre de cartes</h2>
       <button class="bouton-choix" data-cartes="12">12</button>
@@ -197,18 +206,21 @@
 
        Affiché quand toutes les paires sont trouvées (victoire) ou que
        tous les joueurs ont perdu leurs coeurs (défaite) : titre, message,
-       statistiques de chaque joueur et bouton "Rejouer".
+       statistiques de chaque joueur et bouton "Rejouer". En mode "multi"
+       ou "ordinateur" avec plusieurs parties choisies, affiché seulement
+       après la dernière partie de la série, avec un bloc de statistiques
+       par partie jouée (voir SerieParties dans 4-serie-parties.js).
 
-       Fichiers : 5-index.html (#ecran-fin ci-dessous) ; 4-code.js
-       (afficherResultatFin(), afficherStatistiquesFin()) ; 6-style.css
-       (section "ÉCRAN DE FIN").
+       Fichiers : 5-index.html (#ecran-fin ci-dessous) ; 4-code.js (classe
+       AffichageFin) ; 6-style.css (section "ÉCRAN DE FIN").
        =================================================================== -->
   <section id="ecran-fin" class="ecran" hidden>
     <h2 id="titre-fin"></h2>
     <p id="message-fin"></p>
 
-    <!-- Statistiques de chaque joueur : paires trouvées, vies restantes, temps moyen par paire.
-         Rempli par JavaScript (une ligne par joueur) dans terminerPartie(). -->
+    <!-- Un bloc de statistiques par partie jouée (une ligne par joueur
+         dans chacun) : rempli par JavaScript, voir AffichageFin dans
+         4-code.js. -->
     <div id="statistiques-fin"></div>
 
     <button id="bouton-rejouer" data-traduire="rejouer">Rejouer</button>
@@ -222,6 +234,7 @@
   <script src="4-code.js"></script>
   <script src="4-traducteur.js"></script>
   <script src="4-partie.js"></script>
+  <script src="4-serie-parties.js"></script>
   <script src="4-menu.js"></script>
   <script src="4-livre-des-regles.js"></script>
 </body>

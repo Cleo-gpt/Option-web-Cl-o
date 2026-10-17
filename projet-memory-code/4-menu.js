@@ -18,21 +18,30 @@ class Menu {
     this.difficulteOrdi = null;  // "naze" | "moyen" | "fort" (uniquement en mode "ordinateur")
     this.nbCartes = 16;          // toujours un multiple de 4
     this.difficulte = "facile";  // "facile" | "moyen" | "difficile"
+    this.nbParties = 1;          // nombre de parties consécutives (2 à 4 si multi/ordinateur, sinon 1)
     this.nbAccentsAnime = 6;     // nombre de teintes d'accent possibles pour le thème "Animé"
   }
 
   // Vérifie que chaque paramètre obligatoire a bien été choisi par le joueur
   // (mode, nombre de joueurs si multi, difficulté de l'ordi si mode
-  // ordinateur, nombre de cartes, difficulté du mélange). Sert à la fois pour
-  // activer/désactiver le bouton et comme sécurité au moment du clic.
+  // ordinateur, nombre de parties si multi ou ordinateur, nombre de
+  // cartes, difficulté du mélange). Sert à la fois pour activer/désactiver
+  // le bouton et comme sécurité au moment du clic.
   estComplet() {
     const modeChoisi = this.mode !== null;
     const nbJoueursOk = this.mode !== "multi" || document.querySelector("[data-joueurs].selectionne") !== null;
     const difficulteOrdiOk = this.mode !== "ordinateur" || document.querySelector("[data-difficulte-ordi].selectionne") !== null;
+    const nbPartiesOk = !this.plusieursPartiesPossibles() || document.querySelector("[data-nb-parties].selectionne") !== null;
     const cartesChoisies = document.querySelector("[data-cartes].selectionne") !== null;
     const difficulteChoisie = document.querySelector("[data-difficulte].selectionne") !== null;
 
-    return modeChoisi && nbJoueursOk && difficulteOrdiOk && cartesChoisies && difficulteChoisie;
+    return modeChoisi && nbJoueursOk && difficulteOrdiOk && nbPartiesOk && cartesChoisies && difficulteChoisie;
+  }
+
+  // Le choix du nombre de parties n'a de sens qu'à plusieurs (multi) ou
+  // contre l'ordinateur : en solo, une seule partie à la fois.
+  plusieursPartiesPossibles() {
+    return this.mode === "multi" || this.mode === "ordinateur";
   }
 
   // Affiche un petit résumé des choix et active le bouton "Valider" seulement
@@ -50,7 +59,10 @@ class Menu {
       } else {
         texteMode = traducteur.t("mode-solo");
       }
-      elementsHTML.recapMenu.textContent = `${traducteur.t("theme-" + this.theme)} · ${texteMode} · ${this.nbCartes} ${traducteur.t("cartes-mot")} · ${traducteur.t("difficulte-mot")} ${traducteur.t(this.difficulte).toLowerCase()}`;
+      const texteParties = this.plusieursPartiesPossibles()
+        ? ` · ${this.nbParties} ${traducteur.t("parties-mot")}`
+        : "";
+      elementsHTML.recapMenu.textContent = `${traducteur.t("theme-" + this.theme)} · ${texteMode}${texteParties} · ${this.nbCartes} ${traducteur.t("cartes-mot")} · ${traducteur.t("difficulte-mot")} ${traducteur.t(this.difficulte).toLowerCase()}`;
     } else {
       elementsHTML.recapMenu.textContent = "";
     }
@@ -123,7 +135,8 @@ class Menu {
     // Le bloc "nombre de joueurs" ne s'affiche que si "multi" est choisi,
     // le bloc "difficulté de l'ordinateur" seulement si "ordinateur" est
     // choisi (le mode solo n'a besoin d'aucun des deux : un seul joueur
-    // humain, pas de robot).
+    // humain, pas de robot). Le bloc "nombre de parties" s'affiche pour
+    // les deux (multi et ordinateur), jamais en solo.
     const boutonsMode = document.querySelectorAll("[data-mode]");
     boutonsMode.forEach((bouton) => {
       bouton.addEventListener("click", () => {
@@ -133,12 +146,18 @@ class Menu {
         this.mode = bouton.dataset.mode;
         elementsHTML.blocNbJoueurs.hidden = this.mode !== "multi";
         elementsHTML.blocDifficulteOrdi.hidden = this.mode !== "ordinateur";
+        elementsHTML.blocNbParties.hidden = !this.plusieursPartiesPossibles();
 
         if (this.mode !== "multi") {
           this.nbJoueurs = 1; // solo ou contre l'ordinateur : un seul joueur humain
         }
         if (this.mode !== "ordinateur") {
           this.difficulteOrdi = null;
+        }
+        if (!this.plusieursPartiesPossibles()) {
+          // Solo : une seule partie, pas de choix à faire ni à garder en mémoire.
+          this.nbParties = 1;
+          document.querySelectorAll("[data-nb-parties]").forEach((b) => b.classList.remove("selectionne"));
         }
         this.mettreAJourLimiteCartes();
         this.mettreAJourRecapMenu();
@@ -167,6 +186,19 @@ class Menu {
       });
     });
 
+    // Nombre de parties consécutives à jouer (2 à 4), seulement pertinent
+    // en multijoueur ou contre l'ordinateur (voir plusieursPartiesPossibles()).
+    const boutonsNbParties = document.querySelectorAll("[data-nb-parties]");
+    boutonsNbParties.forEach((bouton) => {
+      bouton.addEventListener("click", () => {
+        boutonsNbParties.forEach((b) => b.classList.remove("selectionne"));
+        bouton.classList.add("selectionne");
+
+        this.nbParties = Number(bouton.dataset.nbParties);
+        this.mettreAJourRecapMenu();
+      });
+    });
+
     // Boutons 12 à 56 (pas de 4/8) : le nombre maximum de cartes proposé.
     const boutonsCartes = document.querySelectorAll("[data-cartes]");
     boutonsCartes.forEach((bouton) => {
@@ -190,15 +222,18 @@ class Menu {
       });
     });
 
-    // Une fois la configuration validée, on crée la partie (cartes,
-    // joueurs) et on ouvre directement le livre fermé sur sa page de
-    // garde, avant que le plateau ne soit révélé. La vérification est
-    // refaite ici (en plus du bouton désactivé) : une sécurité pour ne
-    // jamais démarrer une partie si un paramètre n'a pas été choisi.
+    // Une fois la configuration validée, on crée la série de parties (une
+    // seule si solo, 1 à 4 en multi/ordinateur selon le choix fait) et on
+    // démarre sa première partie, puis on ouvre directement le livre
+    // fermé sur sa page de garde, avant que le plateau ne soit révélé. La
+    // vérification est refaite ici (en plus du bouton désactivé) : une
+    // sécurité pour ne jamais démarrer une partie si un paramètre n'a pas
+    // été choisi.
     elementsHTML.boutonValiderMenu.addEventListener("click", () => {
       if (!this.estComplet()) return;
 
-      etatPartie.partieActuelle = new Partie(this.mode, this.nbJoueurs, this.difficulteOrdi, this.theme, this.nbCartes, this.difficulte);
+      etatPartie.serieActuelle = new SerieParties(this.mode, this.nbJoueurs, this.difficulteOrdi, this.theme, this.nbCartes, this.difficulte, this.nbParties);
+      etatPartie.serieActuelle.demarrerPartieSuivante();
       gestionnaireEcrans.changer("jeu");
       livreDesRegles.ouvrirPremierAcces();
     });

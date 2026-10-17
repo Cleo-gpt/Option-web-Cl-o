@@ -563,19 +563,47 @@ class Partie {
   // ===================================================================
   // FIN DE PARTIE
   //
-  // Arrête le chrono et le minuteur, puis affiche l'écran de fin (titre,
-  // message et statistiques de chaque joueur).
+  // Arrête le chrono et le minuteur. S'il n'y a pas de série de plusieurs
+  // parties en cours (solo, ou série déjà terminée), affiche l'écran de
+  // fin classique. Sinon, enregistre le résultat dans la série et enchaîne
+  // automatiquement sur la partie suivante (pas d'écran intermédiaire, pas
+  // de livre des règles à relire) ; l'écran de fin (avec le tableau de
+  // toutes les parties) n'apparaît qu'après la dernière de la série.
   //
-  // Fichier : 4-partie.js, méthode terminer() ; la classe AffichageFin
-  // (afficherResultat(), afficherStatistiques()) est dans 4-code.js.
+  // Fichier : 4-partie.js, méthode terminer() ; la classe SerieParties est
+  // dans 4-serie-parties.js, la classe AffichageFin dans 4-code.js.
   // ===================================================================
 
   terminer(resultat) {
     this.arreterChrono();
     clearInterval(this.identifiantMinuteurTour);
-    elementsHTML.languetteLivre.hidden = true;
 
     this.dernierResultat = resultat;
+
+    const serie = etatPartie.serieActuelle;
+    if (serie === null) {
+      this.afficherEcranFin();
+      return;
+    }
+
+    serie.enregistrerResultatPartie(this);
+    if (serie.estTerminee()) {
+      this.afficherEcranFin();
+    } else {
+      // Enchaînement automatique sur la partie suivante de la série : le
+      // plateau se recrée directement, sans repasser par le menu ni le
+      // livre des règles.
+      serie.demarrerPartieSuivante();
+      etatPartie.partieActuelle.demarrerTour();
+    }
+  }
+
+  // Affiche l'écran de fin : cas d'une partie seule (solo, ou dernière
+  // partie d'une série). Le tableau de statistiques couvre soit cette
+  // seule partie, soit toutes celles de la série (voir
+  // AffichageFin.afficherStatistiques() dans 4-code.js).
+  afficherEcranFin() {
+    elementsHTML.languetteLivre.hidden = true;
     affichageFin.afficherResultat();
     affichageFin.afficherStatistiques();
     gestionnaireEcrans.changer("fin");

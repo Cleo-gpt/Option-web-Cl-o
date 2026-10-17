@@ -796,12 +796,14 @@ body.theme-communaute .bouton-choix:hover {
 
    Une ligne par joueur sur l'écran de fin : paires
    trouvées, coeurs restants, temps moyen par paire et
-   temps de réflexion moyen.
+   temps de réflexion moyen. Pour une série de plusieurs
+   parties, un titre "Partie N" précède les lignes de
+   chaque partie (voir .titre-bloc-stat-fin plus bas).
 
    Fichier : 6-style.css (règles ci-dessous) ;
    5-index.html (#statistiques-fin, vide au départ) ;
-   4-code.js (afficherStatistiquesFin(), qui remplit ces
-   lignes en JS).
+   4-code.js (classe AffichageFin, qui remplit ces lignes
+   en JS).
    =================================================================== */
 
 #statistiques-fin {
@@ -810,6 +812,14 @@ body.theme-communaute .bouton-choix:hover {
   gap: 0.6rem;
   margin: 1.5rem 0;
   text-align: left;
+}
+
+/* Titre "Partie N" au-dessus des lignes de chaque partie,
+   seulement présent pour une série de plusieurs parties. */
+#statistiques-fin h3 {
+  margin: 1rem 0 0;
+  font-family: var(--police-titres);
+  color: var(--accent);
 }
 
 .ligne-stat-fin {

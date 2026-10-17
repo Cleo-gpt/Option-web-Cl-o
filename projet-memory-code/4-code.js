@@ -24,20 +24,22 @@
 // ===================================================================
 // CLASSE ÉTAT PARTIE
 //
-// Porte la seule vraie variable globale du jeu : "partieActuelle" (ou
-// null avant qu'une partie n'ait commencé). Une classe à une seule
-// propriété, sans méthode : elle existe quand même pour que même cette
-// donnée partagée soit portée par une instance plutôt qu'une variable
-// libre (l'écran actuellement affiché, lui, est gestionnaireEcrans.actuel,
-// voir plus bas).
+// Porte les deux vraies variables globales du jeu : "partieActuelle" (la
+// partie en train d'être jouée, ou null avant qu'une partie n'ait
+// commencé) et "serieActuelle" (la série de plusieurs parties en cours,
+// ou null en solo ou avant qu'une partie n'ait commencé — voir
+// SerieParties dans 4-serie-parties.js). Une classe sans méthode : elle
+// existe quand même pour que même ces données partagées soient portées
+// par une instance plutôt que des variables libres (l'écran actuellement
+// affiché, lui, est gestionnaireEcrans.actuel, voir plus bas).
 //
 // Fichier : 4-code.js (classe + instance globale "etatPartie" ci-dessous) ;
-// etatPartie.partieActuelle est une instance de la classe Partie (voir
-// 4-partie.js), lue et écrite depuis 4-partie.js et 4-menu.js.
+// lue et écrite depuis 4-partie.js, 4-menu.js et 4-serie-parties.js.
 // ===================================================================
 class EtatPartie {
   constructor() {
     this.partieActuelle = null;
+    this.serieActuelle = null;
   }
 }
 
@@ -88,6 +90,7 @@ class ElementsHTML {
 
     this.blocNbJoueurs = document.getElementById("bloc-nb-joueurs");
     this.blocDifficulteOrdi = document.getElementById("bloc-difficulte-ordi");
+    this.blocNbParties = document.getElementById("bloc-nb-parties");
     this.recapMenu = document.getElementById("recap-menu");
     this.boutonValiderMenu = document.getElementById("bouton-valider-menu");
 
@@ -211,9 +214,22 @@ class AffichageFin {
   }
 
   // Affiche le titre et le message de fin dans la langue actuelle. Appelée
-  // à la fin de la partie, et de nouveau si la langue change pendant
-  // l'écran de fin.
+  // à la fin de la partie (ou de la série), et de nouveau si la langue
+  // change pendant l'écran de fin. En solo ou pour une partie seule, le
+  // titre annonce la victoire ou la défaite de cette partie. Pour une
+  // série de plusieurs parties, le titre annonce plutôt le joueur qui a
+  // gagné le plus de parties (voir SerieParties.gagnantSerie()).
   afficherResultat() {
+    const serie = etatPartie.serieActuelle;
+    if (serie !== null && serie.estMultiPartie()) {
+      const gagnant = serie.gagnantSerie();
+      elementsHTML.titreFin.textContent = gagnant !== null
+        ? `${gagnant.nomAffiche()} ${traducteur.t("serie-gagnant")}`
+        : traducteur.t("serie-egalite");
+      elementsHTML.messageFin.textContent = `${serie.nbParties} ${traducteur.t("parties-mot")} ${traducteur.t("parties-jouees")}.`;
+      return;
+    }
+
     const partieActuelle = etatPartie.partieActuelle;
     if (partieActuelle.dernierResultat === "victoire") {
       elementsHTML.titreFin.textContent = traducteur.t("victoire-titre");
@@ -224,36 +240,58 @@ class AffichageFin {
     }
   }
 
-  // Affiche, pour chaque joueur, ses paires trouvées, ses vies restantes, le
-  // temps moyen mis pour trouver une paire, et le temps de réflexion moyen
-  // réel entre le 1er et le 2e clic de chaque tour.
+  // Construit la ligne de statistiques d'un seul joueur (paires trouvées,
+  // vies restantes, temps moyen par paire, temps de réflexion moyen réel
+  // entre le 1er et le 2e clic de chaque tour) : réutilisée pour une
+  // partie seule comme pour chaque partie du tableau d'une série.
+  genererLigneStatJoueur(joueur) {
+    const tempsMoyen = joueur.pairesTrouvees > 0
+      ? Math.round(joueur.sommeTempsPaires / joueur.pairesTrouvees)
+      : null;
+    const texteTempsMoyen = tempsMoyen !== null ? `${tempsMoyen}${traducteur.t("temps-moyen-paire")}` : traducteur.t("aucune-paire");
+
+    const tempsReflexionMoyen = joueur.nbToursJoues > 0
+      ? (joueur.sommeTempsReflexion / joueur.nbToursJoues).toFixed(1)
+      : null;
+    const texteTempsReflexion = tempsReflexionMoyen !== null
+      ? `${tempsReflexionMoyen}${traducteur.t("temps-reflexion-moyen")}`
+      : traducteur.t("aucun-temps-reflexion");
+
+    const ligne = document.createElement("div");
+    ligne.className = `ligne-stat-fin ${joueur.classeCouleur}`;
+    ligne.innerHTML = `
+      <span class="lumiere"></span>
+      <span class="nom-stat-fin">${joueur.nomAffiche()}</span>
+      <span>${joueur.pairesTrouvees} ${traducteur.t("paires-trouvees")}</span>
+      <span>❤️ ${joueur.coeurs}</span>
+      <span>${texteTempsMoyen}</span>
+      <span>${texteTempsReflexion}</span>
+    `;
+    return ligne;
+  }
+
+  // Affiche le tableau de statistiques : un bloc par partie jouée (avec un
+  // titre "Partie N") pour une série de plusieurs parties, ou un seul bloc
+  // sans titre pour une partie seule (solo, ou une seule partie choisie).
   afficherStatistiques() {
     elementsHTML.statistiquesFin.innerHTML = "";
 
+    const serie = etatPartie.serieActuelle;
+    if (serie !== null && serie.estMultiPartie()) {
+      serie.resultats.forEach((resultat, index) => {
+        const titreBloc = document.createElement("h3");
+        titreBloc.textContent = `${traducteur.t("partie-mot")} ${index + 1}`;
+        elementsHTML.statistiquesFin.appendChild(titreBloc);
+
+        resultat.joueurs.forEach((joueur) => {
+          elementsHTML.statistiquesFin.appendChild(this.genererLigneStatJoueur(joueur));
+        });
+      });
+      return;
+    }
+
     etatPartie.partieActuelle.joueurs.forEach((joueur) => {
-      const tempsMoyen = joueur.pairesTrouvees > 0
-        ? Math.round(joueur.sommeTempsPaires / joueur.pairesTrouvees)
-        : null;
-      const texteTempsMoyen = tempsMoyen !== null ? `${tempsMoyen}${traducteur.t("temps-moyen-paire")}` : traducteur.t("aucune-paire");
-
-      const tempsReflexionMoyen = joueur.nbToursJoues > 0
-        ? (joueur.sommeTempsReflexion / joueur.nbToursJoues).toFixed(1)
-        : null;
-      const texteTempsReflexion = tempsReflexionMoyen !== null
-        ? `${tempsReflexionMoyen}${traducteur.t("temps-reflexion-moyen")}`
-        : traducteur.t("aucun-temps-reflexion");
-
-      const ligne = document.createElement("div");
-      ligne.className = `ligne-stat-fin ${joueur.classeCouleur}`;
-      ligne.innerHTML = `
-        <span class="lumiere"></span>
-        <span class="nom-stat-fin">${joueur.nomAffiche()}</span>
-        <span>${joueur.pairesTrouvees} ${traducteur.t("paires-trouvees")}</span>
-        <span>❤️ ${joueur.coeurs}</span>
-        <span>${texteTempsMoyen}</span>
-        <span>${texteTempsReflexion}</span>
-      `;
-      elementsHTML.statistiquesFin.appendChild(ligne);
+      elementsHTML.statistiquesFin.appendChild(this.genererLigneStatJoueur(joueur));
     });
   }
 

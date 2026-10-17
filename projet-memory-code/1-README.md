@@ -32,6 +32,7 @@ projet-memory-code/
 │   ├── 4-joueur.js          Joueur
 │   ├── 4-menu.js            Menu
 │   ├── 4-partie.js          Partie
+│   ├── 4-serie-parties.js   SerieParties
 │   └── 4-livre-des-regles.js LivreDesRegles
 │
 ├── 4-code.js                reste de la logique
@@ -61,10 +62,10 @@ Ces règles gardent le projet simple et lisible.
 1. Rester simple (KISS)
    Pas de framework, build tool, ni librairie externe.
 
-2. Un fichier JS par thème de classe, 8 fichiers au total
+2. Un fichier JS par thème de classe, 9 fichiers au total
    `4-code.js` peut contenir plusieurs petites classes
    utilitaires proches (écrans, luminosité, fin de
-   partie) plutôt que d'éclater en plus de 8 fichiers.
+   partie) plutôt que d'éclater en plus de 9 fichiers.
 
 3. Noms en français
    Variables, fonctions, commentaires en français.
