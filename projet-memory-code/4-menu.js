@@ -44,13 +44,13 @@ class Menu {
     if (pret) {
       let texteMode;
       if (this.mode === "multi") {
-        texteMode = `${this.nbJoueurs} ${t("joueurs-mot")}`;
+        texteMode = `${this.nbJoueurs} ${traducteur.t("joueurs-mot")}`;
       } else if (this.mode === "ordinateur") {
-        texteMode = `${t("contre-ordinateur")} (${t("ordi-" + this.difficulteOrdi).toLowerCase()})`;
+        texteMode = `${traducteur.t("contre-ordinateur")} (${traducteur.t("ordi-" + this.difficulteOrdi).toLowerCase()})`;
       } else {
-        texteMode = t("mode-solo");
+        texteMode = traducteur.t("mode-solo");
       }
-      elementsHTML.recapMenu.textContent = `${t("theme-" + this.theme)} · ${texteMode} · ${this.nbCartes} ${t("cartes-mot")} · ${t("difficulte-mot")} ${t(this.difficulte).toLowerCase()}`;
+      elementsHTML.recapMenu.textContent = `${traducteur.t("theme-" + this.theme)} · ${texteMode} · ${this.nbCartes} ${traducteur.t("cartes-mot")} · ${traducteur.t("difficulte-mot")} ${traducteur.t(this.difficulte).toLowerCase()}`;
     } else {
       elementsHTML.recapMenu.textContent = "";
     }

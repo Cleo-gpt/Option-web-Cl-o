@@ -114,7 +114,7 @@ class Partie {
       ligne.classList.toggle("elimine", joueur.estElimine()); // reste correct si on retraduit en cours de partie
       ligne.id = `ligne-joueur-${index}`;
 
-      const nomCouleur = joueur.estRobot ? t("couleur-argente") : t(constantesJeu.clesTraductionCouleurs[index]);
+      const nomCouleur = joueur.estRobot ? traducteur.t("couleur-argente") : traducteur.t(constantesJeu.clesTraductionCouleurs[index]);
       ligne.innerHTML = `
         <span class="lumiere"></span>
         <span>${joueur.nomAffiche()} (${nomCouleur})</span>

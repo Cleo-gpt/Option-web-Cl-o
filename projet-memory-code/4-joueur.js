@@ -23,7 +23,7 @@ class Joueur {
   // Le nom affiché ("Joueur 1" / "Spieler 1" / "Player 1", ou le nom de
   // l'ordinateur), toujours recalculé dans la langue actuelle.
   nomAffiche() {
-    return this.estRobot ? t("ordinateur-mot") : `${t("joueur-mot")} ${this.numero}`;
+    return this.estRobot ? traducteur.t("ordinateur-mot") : `${traducteur.t("joueur-mot")} ${this.numero}`;
   }
 
   estElimine() {

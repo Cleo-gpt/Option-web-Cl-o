@@ -216,11 +216,11 @@ class AffichageFin {
   afficherResultat() {
     const partieActuelle = etatPartie.partieActuelle;
     if (partieActuelle.dernierResultat === "victoire") {
-      elementsHTML.titreFin.textContent = t("victoire-titre");
-      elementsHTML.messageFin.textContent = `${t("victoire-message")} ${this.formaterTemps(partieActuelle.secondesEcoulees)}.`;
+      elementsHTML.titreFin.textContent = traducteur.t("victoire-titre");
+      elementsHTML.messageFin.textContent = `${traducteur.t("victoire-message")} ${this.formaterTemps(partieActuelle.secondesEcoulees)}.`;
     } else {
-      elementsHTML.titreFin.textContent = t("defaite-titre");
-      elementsHTML.messageFin.textContent = t("defaite-message");
+      elementsHTML.titreFin.textContent = traducteur.t("defaite-titre");
+      elementsHTML.messageFin.textContent = traducteur.t("defaite-message");
     }
   }
 
@@ -234,21 +234,21 @@ class AffichageFin {
       const tempsMoyen = joueur.pairesTrouvees > 0
         ? Math.round(joueur.sommeTempsPaires / joueur.pairesTrouvees)
         : null;
-      const texteTempsMoyen = tempsMoyen !== null ? `${tempsMoyen}${t("temps-moyen-paire")}` : t("aucune-paire");
+      const texteTempsMoyen = tempsMoyen !== null ? `${tempsMoyen}${traducteur.t("temps-moyen-paire")}` : traducteur.t("aucune-paire");
 
       const tempsReflexionMoyen = joueur.nbToursJoues > 0
         ? (joueur.sommeTempsReflexion / joueur.nbToursJoues).toFixed(1)
         : null;
       const texteTempsReflexion = tempsReflexionMoyen !== null
-        ? `${tempsReflexionMoyen}${t("temps-reflexion-moyen")}`
-        : t("aucun-temps-reflexion");
+        ? `${tempsReflexionMoyen}${traducteur.t("temps-reflexion-moyen")}`
+        : traducteur.t("aucun-temps-reflexion");
 
       const ligne = document.createElement("div");
       ligne.className = `ligne-stat-fin ${joueur.classeCouleur}`;
       ligne.innerHTML = `
         <span class="lumiere"></span>
         <span class="nom-stat-fin">${joueur.nomAffiche()}</span>
-        <span>${joueur.pairesTrouvees} ${t("paires-trouvees")}</span>
+        <span>${joueur.pairesTrouvees} ${traducteur.t("paires-trouvees")}</span>
         <span>❤️ ${joueur.coeurs}</span>
         <span>${texteTempsMoyen}</span>
         <span>${texteTempsReflexion}</span>

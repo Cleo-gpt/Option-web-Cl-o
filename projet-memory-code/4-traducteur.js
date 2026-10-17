@@ -144,9 +144,4 @@ const traducteur = new Traducteur(
   { fr: "Fr", de: "All", en: "Ang" }
 );
 
-// Raccourci global très utilisé dans le reste du code : traducteur.t(cle).
-function t(cle) {
-  return traducteur.t(cle);
-}
-
 traducteur.initialiserEcouteur();

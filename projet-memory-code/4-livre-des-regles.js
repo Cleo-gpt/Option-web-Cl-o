@@ -30,7 +30,7 @@ class LivreDesRegles {
     this.premierAcces = false;
     etatPartie.partieActuelle.mettreEnPause();
     this.afficherPage(elementsHTML.pageRegles);
-    elementsHTML.boutonLancerPartie.textContent = t("relancer-partie");
+    elementsHTML.boutonLancerPartie.textContent = traducteur.t("relancer-partie");
     elementsHTML.livre.classList.remove("livre-ferme");
     elementsHTML.livre.classList.add("livre-ouvert");
     elementsHTML.livre.hidden = false;
@@ -41,7 +41,7 @@ class LivreDesRegles {
     elementsHTML.livre.classList.add("livre-ferme");
     elementsHTML.livre.classList.remove("livre-ouvert");
     this.afficherPage(elementsHTML.pageQuestion);
-    elementsHTML.boutonLancerPartie.textContent = t("lancer-partie");
+    elementsHTML.boutonLancerPartie.textContent = traducteur.t("lancer-partie");
   }
 
   // N'affiche qu'une seule page du livre à la fois.
