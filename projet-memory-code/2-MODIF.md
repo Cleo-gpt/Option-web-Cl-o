@@ -50,3 +50,12 @@ des ateliers.)*
 
 - Classes séparées dans leurs propres fichiers (2026-09-30)
   Demande explicite, écart assumé.
+
+- Classes sans vrai état propre (2026-10-17)
+  Pour maximiser le pourcentage de code en POO (besoin
+  pour une présentation), des regroupements de
+  fonctions sans état fort (écrans, luminosité, fin de
+  partie, écoutes de boutons) deviennent des classes
+  avec une seule méthode ou presque. Aucun atelier ne
+  crée de classe juste pour en avoir une : demande
+  explicite, écart assumé, règle 9 mise à jour.

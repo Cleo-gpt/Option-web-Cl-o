@@ -64,36 +64,44 @@ class LivreDesRegles {
       partieActuelle.reprendre();
     }
   }
+
+  // Branche tous les boutons du livre (couverture, question, languette) sur
+  // cette instance. Appelée une seule fois, à la création de l'instance
+  // globale "livreDesRegles".
+  initialiserEcouteurs() {
+    // Cliquer sur la couverture fermée ouvre le livre sur sa première page.
+    couvertureLivre.addEventListener("click", () => {
+      livre.classList.remove("livre-ferme");
+      livre.classList.add("livre-ouvert");
+    });
+
+    // "Oui, je souhaite lire les règles" : la page se tourne sur les règles.
+    document.getElementById("bouton-lire-regles").addEventListener("click", () => {
+      this.afficherPage(pageRegles);
+    });
+
+    // "Non, je ne souhaite pas lire les règles" : phrase affichée 10 secondes
+    // puis la partie démarre automatiquement (seulement au tout premier accès).
+    document.getElementById("bouton-refuser-regles").addEventListener("click", () => {
+      this.afficherPage(pageBonneChance);
+      setTimeout(() => {
+        this.fermerEtLancerPartie();
+      }, 500);
+    });
+
+    // "Lancer la partie" / "Relancer la partie" : referme le livre et
+    // démarre ou reprend le jeu.
+    boutonLancerPartie.addEventListener("click", () => {
+      this.fermerEtLancerPartie();
+    });
+
+    // La languette reste visible pendant toute la partie pour rouvrir le
+    // livre (= pause).
+    languetteLivre.addEventListener("click", () => {
+      this.ouvrirEnPause();
+    });
+  }
 }
 
 const livreDesRegles = new LivreDesRegles();
-
-// Cliquer sur la couverture fermée ouvre le livre sur sa première page.
-couvertureLivre.addEventListener("click", () => {
-  livre.classList.remove("livre-ferme");
-  livre.classList.add("livre-ouvert");
-});
-
-// "Oui, je souhaite lire les règles" : la page se tourne sur les règles.
-document.getElementById("bouton-lire-regles").addEventListener("click", () => {
-  livreDesRegles.afficherPage(pageRegles);
-});
-
-// "Non, je ne souhaite pas lire les règles" : phrase affichée 10 secondes puis
-// la partie démarre automatiquement (seulement au tout premier accès).
-document.getElementById("bouton-refuser-regles").addEventListener("click", () => {
-  livreDesRegles.afficherPage(pageBonneChance);
-  setTimeout(() => {
-    livreDesRegles.fermerEtLancerPartie();
-  }, 500);
-});
-
-// "Lancer la partie" / "Relancer la partie" : referme le livre et démarre ou reprend le jeu.
-boutonLancerPartie.addEventListener("click", () => {
-  livreDesRegles.fermerEtLancerPartie();
-});
-
-// La languette reste visible pendant toute la partie pour rouvrir le livre (= pause).
-languetteLivre.addEventListener("click", () => {
-  livreDesRegles.ouvrirEnPause();
-});
+livreDesRegles.initialiserEcouteurs();

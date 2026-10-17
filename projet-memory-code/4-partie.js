@@ -387,7 +387,7 @@ class Partie {
 
   // Passe la main au prochain joueur encore en vie.
   passerAuJoueurSuivant() {
-    if (scene !== "jeu") return; // la partie est peut-être déjà terminée
+    if (gestionnaireEcrans.actuel !== "jeu") return; // la partie est peut-être déjà terminée
 
     do {
       this.joueurActuelIndex = (this.joueurActuelIndex + 1) % this.joueurs.length;
@@ -497,13 +497,13 @@ class Partie {
   // Le robot joue son tour : un court délai avant chaque clic pour rester
   // lisible à l'écran, comme un joueur qui regarde le plateau avant de choisir.
   jouerTourRobot() {
-    if (scene !== "jeu") return;
+    if (gestionnaireEcrans.actuel !== "jeu") return;
 
     const [premiereCarte, deuxiemeCarte] = this.choisirCartesRobot();
     this.choisirCarte(premiereCarte.id);
 
     setTimeout(() => {
-      if (scene !== "jeu" || this.enPause) return;
+      if (gestionnaireEcrans.actuel !== "jeu" || this.enPause) return;
       this.choisirCarte(deuxiemeCarte.id);
     }, 600);
   }
@@ -566,8 +566,8 @@ class Partie {
   // Arrête le chrono et le minuteur, puis affiche l'écran de fin (titre,
   // message et statistiques de chaque joueur).
   //
-  // Fichier : 4-partie.js, méthode terminer() ; les fonctions d'affichage
-  // afficherResultatFin() et afficherStatistiquesFin() sont dans 4-code.js.
+  // Fichier : 4-partie.js, méthode terminer() ; la classe AffichageFin
+  // (afficherResultat(), afficherStatistiques()) est dans 4-code.js.
   // ===================================================================
 
   terminer(resultat) {
@@ -576,8 +576,8 @@ class Partie {
     languetteLivre.hidden = true;
 
     this.dernierResultat = resultat;
-    afficherResultatFin();
-    afficherStatistiquesFin();
-    changerEcran("fin");
+    affichageFin.afficherResultat();
+    affichageFin.afficherStatistiques();
+    gestionnaireEcrans.changer("fin");
   }
 }

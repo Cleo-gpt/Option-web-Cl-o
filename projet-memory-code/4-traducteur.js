@@ -56,10 +56,20 @@ class Traducteur {
       partieActuelle.afficherJoueurs();
       partieActuelle.allumerLumiereJoueurActuel();
     }
-    if (scene === "fin") {
-      afficherResultatFin();
-      afficherStatistiquesFin();
+    if (gestionnaireEcrans.actuel === "fin") {
+      affichageFin.afficherResultat();
+      affichageFin.afficherStatistiques();
     }
+  }
+
+  // Écoute le clic sur le bouton de langue : passe à la langue suivante et
+  // réapplique la traduction partout. Appelée une seule fois, à la
+  // création de l'instance globale "traducteur".
+  initialiserEcouteur() {
+    boutonLangue.addEventListener("click", () => {
+      this.passerALaLangueSuivante();
+      this.appliquerLangue();
+    });
   }
 }
 
@@ -141,7 +151,4 @@ function t(cle) {
 }
 
 const boutonLangue = document.getElementById("bouton-langue");
-boutonLangue.addEventListener("click", () => {
-  traducteur.passerALaLangueSuivante();
-  traducteur.appliquerLangue();
-});
+traducteur.initialiserEcouteur();

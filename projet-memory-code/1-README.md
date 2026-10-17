@@ -61,8 +61,10 @@ Ces règles gardent le projet simple et lisible.
 1. Rester simple (KISS)
    Pas de framework, build tool, ni librairie externe.
 
-2. Un fichier JS par classe, le reste dans `4-code.js`
-   8 fichiers au total, pas d'autre découpage.
+2. Un fichier JS par thème de classe, 8 fichiers au total
+   `4-code.js` peut contenir plusieurs petites classes
+   utilitaires proches (écrans, luminosité, fin de
+   partie) plutôt que d'éclater en plus de 8 fichiers.
 
 3. Noms en français
    Variables, fonctions, commentaires en français.
@@ -89,7 +91,13 @@ Ces règles gardent le projet simple et lisible.
 9. Classes ES6 pour un maximum de structures du jeu
    Constructeur en `this.xxx = xxx`, prédicats
    préfixés par `est`, sans héritage, getters/setters,
-   champs privés ni méthode statique.
+   champs privés ni méthode statique. Même un
+   regroupement de fonctions sans état propre fort
+   (écrans, luminosité, affichage de fin) devient une
+   classe plutôt que des fonctions libres, pour
+   maximiser la part de code orienté objet. Restent hors
+   classe uniquement les constantes pures sans aucun
+   comportement (`TRADUCTIONS`, éléments HTML...).
 
 ### Exemple de commentaire attendu
 

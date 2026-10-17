@@ -10,11 +10,11 @@
 // ===================================================================
 // MEMORY MULTIJOUEUR — LOGIQUE DU JEU
 //
-// Contient tout ce qui n'est pas une classe : les constantes partagées, les
-// éléments HTML récupérés une fois pour toutes, la barre de réglages
-// (luminosité jour/nuit), la gestion des écrans, et l'affichage de fin de
-// partie. Les classes vivent chacune dans leur propre fichier, chargés
-// juste avant celui-ci : 4-theme-visuel.js, 4-traducteur.js, 4-carte.js,
+// Contient les classes qui n'ont pas leur propre fichier (BarreReglages,
+// GestionnaireEcrans, AffichageFin — voir plus bas), les constantes
+// partagées, et les éléments HTML récupérés une fois pour toutes. Les
+// autres classes vivent chacune dans leur propre fichier, chargés juste
+// avant celui-ci : 4-theme-visuel.js, 4-traducteur.js, 4-carte.js,
 // 4-joueur.js, 4-partie.js, 4-menu.js, 4-livre-des-regles.js.
 //
 // Fichier : 4-code.js (fichier entier).
@@ -24,18 +24,17 @@
 // ===================================================================
 // CONSTANTES DU JEU
 //
-// "scene" pilote l'écran affiché (menu/jeu/fin) et "partieActuelle" pointe
-// vers la partie en cours (ou null avant qu'une partie n'ait commencé) : ces
-// deux variables existent en dehors de toute classe, car partagées par tout
-// le code. Les autres constantes (couleurs des joueurs, coeurs de départ,
-// durée d'un tour) sont des valeurs fixes du jeu, utilisées par plusieurs
-// classes.
+// "partieActuelle" pointe vers la partie en cours (ou null avant qu'une
+// partie n'ait commencé) : existe en dehors de toute classe, car partagée
+// par tout le code (l'écran actuellement affiché, lui, est la propriété
+// gestionnaireEcrans.actuel, voir plus bas). Les autres constantes
+// (couleurs des joueurs, coeurs de départ, durée d'un tour) sont des
+// valeurs fixes du jeu, utilisées par plusieurs classes.
 //
 // Fichier : 4-code.js (ci-dessous) ; "partieActuelle" est une instance de la
-// classe Partie (voir 4-partie.js), "scene" et ces constantes sont lues depuis
+// classe Partie (voir 4-partie.js), ces constantes sont lues depuis
 // 4-partie.js et 4-menu.js.
 // ===================================================================
-let scene = "menu"; // "menu" | "jeu" | "fin"
 let partieActuelle = null;
 
 // Couleurs des lumières, dans l'ordre des joueurs (voir 6-style.css)
@@ -85,56 +84,75 @@ const languetteLivre = document.getElementById("languette-livre");
 
 
 // ===================================================================
-// BARRE DE RÉGLAGES : LUMINOSITÉ JOUR / NUIT / ENTRE-DEUX
+// CLASSE BARRE RÉGLAGES
 //
 // Cycle entre 3 niveaux de luminosité, combinés au thème visuel choisi dans
 // le menu : <body> porte donc 2 classes en même temps, par exemple
 // "theme-japon theme-jour" ("nuit" est la luminosité par défaut, sans
-// classe).
+// classe). Une seule instance globale, "barreReglages", gère ce cycle.
 //
-// Fichier : 4-code.js (ci-dessous) ; les couleurs de chaque combinaison sont
-// définies en CSS dans 6-style.css
-// (body.theme-<visuel>.theme-<luminosite>).
+// Fichier : 4-code.js (classe + instance + écoute du bouton 🌗
+// ci-dessous) ; les couleurs de chaque combinaison sont définies en CSS
+// dans 6-style.css (body.theme-<visuel>.theme-<luminosite>).
 // ===================================================================
-const LUMINOSITES = ["nuit", "crepuscule", "jour"];
-let luminositeActuelleIndex = 0;
+class BarreReglages {
+  constructor(luminosites) {
+    this.luminosites = luminosites;
+    this.luminositeActuelleIndex = 0;
+  }
 
-// Applique sur <body> la classe du thème visuel choisi (menu.theme) et
-// celle de la luminosité actuelle, sans effacer l'autre (contrairement à une
-// simple affectation de body.className).
-function appliquerClassesBody() {
-  LUMINOSITES.forEach((luminosite) => document.body.classList.remove(`theme-${luminosite}`));
-  Object.keys(THEMES_VISUELS).forEach((theme) => document.body.classList.remove(`theme-${theme}`));
+  // Passe à la luminosité suivante (cycle nuit -> crepuscule -> jour -> nuit...).
+  cyclerLuminosite() {
+    this.luminositeActuelleIndex = (this.luminositeActuelleIndex + 1) % this.luminosites.length;
+    this.appliquerClassesBody();
+  }
 
-  document.body.classList.add(`theme-${menu.theme}`);
-  const luminosite = LUMINOSITES[luminositeActuelleIndex];
-  if (luminosite !== "nuit") {
-    document.body.classList.add(`theme-${luminosite}`);
+  // Applique sur <body> la classe du thème visuel choisi (menu.theme) et
+  // celle de la luminosité actuelle, sans effacer l'autre (contrairement à
+  // une simple affectation de body.className).
+  appliquerClassesBody() {
+    this.luminosites.forEach((luminosite) => document.body.classList.remove(`theme-${luminosite}`));
+    Object.keys(THEMES_VISUELS).forEach((theme) => document.body.classList.remove(`theme-${theme}`));
+
+    document.body.classList.add(`theme-${menu.theme}`);
+    const luminosite = this.luminosites[this.luminositeActuelleIndex];
+    if (luminosite !== "nuit") {
+      document.body.classList.add(`theme-${luminosite}`);
+    }
   }
 }
 
+const barreReglages = new BarreReglages(["nuit", "crepuscule", "jour"]);
+
 const boutonTheme = document.getElementById("bouton-theme");
-boutonTheme.addEventListener("click", () => {
-  luminositeActuelleIndex = (luminositeActuelleIndex + 1) % LUMINOSITES.length;
-  appliquerClassesBody();
-});
+boutonTheme.addEventListener("click", () => barreReglages.cyclerLuminosite());
 
 
 // ===================================================================
-// GESTION DES ÉCRANS
+// CLASSE GESTIONNAIRE ÉCRANS
 //
 // Affiche l'écran demandé (menu / jeu / fin) et cache tous les autres, pour
-// n'en montrer qu'un à la fois.
+// n'en montrer qu'un à la fois. Une seule instance globale,
+// "gestionnaireEcrans", retient quel écran est actuellement affiché
+// (gestionnaireEcrans.actuel).
 //
-// Fichier : 4-code.js, fonction changerEcran() ; appelée depuis 4-menu.js et
-// 4-partie.js à chaque changement d'écran.
+// Fichier : 4-code.js (classe + instance ci-dessous) ; méthode changer()
+// appelée depuis 4-menu.js et 4-partie.js à chaque changement d'écran.
 // ===================================================================
-function changerEcran(nom) {
-  scene = nom;
-  ecranMenu.hidden = nom !== "menu";
-  ecranJeu.hidden = nom !== "jeu";
-  ecranFin.hidden = nom !== "fin";
+class GestionnaireEcrans {
+  constructor() {
+    this.actuel = "menu"; // "menu" | "jeu" | "fin"
+  }
+
+  changer(nom) {
+    this.actuel = nom;
+    ecranMenu.hidden = nom !== "menu";
+    ecranJeu.hidden = nom !== "jeu";
+    ecranFin.hidden = nom !== "fin";
+  }
 }
+
+const gestionnaireEcrans = new GestionnaireEcrans();
 
 
 // Transforme un nombre de secondes en texte "MM:SS".
@@ -146,62 +164,66 @@ function formaterTemps(totalSecondes) {
 
 
 // ===================================================================
-// FIN DE PARTIE (affichage)
+// CLASSE AFFICHAGE FIN
 //
 // Affiche le titre, le message de fin et les statistiques de chaque joueur
-// (paires trouvées, coeurs restants, temps moyens) sur l'écran de fin.
+// (paires trouvées, coeurs restants, temps moyens) sur l'écran de fin. Une
+// seule instance globale, "affichageFin", gère cet affichage.
 //
-// Fichier : 4-code.js, fonctions afficherResultatFin() à
-// afficherStatistiquesFin() ; appelées depuis Partie.terminer()
-// (voir 4-partie.js).
+// Fichier : 4-code.js (classe + instance + écoute du bouton "Rejouer"
+// ci-dessous) ; appelée depuis Partie.terminer() (voir 4-partie.js).
 // ===================================================================
+class AffichageFin {
+  // Affiche le titre et le message de fin dans la langue actuelle. Appelée
+  // à la fin de la partie, et de nouveau si la langue change pendant
+  // l'écran de fin.
+  afficherResultat() {
+    if (partieActuelle.dernierResultat === "victoire") {
+      titreFin.textContent = t("victoire-titre");
+      messageFin.textContent = `${t("victoire-message")} ${formaterTemps(partieActuelle.secondesEcoulees)}.`;
+    } else {
+      titreFin.textContent = t("defaite-titre");
+      messageFin.textContent = t("defaite-message");
+    }
+  }
 
-// Affiche le titre et le message de fin dans la langue actuelle. Appelée à la
-// fin de la partie, et de nouveau si la langue change pendant l'écran de fin.
-function afficherResultatFin() {
-  if (partieActuelle.dernierResultat === "victoire") {
-    titreFin.textContent = t("victoire-titre");
-    messageFin.textContent = `${t("victoire-message")} ${formaterTemps(partieActuelle.secondesEcoulees)}.`;
-  } else {
-    titreFin.textContent = t("defaite-titre");
-    messageFin.textContent = t("defaite-message");
+  // Affiche, pour chaque joueur, ses paires trouvées, ses vies restantes, le
+  // temps moyen mis pour trouver une paire, et le temps de réflexion moyen
+  // réel entre le 1er et le 2e clic de chaque tour.
+  afficherStatistiques() {
+    statistiquesFin.innerHTML = "";
+
+    partieActuelle.joueurs.forEach((joueur) => {
+      const tempsMoyen = joueur.pairesTrouvees > 0
+        ? Math.round(joueur.sommeTempsPaires / joueur.pairesTrouvees)
+        : null;
+      const texteTempsMoyen = tempsMoyen !== null ? `${tempsMoyen}${t("temps-moyen-paire")}` : t("aucune-paire");
+
+      const tempsReflexionMoyen = joueur.nbToursJoues > 0
+        ? (joueur.sommeTempsReflexion / joueur.nbToursJoues).toFixed(1)
+        : null;
+      const texteTempsReflexion = tempsReflexionMoyen !== null
+        ? `${tempsReflexionMoyen}${t("temps-reflexion-moyen")}`
+        : t("aucun-temps-reflexion");
+
+      const ligne = document.createElement("div");
+      ligne.className = `ligne-stat-fin ${joueur.classeCouleur}`;
+      ligne.innerHTML = `
+        <span class="lumiere"></span>
+        <span class="nom-stat-fin">${joueur.nomAffiche()}</span>
+        <span>${joueur.pairesTrouvees} ${t("paires-trouvees")}</span>
+        <span>❤️ ${joueur.coeurs}</span>
+        <span>${texteTempsMoyen}</span>
+        <span>${texteTempsReflexion}</span>
+      `;
+      statistiquesFin.appendChild(ligne);
+    });
   }
 }
 
-// Affiche, pour chaque joueur, ses paires trouvées, ses vies restantes, le
-// temps moyen mis pour trouver une paire, et le temps de réflexion moyen réel
-// entre le 1er et le 2e clic de chaque tour.
-function afficherStatistiquesFin() {
-  statistiquesFin.innerHTML = "";
-
-  partieActuelle.joueurs.forEach((joueur) => {
-    const tempsMoyen = joueur.pairesTrouvees > 0
-      ? Math.round(joueur.sommeTempsPaires / joueur.pairesTrouvees)
-      : null;
-    const texteTempsMoyen = tempsMoyen !== null ? `${tempsMoyen}${t("temps-moyen-paire")}` : t("aucune-paire");
-
-    const tempsReflexionMoyen = joueur.nbToursJoues > 0
-      ? (joueur.sommeTempsReflexion / joueur.nbToursJoues).toFixed(1)
-      : null;
-    const texteTempsReflexion = tempsReflexionMoyen !== null
-      ? `${tempsReflexionMoyen}${t("temps-reflexion-moyen")}`
-      : t("aucun-temps-reflexion");
-
-    const ligne = document.createElement("div");
-    ligne.className = `ligne-stat-fin ${joueur.classeCouleur}`;
-    ligne.innerHTML = `
-      <span class="lumiere"></span>
-      <span class="nom-stat-fin">${joueur.nomAffiche()}</span>
-      <span>${joueur.pairesTrouvees} ${t("paires-trouvees")}</span>
-      <span>❤️ ${joueur.coeurs}</span>
-      <span>${texteTempsMoyen}</span>
-      <span>${texteTempsReflexion}</span>
-    `;
-    statistiquesFin.appendChild(ligne);
-  });
-}
+const affichageFin = new AffichageFin();
 
 // Le bouton "Rejouer" ramène directement au menu pour choisir une nouvelle configuration.
 document.getElementById("bouton-rejouer").addEventListener("click", () => {
-  changerEcran("menu");
+  gestionnaireEcrans.changer("menu");
 });
