@@ -44,7 +44,7 @@ body {
 
 /* Le fond et le padding vivent sur #contenu-app plutôt
    que directement sur body, qui ne garde que la barre
-   de réglages et le livre des règles (voir 5-index.html)
+   de réglages et le livre des règles (voir index.html)
    hors de cette zone.
    "background" (et pas "background-color") : --fond est
    une simple couleur pour la plupart des thèmes, mais un
@@ -314,7 +314,7 @@ body.theme-youtube.theme-jour {
    thème.
 
    Fichier : 6-style.css (règles ci-dessous) ;
-   5-index.html (#ecran-menu) ; 4-menu.js (classe
+   index.html (#ecran-menu) ; 4-menu.js (classe
    "selectionne" posée/retirée au clic).
    =================================================================== */
 
@@ -393,7 +393,7 @@ body.theme-communaute .bouton-choix:hover {
    accès à la partie et en pause.
 
    Fichier : 6-style.css (règles ci-dessous) ;
-   5-index.html (#livre et ses pages) ;
+   index.html (#livre et ses pages) ;
    4-livre-des-regles.js (classes "livre-ferme"/
    "livre-ouvert" posées/retirées, page affichée).
    =================================================================== */
@@ -508,7 +508,7 @@ body.theme-communaute .bouton-choix:hover {
    le livre des règles en cours de partie.
 
    Fichier : 6-style.css (règles ci-dessous) ;
-   5-index.html (#barre-reglages) ; 4-code.js (bouton
+   index.html (#barre-reglages) ; 4-code.js (bouton
    thème) et 4-traducteur.js (bouton langue).
    =================================================================== */
 #barre-reglages {
@@ -563,7 +563,7 @@ body.theme-communaute .bouton-choix:hover {
    .arene plus bas, qui gère le débordement).
 
    Fichier : 6-style.css (règles ci-dessous) ;
-   5-index.html (#zone-jeu et ses 3 colonnes) ;
+   index.html (#zone-jeu et ses 3 colonnes) ;
    4-partie.js (contenu des colonnes, rempli en JS).
    =================================================================== */
 #zone-jeu {
@@ -801,7 +801,7 @@ body.theme-communaute .bouton-choix:hover {
    chaque partie (voir .titre-bloc-stat-fin plus bas).
 
    Fichier : 6-style.css (règles ci-dessous) ;
-   5-index.html (#statistiques-fin, vide au départ) ;
+   index.html (#statistiques-fin, vide au départ) ;
    4-code.js (classe AffichageFin, qui remplit ces lignes
    en JS).
    =================================================================== */
@@ -936,7 +936,7 @@ body.theme-communaute .bouton-choix:hover {
    et bouton "Rejouer".
 
    Fichier : 6-style.css (règles ci-dessous) ;
-   5-index.html (#ecran-fin) ; 4-code.js
+   index.html (#ecran-fin) ; 4-code.js
    (afficherResultatFin(), qui remplit le titre et le
    message).
    =================================================================== */

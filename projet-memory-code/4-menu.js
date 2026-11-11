@@ -113,7 +113,7 @@ class Menu {
     // Choix du thème visuel : change immédiatement l'apparence de toute la
     // page (fond, couleurs, police, dos de carte) pour un aperçu en direct,
     // même avant de valider le reste de la configuration. "Médiamatique"
-    // est présélectionné par défaut (voir 5-index.html et
+    // est présélectionné par défaut (voir index.html et
     // catalogueThemes.themeParDefaut dans 4-theme-visuel.js).
     const boutonsTheme = document.querySelectorAll("[data-theme]");
     boutonsTheme.forEach((bouton) => {

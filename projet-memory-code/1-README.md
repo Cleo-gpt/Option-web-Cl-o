@@ -38,7 +38,7 @@ projet-memory-code/
 ├── 4-code.js                reste de la logique
 │
 ├── Page et apparence
-│   ├── 5-index.html         structure de la page
+│   ├── index.html           structure de la page
 │   └── 6-style.css          apparence
 │
 └── images/themes/           images par thème
@@ -52,7 +52,7 @@ projet-memory-code/
 Chaque dossier de thème a 28 symboles PNG + un dos.svg.
 
 Pas de framework, pas d'outil de build : on ouvre
-`5-index.html` dans le navigateur et ça fonctionne.
+`index.html` dans le navigateur et ça fonctionne.
 HTML + CSS + JavaScript "vanilla" uniquement.
 
 ## Règles du code à respecter

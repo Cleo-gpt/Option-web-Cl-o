@@ -78,7 +78,7 @@ const constantesJeu = new ConstantesJeu();
 // instance globale, "elementsHTML", porte toutes ces références.
 //
 // Fichier : 4-code.js (classe + instance ci-dessous) ; les éléments
-// correspondent aux ids déclarés dans 5-index.html.
+// correspondent aux ids déclarés dans index.html.
 // ===================================================================
 class ElementsHTML {
   constructor() {
